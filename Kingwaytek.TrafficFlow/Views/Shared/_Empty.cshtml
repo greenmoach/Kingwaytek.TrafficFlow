@@ -1,0 +1,27 @@
+﻿@{
+    string min = ConfigProvider.IsProduction() ? ".min" : string.Empty;
+    string ver = string.Format("?ver={0}", ConfigProvider.VersionNumber());
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>桃園交通資訊中心 流量管理平台</title>
+    
+    <link href="@Url.Content(string.Format("~/Content/bundle/site{0}.css{1}", min, ver))" rel="stylesheet" type="text/css" />
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles", required: false)
+    }
+</head>
+<body @Html.PageClass() @RenderSection("BodyClass", required:false)>
+
+@RenderBody()
+
+
+<script src="@Url.Content(string.Format("~/Scripts/bundle/all{0}.js{1}", min, ver))" type="text/javascript"></script>
+@RenderSection("Scripts", required: false)
+</body>
+</html>

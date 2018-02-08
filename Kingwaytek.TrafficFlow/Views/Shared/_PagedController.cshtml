@@ -1,0 +1,55 @@
+﻿@model IQueryOptionMvc<object>
+@{
+    Layout = null;
+    var pageSizes = (new List<int> { 20, 50, 100, 200, 500, Model.PageSize, Model.DefaultPageSize }).Where(x => x > 0).Distinct().OrderBy(x => x);
+
+    var pageListItem = pageSizes.OrderBy(p => p).Select(x => new SelectListItem
+    {
+        Text = "" + x,
+        Value = "" + x,
+        Selected = (x == Model.PageSize)
+    });
+
+    if (Model.Results.IsNullOrEmpty() == false)
+    {
+        int pageCount = Model.Results.PageCount,
+            startPage = Math.Max(1, Math.Min(Math.Max(1, Model.Page - 5), (pageCount - 10))),
+            endPage = Math.Min((startPage + 10), pageCount);
+        <div class="page-controller">
+            <div class="btn-group pager">
+                @Html.Link(new HtmlAttr { Css = "disabled page-count", Label = $"{Model.Results.TotalItemCount} 笔" })
+                @Html.Link(new HtmlAttr { Css = $" {(Model.Results.HasPreviousPage ? "" : "disabled")}", Icon = "chevron-left", Href = "#Prev" })
+                @if (startPage != 1)
+                {
+                    @Html.Link(new HtmlAttr { Css = "", Label = "1", Href = "#Page_1" })
+                    if ((startPage - 1) > 1)
+                    {
+                        @Html.Link(new HtmlAttr { Css = " disabled", Label = "..." })
+                    }
+                }
+                @for (var p = startPage; p <= endPage; p++)
+                {
+                    @Html.Link(new HtmlAttr { Css = $" {(Model.Page == p ? "disabled" : "")}", Label = $"{p}", Href = $"#Page_{p}" })
+                }
+                @if (endPage != pageCount)
+                {
+                    if ((endPage + 1) < pageCount)
+                    {
+                        @Html.Link(new HtmlAttr { Css = " disabled", Label = "..." })
+                    }
+                    @Html.Link(new HtmlAttr { Css = "", Label = $"{pageCount}", Href = $"#Page_{pageCount}" })
+                }
+                @Html.Link(new HtmlAttr { Css = $" {(Model.Results.HasNextPage ? "" : "disabled")}", Icon = "chevron-right", Href = "#Next" })
+            </div>
+            <div class="btn-group page-size">
+                <a data-toggle="dropdown" class="btn  dropdown-toggle">@Model.PageSize 列 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    @foreach (var p in pageSizes.Where(x => x != Model.PageSize).OrderBy(x => x))
+                    {
+                        <li><a href="#Size_@p">@p 列</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+}
