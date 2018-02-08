@@ -1,0 +1,159 @@
+﻿header {
+    width: 100%;
+    height: 50px;
+    background: #5e87b0;
+}
+
+    header .logo {
+        height: 50px;
+        width: 300px;
+        line-height: 50px;
+        margin-left: 20px;
+        float: left;
+        font-size: 18px;
+        color: #FFF;
+        display: block;
+    }
+
+@media (max-width: 768px) {
+
+    header .logo {
+        height: 50px;
+        width: 150px;
+        line-height: 50px;
+        margin-left: 10px;
+        overflow: hidden;
+        float: left;
+        font-size: 15px;
+        color: #FFF;
+    }
+}
+
+
+.header-links {
+    color: #fff;
+    position: absolute;
+    width: 370px;
+    height: 25px;
+    top: 0;
+    right: 0;
+    /*底層灰色漸層*/
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.5)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, rgba(0,0,0,0), rgba(0,0,0,0.5)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, rgba(0,0,0,0), rgba(0,0,0,0.5)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.5)); /* Standard syntax (must be last) */
+    /*底層灰色漸層end*/
+    padding: 0px 0px 1px 40px;
+    text-shadow: 1px 1px 0 #333;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+header .header-links span {
+    vertical-align: middle;
+}
+
+header .header-links a {
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow: hidden;
+}
+
+    header .header-links a:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 50%;
+        right: 50%;
+        bottom: 0;
+        background: #fff;
+        height: 1px;
+        -webkit-transition-property: left, right;
+        transition-property: left, right;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+    }
+
+    header .header-links a:hover:before,
+    header .header-links a:focus:before,
+    header .header-links a:active:before {
+        left: 0;
+        right: 0;
+        text-decoration: none;
+    }
+
+@media (max-width: 768px) {
+    .dropdownitem {
+        position: absolute;
+        top: 50px;
+        z-index: 999;
+        width: 100%;
+        background: inherit;
+        border-bottom: 1px solid #CCC;
+    }
+}
+
+@media (min-width: 768px) {
+    .collapse .nav-bar {
+        height: 50px;
+        width: 300px;
+        color: #fff;
+        text-align: center;
+        float: left;
+        margin: 0 auto;
+        position: absolute;
+        left: 330px;
+        top: 0px;
+    }
+
+        .collapse .nav-bar .nav {
+            text-align: center;
+            width: 100%;
+        }
+
+            .collapse .nav-bar .nav > li {
+                float: left;
+                width: 150px;
+                ;
+                background: #6f94b8;
+                border-right: 2px solid #507aa4;
+                overflow: hidden;
+            }
+
+                .collapse .nav-bar .nav > li > a {
+                    text-align: center;
+                    color: #fff;
+                    height: 50px;
+                    line-height: 50px;
+                    font-size: 15px;
+                    padding: inherit;
+                }
+
+                    .collapse .nav-bar .nav > li > a:hover,
+                    .collapse .nav-bar .nav > li > a:focus,
+                    .collapse .nav-bar .nav > li.active > a {
+                        color: #555;
+                        background: #eee;
+                    }
+
+                    .collapse .nav-bar .nav > li > a:before {
+                        content: "";
+                        position: absolute;
+                        z-index: -1;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                    }
+}

@@ -1,0 +1,140 @@
+﻿.content {
+    width: 100%;
+    height: calc(100vh - 75px);
+    position: relative;
+    z-index: 4;
+    top: 0px;
+    bottom: 25px;
+    background-color: #eee;
+}
+
+.content-form {
+    width: 100%;
+    min-height: calc(100vh - 75px);
+    top: 50px;
+    bottom: 25px;
+    background: #eee;
+}
+
+
+.gis-left {
+    width: 330px;
+    background: #e9f2f9;
+    border-right: 1px solid #0071b5;
+    position: absolute;
+    z-index: 7;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 2px 0px 5px rgba(0,0,0,.25);
+}
+
+.btn-toggle {
+    height: 72px;
+    width: 15px;
+    position: absolute;
+    z-index: 8;
+    right: -15px;
+    top: 50%;
+    margin-top: -36px;
+    cursor: pointer;
+}
+
+    .btn-toggle.l-show {
+        background: rgba(0, 0, 0, 0) url(../images/left-toggle.png) repeat scroll 0 bottom;
+        display: none;
+    }
+
+    .btn-toggle.l-hide {
+        background: rgba(0, 0, 0, 0) url(../images/left-toggle.png) repeat scroll 0 0;
+    }
+
+
+
+.gis-right {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 330px;
+    right: 0px;
+    z-index: 5;
+}
+
+.gis-map {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 6;
+}
+
+
+
+
+
+
+.left-accordion.ui-accordion {
+    padding: 10px 10px !important;
+    margin-bottom: 8px;
+    border-top: 0 !important;
+}
+
+
+    .left-accordion.ui-accordion .ui-accordion-header {
+        margin-top: 10px;
+        color: #666;
+        font-family: "微軟正黑體", "Microsoft JhengHei";
+        font-size: 15px;
+        font-weight: bold;
+        padding-left: 30px;
+        background: rgb(239,239,239);
+        background: -moz-linear-gradient(top, rgb(239,239,239) 0%, rgb(221,221,221) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,239,239)), color-stop(100%,rgb(221,221,221)));
+        background: -webkit-linear-gradient(top, rgb(239,239,239) 0%,rgb(221,221,221) 100%);
+        background: -o-linear-gradient(top, rgb(239,239,239) 0%,rgb(221,221,221) 100%);
+        background: -ms-linear-gradient(top, rgb(239,239,239) 0%,rgb(221,221,221) 100%);
+        background: linear-gradient(to bottom, rgb(239,239,239) 0%,rgb(221,221,221) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#dddddd',GradientType=0 );
+        border: 1px solid #bbbbbb !important;
+        border-bottom: 3px solid #bbbbbb !important;
+    }
+
+        .left-accordion.ui-accordion .ui-accordion-header:first-child {
+            margin-top: 0;
+        }
+
+        /* 下拉式選單(滑鼠移動到上面的效果) */
+        .left-accordion.ui-accordion .ui-accordion-header:hover {
+            color: #222;
+            background: rgb(238,238,238);
+            background: -moz-linear-gradient(top, rgb(238,238,238) 0%, rgb(204,204,204) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(238,238,238)), color-stop(100%,rgb(204,204,204)));
+            background: -webkit-linear-gradient(top, rgb(238,238,238) 0%,rgb(204,204,204) 100%);
+            background: -o-linear-gradient(top, rgb(238,238,238) 0%,rgb(204,204,204) 100%);
+            background: -ms-linear-gradient(top, rgb(238,238,238) 0%,rgb(204,204,204) 100%);
+            background: linear-gradient(to bottom, rgb(238,238,238) 0%,rgb(204,204,204) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 );
+        }
+
+    /* 下拉式選單(滑鼠選取到的狀態) */
+    .left-accordion.ui-accordion .ui-accordion-header-active,
+    .left-accordion.ui-accordion .ui-accordion-header-active:hover {
+        border: 1px solid #bf543d !important;
+        border-bottom: 3px solid #bf543d !important;
+        /*background:#4DA6CC;*/
+        color: #fff;
+        background: rgb(243,122,96);
+        background: -moz-linear-gradient(top, rgb(243,122,96) 0%, rgb(227,106,80) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(243,122,96)), color-stop(100%,rgb(227,106,80)));
+        background: -webkit-linear-gradient(top, rgb(243,122,96) 0%,rgb(227,106,80) 100%);
+        background: -o-linear-gradient(top, rgb(243,122,96) 0%,rgb(227,106,80) 100%);
+        background: -ms-linear-gradient(top, rgb(243,122,96) 0%,rgb(227,106,80) 100%);
+        background: linear-gradient(to bottom, rgb(243,122,96) 0%,rgb(227,106,80) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f27a60', endColorstr='#e36a50',GradientType=0 );
+    }
+
+.rotate-btn {
+    border: 1px solid #999;
+    width: 40px;
+}

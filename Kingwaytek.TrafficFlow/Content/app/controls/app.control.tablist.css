@@ -1,0 +1,216 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "微軟正黑體", "Microsoft JhengHei";
+}
+
+a {
+    outline: none; /* for Firefox */
+    hlbr: expression(this.onFocus=this.blur()); /* for IE */
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+
+.nav-tabs > li > a {
+    border: 1px solid #ddd;
+    padding: 5px 20px;
+    color: #777;
+    background-color: #e3e3e3;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+    .nav-tabs > li > a:hover {
+        color: #333;
+        background-color: #d3d3d3;
+    }
+
+.nav-tabs > li.active > a {
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    background-color: #fff;
+    color: #111;
+}
+
+.tab-content .tab-pane {
+    margin: 12px 0px;
+}
+
+.ui-dialog .tab-content .tab-pane {
+    margin-bottom: 0;
+}
+
+.tab-content .form-group, .tab-content .row, .left-accordion .searchQuery .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+    .tab-content .form-group label {
+        margin-bottom: 3px;
+    }
+
+    .tab-content .form-group select.form-control {
+        margin-bottom: 2px;
+    }
+
+        .tab-content .form-group select.form-control:last-child {
+            margin-bottom: 0px;
+        }
+
+.tab-content .btn-form,
+.searchQuery .btn-form {
+    margin-top: 15px;
+}
+
+.tab-content .form-search-result {
+    margin-top: 15px;
+    border-top: 1px dashed #aaa;
+    padding-top: 15px;
+}
+
+    .tab-content .form-search-result p b {
+        color: #06F;
+        padding: 0 3px;
+    }
+
+.form-control.t_date, .form-control.t_datetime {
+    background-image: url(../images/icon_calendar.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 26px auto;
+}
+
+.form-search-result > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+    .form-search-result > ul > li {
+        border-bottom: 1px dotted #bbb;
+        margin: 0;
+        padding: 8px;
+        padding-left: 50px;
+        position: relative;
+    }
+
+        .form-search-result > ul > li:hover {
+            background-color: #eee;
+        }
+
+        .form-search-result > ul > li > i {
+            position: absolute;
+            display: block;
+            width: 36px;
+            height: 36px;
+            background: url(../images/ico-pin.png);
+            text-align: center;
+            left: 8px;
+            top: 8px;
+            padding-top: 7px;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 13px;
+            font-family: Arial;
+            line-height: 18px;
+            color: #03C;
+        }
+
+        .form-search-result > ul > li > span, .form-search-result > ul > li > a {
+            display: block;
+        }
+
+        .form-search-result > ul > li > a {
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 2px;
+            color: #09C;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+        }
+
+            .form-search-result > ul > li > a:hover {
+                color: #06C;
+            }
+
+        .form-search-result > ul > li > span {
+            color: #666;
+        }
+
+
+.btn.btn-primary {
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    background-color: #239fdb;
+    -moz-box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+    -webkit-box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+    box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+    border: 1px solid #fff;
+}
+
+    .btn.btn-primary:hover {
+        background-color: #2ca8e4;
+    }
+
+    .btn.btn-primary:active, .btn.btn-info:active, .btn.btn-success:active, .btn.btn-inverse:active, .btn.btn-warning:active, .btn.btn-danger:active {
+        -moz-box-shadow: 0 1px 3px rgba(0,0,0,.2), inset 0 -2px 0 rgba(0,0,0,0);
+        -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.2), inset 0 -2px 0 rgba(0,0,0,0);
+        box-shadow: 0 1px 3px rgba(0,0,0,.2), inset 0 -2px 0 rgba(0,0,0,0);
+    }
+
+
+
+
+/* ***** - xcheckbox - ***** */
+
+/*input[type=checkbox] {
+display: none;
+} */
+
+label[class="xcheckbox inline"] span {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+    margin-right: 5px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #efefef;
+    -moz-box-shadow: 0 1px 0 rgba(255,255,255,.6), inset 0 2px 0 rgba(0,0,0,.06);
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.6), inset 0 2px 0 rgba(0,0,0,.06);
+    box-shadow: 0 1px 0 rgba(255,255,255,.6), inset 0 2px 0 rgba(0,0,0,.06);
+    border: 1px solid #ccc;
+    vertical-align: text-bottom;
+}
+
+label[class="xcheckbox inline"] {
+    padding-left: 0;
+    margin-right: 20px;
+    margin-left: -13px;
+}
+
+input[type=checkbox]:checked + label span {
+    background-color: #239fdb;
+    position: relative;
+    border: none;
+}
+
+    input[type=checkbox]:checked + label span:after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        margin-top: -8px;
+        margin-right: -8px;
+        background: url(../images/glyphicons-halflings-white.png) no-repeat scroll -287px 0;
+    }

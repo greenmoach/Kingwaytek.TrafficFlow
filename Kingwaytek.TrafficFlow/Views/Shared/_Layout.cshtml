@@ -1,0 +1,45 @@
+﻿@{
+    string min = ConfigProvider.IsProduction() ? ".min" : string.Empty;
+    string ver = string.Format("?ver={0}", ConfigProvider.VersionNumber());
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>桃園交通資訊中心 流量管理平台</title>
+    
+    <link href="@Url.Content(string.Format("~/Content/bundle/site{0}.css{1}", min, ver))" rel="stylesheet" type="text/css" />
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles", required: false)
+    }
+</head>
+<body>
+    <header>
+        <!--Header-->
+        <button type="button" class="navbar-toggle collapsed" style=" background:#FFF;" data-toggle="collapse" data-target="#navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        <a href="#"><div class="logo"><i class="fa fa-car" aria-hidden="true"></i> 桃園交通資訊中心 流量管理平台</div></a>
+    </header><!--//Header end-->
+
+    <div class="dropdownitem">
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <div class="nav-bar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html"><i class="fa fa-search" aria-hidden="true"></i> 流量管理</a></li>
+                    <li><a href="management.html"><i class="fa fa-cog" aria-hidden="true"></i> 流量查詢</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+
+    <footer>
+        <span>桃園市交通資訊中心 流量管理平台</span>
+        <span>Copyright © Taoyuan  2018</span>
+    </footer>
+<script src="@Url.Content(string.Format("~/Scripts/bundle/all{0}.js{1}", min, ver))" type="text/javascript"></script>
+@RenderSection("Scripts", required: false)
+</body>
+</html>
