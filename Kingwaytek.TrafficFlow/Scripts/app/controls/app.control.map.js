@@ -10,8 +10,8 @@
 
         // Define map.
         var mapOpts = {
-            zoom: 3,
-            center: new google.maps.LatLng(44, 0),
+            zoom: 10,
+            center: new google.maps.LatLng(24.9927278, 121.3004241),
             mapTypeControl: false,
             panControl: false,
             zoomControl: false,
