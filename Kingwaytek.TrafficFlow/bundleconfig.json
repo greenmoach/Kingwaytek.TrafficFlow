@@ -14,10 +14,10 @@
   {
     "outputFileName": "scripts/bundle/all.js",
     "inputFiles": [
-      "Scripts/plugins/bootstrap/bootstrap.js",
       "Scripts/plugins/jquery/jquery-*.js",
       "Scripts/plugins/jquery.validate/jquery.validate.js",
       "Scripts/plugins/jquery.validate/jquery.validate.unobtrusive.js",
+      "Scripts/plugins/bootstrap/bootstrap.js",
       "Scripts/plugins/jquery.datetimepicker/jquery.datetimepicker.js",
       "Scripts/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js",
       "Scripts/app/controls/app.control.*.js",

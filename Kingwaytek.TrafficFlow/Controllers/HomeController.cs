@@ -12,5 +12,10 @@ namespace Kingwaytek.TrafficFlow.Controllers
         {
             return View();
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
     }
 }
