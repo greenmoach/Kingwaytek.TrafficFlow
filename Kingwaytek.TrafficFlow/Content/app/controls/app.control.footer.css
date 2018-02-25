@@ -4,18 +4,20 @@
     font-size: 13px;
     color: #FFF;
     text-align: center;
-    letter-spacing: 1px ;
+    letter-spacing: 1px;
     width: 100%;
     /*position: absolute;*/
     /*z-index:10;*/
     bottom: 0;
     overflow: hidden;
-    overflow:hidden;
-    padding-top:3px;
+    overflow: hidden;
+    padding-top: 3px;
 }
-footer span {
-    margin-right:10px;
-}
-footer span:last-child {
-    margin-right:0px;
-}
+
+    footer span {
+        margin-right: 10px;
+    }
+
+        footer span:last-child {
+            margin-right: 0px;
+        }

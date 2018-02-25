@@ -516,7 +516,6 @@
                         }
                         clearTimeout(lazyInitTimer);
                         lazyInitTimer = setTimeout(function () {
-
                             if (!input.data('xdsoft_datetimepicker')) {
                                 createDateTimePicker(input);
                             }
@@ -1366,7 +1365,6 @@
                     datetimepicker.trigger('changedatetime.xdsoft');
                 });
 
-
             datepicker
                 .on('mousewheel.xdsoft', function (event) {
                     if (!options.scrollMonth) {
@@ -1499,7 +1497,6 @@
             datetimepicker.setOptions(options);
 
             function getCurrentValue() {
-
                 var ct = false, time;
 
                 if (options.startDate) {
@@ -1633,7 +1630,6 @@
     $.fn.datetimepicker.defaults = default_options;
 }(jQuery));
 (function () {
-
     /*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
      * Licensed under the MIT License (LICENSE.txt).
      *

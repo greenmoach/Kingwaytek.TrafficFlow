@@ -15,7 +15,6 @@ select:-moz-focusring {
     text-shadow: 0 0 0 #000;
 }
 
-
 .nav-tabs > li > a {
     border: 1px solid #ddd;
     padding: 5px 20px;
@@ -79,7 +78,7 @@ select:-moz-focusring {
     }
 
 .form-control.t_date, .form-control.t_datetime {
-    background-image: url(../images/icon_calendar.png);
+    background-image: url(../../images/icon_calendar.png);
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 26px auto;
@@ -108,7 +107,7 @@ select:-moz-focusring {
             display: block;
             width: 36px;
             height: 36px;
-            background: url(../images/ico-pin.png);
+            background: url(../../images/ico-pin.png);
             text-align: center;
             left: 8px;
             top: 8px;
@@ -142,7 +141,6 @@ select:-moz-focusring {
             color: #666;
         }
 
-
 .btn.btn-primary {
     color: #fff;
     text-shadow: 0 1px 1px rgba(0,0,0,.4);
@@ -162,9 +160,6 @@ select:-moz-focusring {
         -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.2), inset 0 -2px 0 rgba(0,0,0,0);
         box-shadow: 0 1px 3px rgba(0,0,0,.2), inset 0 -2px 0 rgba(0,0,0,0);
     }
-
-
-
 
 /* ***** - xcheckbox - ***** */
 
@@ -212,5 +207,5 @@ input[type=checkbox]:checked + label span {
         right: 50%;
         margin-top: -8px;
         margin-right: -8px;
-        background: url(../images/glyphicons-halflings-white.png) no-repeat scroll -287px 0;
+        background: url(../../images/glyphicons-halflings-white.png) no-repeat scroll -287px 0;
     }

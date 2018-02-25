@@ -1,4 +1,12 @@
-﻿<!--Content-->
+﻿@{
+    var investigationTypes = Enum.GetValues(typeof(InvestigationTypeEnum))
+                                .Cast<InvestigationTypeEnum>()
+                                .ToSelectListItemList(x => x.GetDisplayName("Name"), x => x.ToString());
+    var defaultSelectItem = new List<SelectListItem>() { new SelectListItem() { Text = "請選擇" } };
+    var towns = SiteHelper.GetTowns().ToSelectListItemList(x => x, x => x);
+    towns.Insert(0, new SelectListItem() { Text = "請選擇", Value = string.Empty, Selected = true });
+}
+<!--Content-->
 <div class="content">
     <div class="gis-left">
         <!--左側滑動收合-->
@@ -14,41 +22,28 @@
             <div class="Position-Setup">
                 <div class="form-group">
                     <label>1、調查型態：</label>
-                    <select class="selectpicker show-menu-arrow form-control">
-                        <option>T字路口車流量</option>
-                        <option>十字路口車流量</option>
-                        <option>行人量調查</option>
-                        <option>五叉及五叉以上路口車流量</option>
-                    </select>
+                    @Html.DropDownList("InvestigationType", investigationTypes, new { @class = "selectpicker show-menu-arrow form-control" })
                 </div>
 
                 <div class="form-group">
                     <label>2、路口定位：</label>
                     <div class="input-group">
                         <span class="input-group-addon">行政區：</span>
-                        <select class="selectpicker show-menu-arrow form-control">
-                            <option>請選擇</option>
-                            <option>神岡</option>
-                            <option>新社</option>
-                        </select>
+                        @Html.DropDownList("Town", towns, new { @class = "selectpicker show-menu-arrow form-control" })
                     </div>
                     <br />
                     <div class="input-group">
                         <span class="input-group-addon">路&nbsp;&nbsp;&nbsp;名：</span>
-                        <input type="text" class="form-control" id="" placeholder="請輸入正確路名">
+                        @Html.DropDownList("Road1", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
                     </div>
                     <br />
                     <div class="input-group">
                         <span class="input-group-addon">路&nbsp;&nbsp;&nbsp;名：</span>
-                        <select class="selectpicker show-menu-arrow form-control">
-                            <option>請選擇</option>
-                            <option>神岡</option>
-                            <option>新社</option>
-                        </select>
+                        @Html.DropDownList("Road2", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
                     </div>
                 </div>
 
-                <button type="button" id="next-1" class="btn btn-primary btn-block"><i class="fa fa-map-marker" aria-hidden="true"></i> 定位</button>
+                <button type="button" id="next-1" class="btn btn-primary btn-block" disabled><i class="fa fa-map-marker" aria-hidden="true"></i> 定位</button>
             </div>
             <!--//一、路口定位設定-->
             <!--路口指向設定-->
@@ -142,7 +137,6 @@
     <script>
         var GEE_HOST = 'trafficgee.tycg.gov.tw';
         var GEE_BASE_URL = 'http://' + GEE_HOST;
-
     </script>
     <script src="http://trafficgee.tycg.gov.tw//Taoyuan_2D_01/query?request=Json&var=geeServerDefs&is2d=t" type="text/javascript"></script>
     <script src="http://trafficgee.tycg.gov.tw/maps/api/bootstrap.js" type="text/javascript"></script>

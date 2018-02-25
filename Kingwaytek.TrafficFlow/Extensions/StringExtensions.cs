@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Resources;
 
 namespace Kingwaytek.TrafficFlow
 {
@@ -16,6 +13,18 @@ namespace Kingwaytek.TrafficFlow
         public static bool IsNullOrEmpty(this string source)
         {
             return string.IsNullOrEmpty(source);
+        }
+
+        public static string GetLocalString(this string source, Type resourceType)
+        {
+            var resourceManager = new ResourceManager(resourceType);
+            var localString = resourceManager.GetString(source);
+            if (localString != string.Empty)
+            {
+                return localString;
+            }
+
+            return source;
         }
     }
 }

@@ -27,11 +27,9 @@ a {
     padding: 15px;
 }
 
-
 .ui-state-focus:focus {
     outline: none !important
 }
-
 
 label.file input {
     position: absolute;
@@ -188,10 +186,6 @@ label.file {
         background: rgb(73,155,234); /* Old browsers */
     }
 
-
-
-
-
 .div-Info {
     position: absolute;
     z-index: 4;
@@ -299,8 +293,6 @@ label.file {
     display: none;
 }
 
-
-
 .div-Info .well legend {
     margin-bottom: 0px;
     padding: 8px 10px;
@@ -323,11 +315,9 @@ label.file {
     transition: all 0.15s;
 }
 
-
     .div-Info .well .close:hover {
         opacity: 0.9;
     }
-
 
 .div-Info .div-info-table {
     border: 0px solid #aaa;
@@ -339,7 +329,6 @@ label.file {
     .div-Info .div-info-table td {
         padding: 5px;
     }
-
 
 .div-Info ul {
     margin: 0;
@@ -378,7 +367,6 @@ label.file {
 .div-Info-label4 {
     width: 65%;
 }
-
 
 .detail-area {
     height: 32px;
@@ -435,7 +423,6 @@ label.file {
     background: #FFF;
     padding: 10px;
 }
-
 
 .div-history {
     position: absolute;
@@ -559,8 +546,6 @@ label.file {
         display: none;
     }
 
-
-
     .div-history .well legend {
         margin-bottom: 0px;
         padding: 8px 10px;
@@ -583,11 +568,9 @@ label.file {
         transition: all 0.15s;
     }
 
-
         .div-history .well .close:hover {
             opacity: 0.9;
         }
-
 
     .div-history .div-info-table {
         border: 0px solid #aaa;
@@ -599,7 +582,6 @@ label.file {
         .div-history .div-info-table td {
             padding: 5px;
         }
-
 
     .div-history ul {
         margin: 0;
@@ -653,8 +635,6 @@ label.file {
     height: 500px;
     overflow: auto;
 }
-
-
 
 .div-turn-history {
     position: absolute;
@@ -778,8 +758,6 @@ label.file {
         display: none;
     }
 
-
-
     .div-turn-history .well legend {
         margin-bottom: 0px;
         padding: 8px 10px;
@@ -802,11 +780,9 @@ label.file {
         transition: all 0.15s;
     }
 
-
         .div-turn-history .well .close:hover {
             opacity: 0.9;
         }
-
 
     .div-turn-history .div-info-table {
         border: 0px solid #aaa;
@@ -818,7 +794,6 @@ label.file {
         .div-turn-history .div-info-table td {
             padding: 5px;
         }
-
 
     .div-turn-history ul {
         margin: 0;

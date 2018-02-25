@@ -1,12 +1,10 @@
-﻿
-$(function() {
-
+﻿$(function () {
     //tooltip
     $('.map-tools').tooltip({
         position: {
             my: "center top+1",
             at: "center bottom",
-            using: function(position, feedback) {
+            using: function (position, feedback) {
                 $(this).css(position);
                 $("<div>")
                     .addClass("arrow-tooltip top")
@@ -16,8 +14,6 @@ $(function() {
             }
         }
     });
-
-
 });
 
 //左側縮合
@@ -34,7 +30,6 @@ $(document).ready(function () {
     });
 });
 
-
 //圖層選單的tree view
 $(document).ready(function () {
     $('.p-tree li').each(function () {
@@ -48,11 +43,9 @@ $(document).ready(function () {
         $(this).parent().toggleClass('active');
         $(this).parent().children('ul').slideToggle('fast');
     });
-
 });
 
-
-//InfoWindow 
+//InfoWindow
 $(document).ready(function () {
     $('.InfoWindow .close')
         .click(function () {
@@ -60,18 +53,13 @@ $(document).ready(function () {
         });
 });
 
-
 //圖台工具的按鈕變化
 //$('.btn-map-tools .btn').click(function(){
 //	$('.btn-map-tools .btn').removeClass("active");
 //	$(this).addClass("active");
 //});
 
-
-
 $(function () { $("[data-toggle='popover']").popover(); });
-
-
 
 $('.btn-shapes .btn').click(function () {
     $('.btn-shapes .btn').removeClass("active");

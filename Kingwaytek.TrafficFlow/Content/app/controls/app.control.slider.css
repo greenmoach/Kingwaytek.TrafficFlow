@@ -16,7 +16,6 @@
     background: #eee;
 }
 
-
 .gis-left {
     width: 330px;
     background: #e9f2f9;
@@ -41,15 +40,13 @@
 }
 
     .btn-toggle.l-show {
-        background: rgba(0, 0, 0, 0) url(../images/left-toggle.png) repeat scroll 0 bottom;
+        background: rgba(0, 0, 0, 0) url(../../images/left-toggle.png) repeat scroll 0 bottom;
         display: none;
     }
 
     .btn-toggle.l-hide {
-        background: rgba(0, 0, 0, 0) url(../images/left-toggle.png) repeat scroll 0 0;
+        background: rgba(0, 0, 0, 0) url(../../images/left-toggle.png) repeat scroll 0 0;
     }
-
-
 
 .gis-right {
     position: absolute;
@@ -69,17 +66,11 @@
     z-index: 6;
 }
 
-
-
-
-
-
 .left-accordion.ui-accordion {
     padding: 10px 10px !important;
     margin-bottom: 8px;
     border-top: 0 !important;
 }
-
 
     .left-accordion.ui-accordion .ui-accordion-header {
         margin-top: 10px;

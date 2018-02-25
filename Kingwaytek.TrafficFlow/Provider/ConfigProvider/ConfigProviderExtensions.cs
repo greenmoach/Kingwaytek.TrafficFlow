@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kingwaytek.TrafficFlow
+﻿namespace Kingwaytek.TrafficFlow
 {
-    public  static class ConfigProviderExtensions
+    public static class ConfigProviderExtensions
     {
         public static bool IsProduction(this IConfigProvider config)
         {

@@ -61,7 +61,6 @@ namespace Kingwaytek.TrafficFlow
             {
                 var editModel = (IEditColumn)model;
                 editModel.CreateTime = DateTime.Now;
-                editModel.CreateUserId = 0;
             }
             if (_isIdentityGuid)
             {
@@ -83,7 +82,6 @@ namespace Kingwaytek.TrafficFlow
                 {
                     var editModel = (IEditColumn)p;
                     editModel.CreateTime = DateTime.Now;
-                    editModel.CreateUserId = 0;
                     return (TModel)editModel;
                 });
             }
@@ -100,7 +98,6 @@ namespace Kingwaytek.TrafficFlow
             {
                 var editModel = (IEditColumn)model;
                 editModel.LastEditTime = DateTime.Now;
-                editModel.LastEditUserId = 0;
             }
 
             Context.Entry(model).State = EntityState.Modified;
@@ -116,7 +113,6 @@ namespace Kingwaytek.TrafficFlow
 
             Context.SaveChanges();
         }
-
 
         public virtual void Delete(TModel model)
         {

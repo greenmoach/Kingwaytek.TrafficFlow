@@ -1,13 +1,7 @@
-﻿
-
-(function ($) {
-
-
-
+﻿(function ($) {
     var geeMap;
 
-    $(function() {
-
+    $(function () {
         // Define map.
         var mapOpts = {
             zoom: 10,
@@ -20,9 +14,5 @@
         };
         // Create map.
         geeMap = geeCreateFusionMap('map_canvas', geeServerDefs, mapOpts);
-
     });
-
-
 })(jQuery);
-

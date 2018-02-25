@@ -1,5 +1,5 @@
-﻿using System.Web.Mvc;
-using Kingwaytek.TrafficFlow.Provider;
+﻿using Kingwaytek.TrafficFlow.Provider;
+using System.Web.Mvc;
 
 namespace Kingwaytek.TrafficFlow
 {

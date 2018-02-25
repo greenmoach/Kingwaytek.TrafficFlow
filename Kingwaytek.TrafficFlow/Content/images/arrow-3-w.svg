@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="33.25px" height="41.75px" viewBox="5.41 -3.641 33.25 41.75" enable-background="new 5.41 -3.641 33.25 41.75"
+	 xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="294.2009" y1="-393.8403" x2="294.2009" y2="-363.6216" gradientTransform="matrix(2.560422e-007 -1 -1 -2.384635e-007 -357.0237 311.3552)">
+	<stop  offset="0" style="stop-color:#EB7260"/>
+	<stop  offset="1" style="stop-color:#E22931"/>
+</linearGradient>
+<polygon fill="url(#SVGID_1_)" stroke="#B72330" stroke-miterlimit="10" points="10.936,13.811 6.597,17.156 10.936,20.502 
+	10.936,19.088 36.816,19.088 36.816,15.224 10.936,15.224 "/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="282.0388" y1="-393.8403" x2="282.0388" y2="-373.8228" gradientTransform="matrix(2.560422e-007 -1 -1 -2.384635e-007 -357.0237 311.3552)">
+	<stop  offset="0" style="stop-color:#EB7260"/>
+	<stop  offset="1" style="stop-color:#E22931"/>
+</linearGradient>
+<polygon fill="url(#SVGID_2_)" stroke="#B72330" stroke-miterlimit="10" points="18.228,32.383 16.799,32.383 20.145,36.723 
+	23.49,32.383 22.06,32.383 22.06,25.747 36.816,25.747 36.816,21.915 18.228,21.915 "/>
+<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="306.4509" y1="-393.8403" x2="306.4509" y2="-373.8228" gradientTransform="matrix(2.560422e-007 -1 -1 -2.384635e-007 -357.0237 311.3552)">
+	<stop  offset="0" style="stop-color:#EB7260"/>
+	<stop  offset="1" style="stop-color:#E22931"/>
+</linearGradient>
+<polygon fill="url(#SVGID_3_)" stroke="#B72330" stroke-miterlimit="10" points="20.145,-2.504 16.799,1.835 18.228,1.835 
+	18.228,12.317 36.816,12.317 36.816,8.485 22.06,8.485 22.06,1.835 23.49,1.835 "/>
+</svg>

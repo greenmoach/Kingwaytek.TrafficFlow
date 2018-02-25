@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Kingwaytek.TrafficFlow
 {
@@ -14,21 +10,25 @@ namespace Kingwaytek.TrafficFlow
         /// <summary>
         /// T字路口車流量
         /// </summary>
+        [Display(Name = "T字路口車流量")]
         TRoad = 1,
 
         /// <summary>
         /// 十字路口車流量
         /// </summary>
+        [Display(Name = "十字路口車流量")]
         Intersection,
 
         /// <summary>
         /// 行人量調查
         /// </summary>
+        [Display(Name = "行人量調查")]
         Pedestrians,
 
         /// <summary>
         /// 五叉及五叉以上路口車流量
         /// </summary>
+        [Display(Name = "五叉及五叉以上路口車流量")]
         FiveWay
     }
 }

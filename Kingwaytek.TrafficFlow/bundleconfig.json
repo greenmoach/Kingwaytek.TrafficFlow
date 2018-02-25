@@ -5,6 +5,7 @@
       "Content/plugins/bootstrap/bootstrap.css",
       "Content/plugins/jquery-ui/jquery-ui-1.10.3.custom.css",
       "Content/plugins/jquery.datetimepicker/jquery.datetimepicker.css",
+      "Content/plugins/font-awesome/css/font-awesome.css",
       "Content/app/controls/app.control.*.css",
       "!Content/app/pages/*.min.css",
       "Content/app/pages/app.page.*.css"

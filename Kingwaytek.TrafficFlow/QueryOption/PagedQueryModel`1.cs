@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kingwaytek.TrafficFlow
+﻿namespace Kingwaytek.TrafficFlow
 {
     public class PagedQueryModel<TModel, TFilter> : QueryOption<TModel, TFilter>, IQueryOptionMvc<TModel>
         where TFilter : new()
