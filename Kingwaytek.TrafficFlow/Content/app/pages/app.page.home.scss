@@ -1,0 +1,28 @@
+﻿.home-create {
+    .modal-content {
+        width: 810px;
+    }
+
+    table.table-preview {
+        min-width: 60%;
+
+        tr {
+            td, th {
+                border: 1px solid black;
+                text-align: center;
+            }
+
+            th.direction {
+                width: 5%;
+            }
+
+            th.time {
+                width: 10%;
+            }
+
+            th.count {
+                width: 6%;
+            }
+        }
+    }
+}

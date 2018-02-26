@@ -129,5 +129,36 @@
                 .fail(function () {
                     alert('無法取得該交叉路口定位資訊');
                 });
+        })
+        .on('click', '#FileUploadButton', function () {
+            var formData = new FormData(),
+                url = '/Home/UploadInvestigation',
+                file = document.getElementById('FileUpload').files[0];
+            if (!file) {
+                alert('請選擇要會上傳的調查資料');
+            }
+
+            if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                alert('上傳的調查資料檔案類型非EXCEL');
+            }
+
+            // 上傳檔案上限10MB
+            if (file.size > 10 * 1024 * 1024) {
+                alert('檔案大小超過10MB');
+            }
+
+            formData.append('file', file);
+            formData.append('type', $('#InvestigationType').find('option:selected').val());
+            $.ajax(url, {
+                method: 'post',
+                processData: false,
+                contentType: false,
+                data: formData
+            }).done(function (data) {
+                $('#Modal-upload-success').find('.modal-body').html(data).end().modal('show');
+            }).fail(function (data) {
+                console.log(data);
+                alert('Error while uploading the files');
+            });
         });
 })(jQuery);

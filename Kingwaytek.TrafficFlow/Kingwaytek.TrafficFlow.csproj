@@ -55,6 +55,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -145,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\InvestigationExcelReader\TRoadReader.cs" />
     <Compile Include="Helpers\SiteHelper.cs" />
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Interfaces\IConfigProvider.cs" />
@@ -155,6 +159,7 @@
     <Compile Include="Interfaces\ISelectListItem.cs" />
     <Compile Include="Models\Dto\PositioningDto.cs" />
     <Compile Include="Models\Dto\PositioningTownDto.cs" />
+    <Compile Include="Models\VehicleInvestigateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CacheProvider\ICacheProvider.cs" />
     <Compile Include="Provider\CacheProvider\MemoryCacheProvider.cs" />
@@ -200,6 +205,12 @@
     <Content Include="Content\app\controls\app.control.header.css" />
     <Content Include="Content\app\controls\app.control.slider.css" />
     <Content Include="Content\app\controls\app.control.tablist.css" />
+    <Content Include="Content\app\pages\app.page.home.css">
+      <DependentUpon>app.page.home.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\app\pages\app.page.home.min.css">
+      <DependentUpon>app.page.home.css</DependentUpon>
+    </Content>
     <Content Include="Content\bundle\site.css" />
     <Content Include="Content\bundle\site.min.css">
       <DependentUpon>site.css</DependentUpon>
@@ -219,7 +230,6 @@
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\icon_calendar.png" />
     <Content Include="Content\images\left-toggle.png" />
-    <Content Include="Content\PagedList.css" />
     <Content Include="Content\plugins\bootstrap\bootstrap.css" />
     <Content Include="Content\plugins\font-awesome\css\font-awesome.css" />
     <Content Include="Content\plugins\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -280,6 +290,11 @@
     <Content Include="Content\plugins\font-awesome\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\plugins\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\plugins\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\app\pages\app.page.home.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Scripts\plugins\jquery.validate\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\plugins\jquery.validate\jquery.validate.js" />
     <Content Include="Scripts\plugins\jquery.validate\jquery.validate.unobtrusive.js" />
@@ -306,10 +321,10 @@
     <Content Include="Views\Shared\_QueryPanel.cshtml" />
     <Content Include="Views\Shared\_PagedQueryPanel.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Home\CrossRoadPreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\app\pages\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
