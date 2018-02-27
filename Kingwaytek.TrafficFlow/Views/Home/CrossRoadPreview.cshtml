@@ -1,64 +1,64 @@
-﻿@model IEnumerable<VehicleInvestigateModel>
-@{
-    Layout = null;
-}
-<table class="table-preview">
-    <tr>
-        <th class="direction">&nbsp;</th>
-        <th class="time">&nbsp;</th>
-        <th class="time">&nbsp;</th>
-        <th class="count">大型車</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">小型車</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">機車</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">腳踏車</th>
-        <th class="count">&nbsp;</th>
-        <th class="count">&nbsp;</th>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>時間-起</td>
-        <td>時間-迄</td>
-        <td>左轉</td>
-        <td>直行</td>
-        <td>右轉</td>
-        <td>左轉</td>
-        <td>直行</td>
-        <td>右轉</td>
-        <td>左轉</td>
-        <td>直行</td>
-        <td>右轉</td>
-        <td>左轉</td>
-        <td>直行</td>
-        <td>右轉</td>
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.DirectionCode</td>
-            <td>@item.StartTime</td>
-            <td>@item.EndTime</td>
-            @foreach (var num in item.LargeVehicle)
-            {
-                <td>@num</td>
-            }
-            @foreach (var num in item.LightVehicle)
-            {
-                <td>@num</td>
-            }
-            @foreach (var num in item.Motocycle)
-            {
-                <td>@num</td>
-            }
-            @foreach (var num in item.Bicycle)
-            {
-                <td>@num</td>
-            }
-        </tr>
+﻿@model InvestigateModel<VehicleInvestigateModel>
+    @{
+        Layout = null;
     }
-</table>
+    <table class="table-preview">
+        <tr>
+            <th class="direction">&nbsp;</th>
+            <th class="time">&nbsp;</th>
+            <th class="time">&nbsp;</th>
+            <th class="count">大型車</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">小型車</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">機車</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">腳踏車</th>
+            <th class="count">&nbsp;</th>
+            <th class="count">&nbsp;</th>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>時間-起</td>
+            <td>時間-迄</td>
+            <td>左轉</td>
+            <td>直行</td>
+            <td>右轉</td>
+            <td>左轉</td>
+            <td>直行</td>
+            <td>右轉</td>
+            <td>左轉</td>
+            <td>直行</td>
+            <td>右轉</td>
+            <td>左轉</td>
+            <td>直行</td>
+            <td>右轉</td>
+        </tr>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.DirectionCode</td>
+                <td>@item.StartTime</td>
+                <td>@item.EndTime</td>
+                @foreach (var num in item.LargeVehicle)
+                {
+                    <td>@num</td>
+                }
+                @foreach (var num in item.LightVehicle)
+                {
+                    <td>@num</td>
+                }
+                @foreach (var num in item.Motocycle)
+                {
+                    <td>@num</td>
+                }
+                @foreach (var num in item.Bicycle)
+                {
+                    <td>@num</td>
+                }
+            </tr>
+        }
+    </table>

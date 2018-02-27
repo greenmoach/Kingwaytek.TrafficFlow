@@ -15,6 +15,12 @@ namespace Kingwaytek.TrafficFlow
             return string.IsNullOrEmpty(source);
         }
 
+        /// <summary>
+        /// Get local string
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="resourceType"></param>
+        /// <returns></returns>
         public static string GetLocalString(this string source, Type resourceType)
         {
             var resourceManager = new ResourceManager(resourceType);
@@ -25,6 +31,23 @@ namespace Kingwaytek.TrafficFlow
             }
 
             return source;
+        }
+
+        /// <summary>
+        /// Try convert string to int, if not return 0
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static int ToInt(this string text)
+        {
+            if (text.IsNullOrEmpty())
+            {
+                return 0;
+            }
+
+            int.TryParse(text, out var value);
+
+            return value;
         }
     }
 }

@@ -1,9 +1,15 @@
 ﻿.home-create {
     .modal-content {
-        width: 810px;
+        width: 900px;
+    }
+
+    .modal-dialog {
+        width: 1024px;
     }
 
     table.table-preview {
+        margin: 0 auto;
+        width: 100%;
         min-width: 60%;
 
         tr {
@@ -22,6 +28,31 @@
 
             th.count {
                 width: 6%;
+            }
+        }
+    }
+
+    table.table-fiveway-preview {
+        margin: 0 auto;
+        width: 100%;
+        min-width: 60%;
+
+        tr {
+            td, th {
+                border: 1px solid black;
+                text-align: center;
+            }
+
+            th.direction {
+                width: 5%;
+            }
+
+            th.time {
+                width: 7%;
+            }
+
+            th.count {
+                width: 4%;
             }
         }
     }

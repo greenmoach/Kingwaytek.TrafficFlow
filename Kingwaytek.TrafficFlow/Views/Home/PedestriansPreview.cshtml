@@ -1,0 +1,28 @@
+﻿@model InvestigateModel<PedestriansInvestigateModel>
+@{
+    Layout = null;
+}
+
+<table class="table-preview">
+    <tr>
+        <th class="direction">&nbsp;</th>
+        <th class="time">時間-起</th>
+        <th class="time">時間-迄</th>
+        <th class="count">BD</th>
+        <th class="count">AC</th>
+        <th class="count">AB↔CD</th>
+        <th class="count">AD↔BC</th>
+    </tr>
+    @foreach (var item in Model.Data)
+    {
+        <tr>
+            <td>@item.DirectionCode</td>
+            <td>@item.StartTime</td>
+            <td>@item.EndTime</td>
+            <td>@item.BD</td>
+            <td>@item.AC</td>
+            <td>@item.AB2CD</td>
+            <td>@item.AD2BC</td>
+        </tr>
+    }
+</table>

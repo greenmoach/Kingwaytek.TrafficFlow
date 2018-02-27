@@ -148,7 +148,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\InvestigationExcelReader\TRoadReader.cs" />
+    <Compile Include="Helpers\InvestigationExcelReader\FivewayReader.cs" />
+    <Compile Include="Helpers\InvestigationExcelReader\IntersectionReader.cs" />
+    <Compile Include="Helpers\InvestigationExcelReader\PedestriansReader.cs" />
     <Compile Include="Helpers\SiteHelper.cs" />
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Interfaces\IConfigProvider.cs" />
@@ -157,8 +159,11 @@
     <Compile Include="Interfaces\IEnabled.cs" />
     <Compile Include="Interfaces\IIdentity.cs" />
     <Compile Include="Interfaces\ISelectListItem.cs" />
+    <Compile Include="Models\BasicDescriptionModel.cs" />
     <Compile Include="Models\Dto\PositioningDto.cs" />
     <Compile Include="Models\Dto\PositioningTownDto.cs" />
+    <Compile Include="Models\InvestigateModel.cs" />
+    <Compile Include="Models\PedestriansInvestigateModel.cs" />
     <Compile Include="Models\VehicleInvestigateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CacheProvider\ICacheProvider.cs" />
@@ -322,6 +327,8 @@
     <Content Include="Views\Shared\_PagedQueryPanel.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
     <Content Include="Views\Home\CrossRoadPreview.cshtml" />
+    <Content Include="Views\Home\FivewayPreview.cshtml" />
+    <Content Include="Views\Home\PedestriansPreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

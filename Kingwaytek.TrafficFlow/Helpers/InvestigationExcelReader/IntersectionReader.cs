@@ -8,11 +8,11 @@ using OfficeOpenXml;
 
 namespace Kingwaytek.TrafficFlow
 {
-    public class TRoadReader
+    public class IntersectionReader
     {
-        public List<VehicleInvestigateModel> Convert(Stream fileStream)
+        public InvestigateModel<VehicleInvestigateModel> Convert(Stream fileStream)
         {
-            var models = new List<VehicleInvestigateModel>();
+            var models = new InvestigateModel<VehicleInvestigateModel>();
 
             using (var excel = new ExcelPackage(fileStream))
             {
@@ -23,58 +23,49 @@ namespace Kingwaytek.TrafficFlow
                     return models;
                 }
 
+                // The weather data
+                models.Weather = workSheet.Cells[5, 2].Text;
+
                 for (int i = 12; i <= workSheet.Dimension.End.Row; i++)
                 {
                     if (workSheet.Cells[i, 2].Text.IsNullOrEmpty() ||
                         workSheet.Cells[i, 3].Text.IsNullOrEmpty()) continue;
                     var rowData = new VehicleInvestigateModel
                     {
-                        DirectionCode = workSheet.Cells[i, 1].Text.IsNullOrEmpty() ? models[models.Count - 1].DirectionCode : workSheet.Cells[i, 1].Text,
+                        DirectionCode = workSheet.Cells[i, 1].Text.IsNullOrEmpty() ? models.Data[models.Data.Count - 1].DirectionCode : workSheet.Cells[i, 1].Text,
                         StartTime = workSheet.Cells[i, 2].Text,
                         EndTime = workSheet.Cells[i, 3].Text,
                         LargeVehicle = new[]
                         {
-                            ToInt(workSheet.Cells[i, 4].Text),
-                            ToInt(workSheet.Cells[i, 5].Text),
-                            ToInt(workSheet.Cells[i, 6].Text)
+                            workSheet.Cells[i, 4].Text.ToInt(),
+                            workSheet.Cells[i, 5].Text.ToInt(),
+                            workSheet.Cells[i, 6].Text.ToInt()
                         },
                         LightVehicle = new[]
                         {
-                            ToInt(workSheet.Cells[i, 7].Text),
-                            ToInt(workSheet.Cells[i, 8].Text),
-                            ToInt(workSheet.Cells[i, 9].Text)
+                            workSheet.Cells[i, 7].Text.ToInt(),
+                            workSheet.Cells[i, 8].Text.ToInt(),
+                            workSheet.Cells[i, 9].Text.ToInt()
                         },
                         Motocycle = new[]
                         {
-                            ToInt(workSheet.Cells[i, 10].Text),
-                            ToInt(workSheet.Cells[i, 11].Text),
-                            ToInt(workSheet.Cells[i, 12].Text)
+                            workSheet.Cells[i, 10].Text.ToInt(),
+                            workSheet.Cells[i, 11].Text.ToInt(),
+                            workSheet.Cells[i, 12].Text.ToInt()
                         },
                         Bicycle = new[]
                         {
-                            ToInt(workSheet.Cells[i, 13].Text),
-                            ToInt(workSheet.Cells[i, 14].Text),
-                            ToInt(workSheet.Cells[i, 15].Text)
+                            workSheet.Cells[i, 13].Text.ToInt(),
+                            workSheet.Cells[i, 14].Text.ToInt(),
+                            workSheet.Cells[i, 15].Text.ToInt()
                         },
                     };
 
-                    models.Add(rowData);
+                    models.Data.Add(rowData);
                 }
             }
 
             return models;
-        }
-
-        private int ToInt(string text)
-        {
-            if (text.IsNullOrEmpty())
-            {
-                return 0;
-            }
-
-            int.TryParse(text, out var value);
-
-            return value;
         }
     }
 }

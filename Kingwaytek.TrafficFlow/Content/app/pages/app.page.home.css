@@ -1,7 +1,12 @@
 ﻿.home-create .modal-content {
-  width: 810px; }
+  width: 900px; }
+
+.home-create .modal-dialog {
+  width: 1024px; }
 
 .home-create table.table-preview {
+  margin: 0 auto;
+  width: 100%;
   min-width: 60%; }
   .home-create table.table-preview tr td, .home-create table.table-preview tr th {
     border: 1px solid black;
@@ -12,4 +17,18 @@
     width: 10%; }
   .home-create table.table-preview tr th.count {
     width: 6%; }
+
+.home-create table.table-fiveway-preview {
+  margin: 0 auto;
+  width: 100%;
+  min-width: 60%; }
+  .home-create table.table-fiveway-preview tr td, .home-create table.table-fiveway-preview tr th {
+    border: 1px solid black;
+    text-align: center; }
+  .home-create table.table-fiveway-preview tr th.direction {
+    width: 5%; }
+  .home-create table.table-fiveway-preview tr th.time {
+    width: 7%; }
+  .home-create table.table-fiveway-preview tr th.count {
+    width: 4%; }
 
