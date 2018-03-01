@@ -124,6 +124,7 @@
             $.post('/Location/GetPositioning?town=' + selectedTown + '&road1=' + selectedRoad1 + '&road2=' + selectedRoad2)
                 .done(function (data) {
                     positioningOfIntersection = data;
+                    positioningMarkers();
                     $('#next-1').prop('disabled', false);
                 })
                 .fail(function () {
@@ -155,10 +156,28 @@
                 contentType: false,
                 data: formData
             }).done(function (data) {
-                $('#Modal-upload-success').find('.modal-body').html(data).end().modal('show');
-            }).fail(function (data) {
-                console.log(data);
-                alert('Error while uploading the files');
+                $('#Modal-upload-success').remove();
+                $('body').append(data);
+                $('#Modal-upload-success').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }).fail(function () {
+                alert('檔案上傳錯誤，請確認網路設定並稍後再試');
             });
         });
+
+    function positioningMarkers() {
+        var marker = new google.maps.Marker({
+            id: 'A',
+            position: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude),
+            icon: '/content/images/center.svg',
+            draggable: true,
+            map: geeMap
+        });
+
+        google.maps.event.addListener(marker, 'dragend', function () {
+            console.log(marker.getPosition());
+        });
+    }
 })(jQuery);

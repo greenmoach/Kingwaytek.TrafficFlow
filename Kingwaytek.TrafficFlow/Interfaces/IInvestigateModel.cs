@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Kingwaytek.TrafficFlow
 {
-    public class InvestigateModel<T> : IInvestigateModel<T>
+    public interface IInvestigateModel<TModel>
     {
         /// <summary>
         /// 天候
         /// </summary>
-        public string Weather { get; set; }
+        string Weather { get; set; }
 
         /// <summary>
         /// 調查(計數)資料
         /// </summary>
-        public List<T> Data { get; set; } = new List<T>();
+        List<TModel> Data { get; set; }
 
         /// <summary>
         /// 匯入的調查檔案識別編號
         /// </summary>
-        public string FileIdentification { get; set; }
+        string FileIdentification { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Kingwaytek.TrafficFlow
 {
     public class IntersectionReader
     {
-        public InvestigateModel<VehicleInvestigateModel> Convert(Stream fileStream)
+        public InvestigateModel<VehicleInvestigateModel> Convert(Stream fileStream, InvestigationTypeEnum type)
         {
             var models = new InvestigateModel<VehicleInvestigateModel>();
 
@@ -19,6 +19,11 @@ namespace Kingwaytek.TrafficFlow
                 var workSheet = excel.Workbook.Worksheets.FirstOrDefault();
 
                 if (workSheet == null)
+                {
+                    return models;
+                }
+
+                if (IsValidDirection(workSheet, type) == false)
                 {
                     return models;
                 }
@@ -66,6 +71,27 @@ namespace Kingwaytek.TrafficFlow
             }
 
             return models;
+        }
+
+        /// <summary>
+        /// 有效的指向數
+        /// </summary>
+        /// <returns></returns>
+        private bool IsValidDirection(ExcelWorksheet workSheet, InvestigationTypeEnum type)
+        {
+            var directions = new List<string> { "A", "B", "C", "D" };
+            var directionNumber = workSheet.Cells[12, 1, workSheet.Dimension.End.Row, 1].Count(x => directions.Contains(x.Text.ToUpper()));
+            if (type == InvestigationTypeEnum.TRoad && directionNumber == 3)
+            {
+                return true;
+            }
+
+            if (type == InvestigationTypeEnum.Intersection && directionNumber == 4)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

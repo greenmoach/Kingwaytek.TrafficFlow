@@ -1,10 +1,23 @@
 ﻿.home-create {
-    .modal-content {
+    .modal-lg > .modal-content {
         width: 900px;
     }
 
-    .modal-dialog {
-        width: 1024px;
+    @media (min-width: 992px) {
+        .modal-lg {
+            max-width: 1024px;
+        }
+    }
+
+    @media (min-width: 576px) {
+        .modal-sm {
+            max-width: 300px;
+        }
+    }
+
+    .content-from {
+        height: auto;
+        max-height: 700px;
     }
 
     table.table-preview {

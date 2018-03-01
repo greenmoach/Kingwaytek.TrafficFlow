@@ -1,8 +1,17 @@
-﻿.home-create .modal-content {
+﻿.home-create .modal-lg > .modal-content {
   width: 900px; }
 
-.home-create .modal-dialog {
-  width: 1024px; }
+@media (min-width: 992px) {
+  .home-create .modal-lg {
+    max-width: 1024px; } }
+
+@media (min-width: 576px) {
+  .home-create .modal-sm {
+    max-width: 300px; } }
+
+.home-create .content-from {
+  height: auto;
+  max-height: 700px; }
 
 .home-create table.table-preview {
   margin: 0 auto;

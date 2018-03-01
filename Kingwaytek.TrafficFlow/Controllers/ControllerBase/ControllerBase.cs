@@ -19,5 +19,37 @@ namespace Kingwaytek.TrafficFlow.Controllers
                 return this.ConfigProviderInstance;
             }
         }
+
+        /// <summary>
+        /// 應用程式資料路徑
+        /// </summary>
+        public string AppDataPath
+        {
+            get
+            {
+                if (HttpContext != null)
+                {
+                    return HttpContext.Server.MapPath("~/App_Data");
+                }
+
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 應用程式根目錄
+        /// </summary>
+        public string AppRootPath
+        {
+            get
+            {
+                if (HttpContext != null)
+                {
+                    return HttpContext.Server.MapPath("~/");
+                }
+
+                return string.Empty;
+            }
+        }
     }
 }

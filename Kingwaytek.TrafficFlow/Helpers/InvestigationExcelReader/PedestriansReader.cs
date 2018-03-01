@@ -23,6 +23,11 @@ namespace Kingwaytek.TrafficFlow.Helpers.InvestigationExcelReader
                     return models;
                 }
 
+                if (IsValidDirection(workSheet) == false)
+                {
+                    return models;
+                }
+
                 // The weather data
                 models.Weather = workSheet.Cells[5, 2].Text;
 
@@ -46,6 +51,19 @@ namespace Kingwaytek.TrafficFlow.Helpers.InvestigationExcelReader
             }
 
             return models;
+        }
+
+        /// <summary>
+        /// 有效的指向數
+        /// </summary>
+        /// <returns></returns>
+        private bool IsValidDirection(ExcelWorksheet workSheet)
+        {
+            var directions = new List<string> { "A", "B", "C", "D" };
+            var directionNumber = workSheet.Cells[12, 1, workSheet.Dimension.End.Row, 1].Count(x => directions.Contains(x.Text.ToUpper()));
+            return directionNumber == 4
+                && workSheet.Cells[11, 4].Text.ToUpper().Equals("BD")
+                && workSheet.Cells[11, 5].Text.ToUpper().Equals("AC");
         }
     }
 }

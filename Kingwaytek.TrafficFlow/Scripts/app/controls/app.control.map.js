@@ -1,6 +1,6 @@
-﻿(function ($) {
-    var geeMap;
+﻿var geeMap;
 
+(function ($) {
     $(function () {
         // Define map.
         var mapOpts = {
