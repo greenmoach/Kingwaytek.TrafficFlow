@@ -5,11 +5,11 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TaoyuanTrafficModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Investigaion">
+        <EntityType Name="Investigation">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InvestigationType" Type="int" Nullable="false" />
           <Property Name="PositioningId" Type="int" Nullable="false" />
           <Property Name="PositioningCity" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -18,16 +18,18 @@
           <Property Name="PositioningRoad2" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="PositioningLatitude" Type="decimal" Precision="10" Scale="8" Nullable="false" />
           <Property Name="PositioningLongitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
+          <Property Name="Positioning" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IntersectionId" Type="nvarchar" MaxLength="50" />
           <Property Name="Weather" Type="nvarchar" MaxLength="50" />
           <Property Name="InvestigaionTime" Type="datetime" Nullable="false" />
           <Property Name="TrafficControlNote" Type="nvarchar" MaxLength="500" />
-          <Property Name="FileName" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="LastEditTime" Type="datetime" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="InvestigaionData">
+        <EntityType Name="InvestigationData">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -43,117 +45,137 @@
           <Property Name="ThirdQuarterCount" Type="int" />
           <Property Name="FourthQuarterCount" Type="int" />
         </EntityType>
+        <Association Name="FK_InvestigationData_Investigation">
+          <End Role="Investigation" Type="Self.Investigation" Multiplicity="1" />
+          <End Role="InvestigationData" Type="Self.InvestigationData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Investigation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InvestigationData">
+              <PropertyRef Name="InvestigationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="TaoyuanTrafficModelStoreContainer">
-          <EntitySet Name="Investigaion" EntityType="Self.Investigaion" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="InvestigaionData" EntityType="Self.InvestigaionData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Investigation" EntityType="Self.Investigation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvestigationData" EntityType="Self.InvestigationData" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_InvestigationData_Investigation" Association="Self.FK_InvestigationData_Investigation">
+            <End Role="Investigation" EntitySet="Investigation" />
+            <End Role="InvestigationData" EntitySet="InvestigationData" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TaoyuanTrafficModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Investigaion">
+        <EntityContainer Name="TaoyuanTrafficEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="InvestigationData" EntityType="TaoyuanTrafficModel.InvestigationData" />
+          <EntitySet Name="Investigation" EntityType="TaoyuanTrafficModel.Investigation" />
+          <AssociationSet Name="FK_InvestigationData_Investigation" Association="TaoyuanTrafficModel.FK_InvestigationData_Investigation">
+            <End Role="Investigation" EntitySet="Investigation" />
+            <End Role="InvestigationData" EntitySet="InvestigationData" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="InvestigationData">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="PositioningId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvestigationId" Type="Int32" Nullable="false" />
+          <Property Name="Intersection" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Direction" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="TargetType" Type="Int32" Nullable="false" />
+          <Property Name="HourlyInterval" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstQuarterCount" Type="Int32" />
+          <Property Name="SecondQuarterCount" Type="Int32" />
+          <Property Name="ThirdQuarterCount" Type="Int32" />
+          <Property Name="FourthQuarterCount" Type="Int32" />
+          <NavigationProperty Name="Investigation" Relationship="TaoyuanTrafficModel.FK_InvestigationData_Investigation" FromRole="InvestigationData" ToRole="Investigation" />
+        </EntityType>
+        <EntityType Name="Investigation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="InvestigationType" Type="Int32" Nullable="false" />
-          <Property Name="Weather" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InvestigaionTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TrafficControlNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="FileName" Type="Guid" Nullable="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastEditTime" Type="DateTime" Precision="3" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="InvestigaionData" Relationship="Self.FK_InvestigaionData_Investigaion" FromRole="Investigaion" ToRole="InvestigaionData" />
+          <Property Name="PositioningId" Type="Int32" Nullable="false" />
           <Property Name="PositioningCity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PositioningTown" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PositioningRoad1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="PositioningRoad2" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="PositioningLatitude" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
           <Property Name="PositioningLongitude" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
+          <Property Name="Positioning" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IntersectionId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Weather" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvestigaionTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TrafficControlNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastEditTime" Type="DateTime" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="InvestigationData" Relationship="TaoyuanTrafficModel.FK_InvestigationData_Investigation" FromRole="Investigation" ToRole="InvestigationData" />
         </EntityType>
-        <EntityType Name="InvestigaionData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvestigationId" Type="Int32" Nullable="false" />
-          <Property Name="Intersection" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Direction" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Amount" Type="Int32" Nullable="false" />
-          <Property Name="TargetType" Type="Int32" Nullable="false" />
-          <Property Name="HourlyInterval" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FirstQuarterCount" Type="Int32" />
-          <Property Name="SecondQuarterCount" Type="Int32" />
-          <Property Name="ThirdQuarterCount" Type="Int32" />
-          <Property Name="FourthQuarterCount" Type="Int32" />
-          <NavigationProperty Name="Investigaion" Relationship="Self.FK_InvestigaionData_Investigaion" FromRole="InvestigaionData" ToRole="Investigaion" />
-        </EntityType>
-        <Association Name="FK_InvestigaionData_Investigaion">
-          <End Role="Investigaion" Type="Self.Investigaion" Multiplicity="1" />
-          <End Role="InvestigaionData" Type="Self.InvestigaionData" Multiplicity="*" />
+        <Association Name="FK_InvestigationData_Investigation">
+          <End Type="TaoyuanTrafficModel.Investigation" Role="Investigation" Multiplicity="1" />
+          <End Type="TaoyuanTrafficModel.InvestigationData" Role="InvestigationData" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Investigaion">
+            <Principal Role="Investigation">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="InvestigaionData">
+            <Dependent Role="InvestigationData">
               <PropertyRef Name="InvestigationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TaoyuanTrafficEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Investigaion" EntityType="Self.Investigaion" />
-          <EntitySet Name="InvestigaionData" EntityType="Self.InvestigaionData" />
-          <AssociationSet Name="FK_InvestigaionData_Investigaion" Association="Self.FK_InvestigaionData_Investigaion">
-            <End Role="Investigaion" EntitySet="Investigaion" />
-            <End Role="InvestigaionData" EntitySet="InvestigaionData" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TaoyuanTrafficModelStoreContainer" CdmEntityContainer="TaoyuanTrafficEntities">
-          <EntitySetMapping Name="Investigaion">
-            <EntityTypeMapping TypeName="TaoyuanTrafficModel.Investigaion">
-              <MappingFragment StoreEntitySet="Investigaion">
+          <EntitySetMapping Name="InvestigationData">
+            <EntityTypeMapping TypeName="TaoyuanTrafficModel.InvestigationData">
+              <MappingFragment StoreEntitySet="InvestigationData">
+                <ScalarProperty Name="FourthQuarterCount" ColumnName="FourthQuarterCount" />
+                <ScalarProperty Name="ThirdQuarterCount" ColumnName="ThirdQuarterCount" />
+                <ScalarProperty Name="SecondQuarterCount" ColumnName="SecondQuarterCount" />
+                <ScalarProperty Name="FirstQuarterCount" ColumnName="FirstQuarterCount" />
+                <ScalarProperty Name="HourlyInterval" ColumnName="HourlyInterval" />
+                <ScalarProperty Name="TargetType" ColumnName="TargetType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Direction" ColumnName="Direction" />
+                <ScalarProperty Name="Intersection" ColumnName="Intersection" />
+                <ScalarProperty Name="InvestigationId" ColumnName="InvestigationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Investigation">
+            <EntityTypeMapping TypeName="TaoyuanTrafficModel.Investigation">
+              <MappingFragment StoreEntitySet="Investigation">
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="LastEditTime" ColumnName="LastEditTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="TrafficControlNote" ColumnName="TrafficControlNote" />
+                <ScalarProperty Name="InvestigaionTime" ColumnName="InvestigaionTime" />
+                <ScalarProperty Name="Weather" ColumnName="Weather" />
+                <ScalarProperty Name="IntersectionId" ColumnName="IntersectionId" />
+                <ScalarProperty Name="Positioning" ColumnName="Positioning" />
                 <ScalarProperty Name="PositioningLongitude" ColumnName="PositioningLongitude" />
                 <ScalarProperty Name="PositioningLatitude" ColumnName="PositioningLatitude" />
                 <ScalarProperty Name="PositioningRoad2" ColumnName="PositioningRoad2" />
                 <ScalarProperty Name="PositioningRoad1" ColumnName="PositioningRoad1" />
                 <ScalarProperty Name="PositioningTown" ColumnName="PositioningTown" />
                 <ScalarProperty Name="PositioningCity" ColumnName="PositioningCity" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PositioningId" ColumnName="PositioningId" />
                 <ScalarProperty Name="InvestigationType" ColumnName="InvestigationType" />
-                <ScalarProperty Name="Weather" ColumnName="Weather" />
-                <ScalarProperty Name="InvestigaionTime" ColumnName="InvestigaionTime" />
-                <ScalarProperty Name="TrafficControlNote" ColumnName="TrafficControlNote" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastEditTime" ColumnName="LastEditTime" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InvestigaionData">
-            <EntityTypeMapping TypeName="TaoyuanTrafficModel.InvestigaionData">
-              <MappingFragment StoreEntitySet="InvestigaionData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="InvestigationId" ColumnName="InvestigationId" />
-                <ScalarProperty Name="Intersection" ColumnName="Intersection" />
-                <ScalarProperty Name="Direction" ColumnName="Direction" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="TargetType" ColumnName="TargetType" />
-                <ScalarProperty Name="HourlyInterval" ColumnName="HourlyInterval" />
-                <ScalarProperty Name="FirstQuarterCount" ColumnName="FirstQuarterCount" />
-                <ScalarProperty Name="SecondQuarterCount" ColumnName="SecondQuarterCount" />
-                <ScalarProperty Name="ThirdQuarterCount" ColumnName="ThirdQuarterCount" />
-                <ScalarProperty Name="FourthQuarterCount" ColumnName="FourthQuarterCount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

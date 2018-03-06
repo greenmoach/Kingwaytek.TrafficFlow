@@ -5,25 +5,25 @@
 @section Styles { @RenderSection("Styles", required: false) }
 @section Scripts { @RenderSection("Scripts", required: false) }
 
-    <header>
-        <!--Header-->
-        <button type="button" class="navbar-toggle collapsed" style=" background:#FFF;" data-toggle="collapse" data-target="#navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-        <a href="#"><div class="logo"><i class="fa fa-car" aria-hidden="true"></i> 桃園交通資訊中心 流量管理平台</div></a>
-    </header><!--//Header end-->
+<header>
+    <!--Header-->
+    <button type="button" class="navbar-toggle collapsed" style=" background:#FFF;" data-toggle="collapse" data-target="#navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+    <a href="#"><div class="logo"><i class="fa fa-car" aria-hidden="true"></i> 桃園交通資訊中心 流量管理平台</div></a>
+</header><!--//Header end-->
 
-    <div class="dropdownitem">
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <div class="nav-bar">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.html"><i class="fa fa-search" aria-hidden="true"></i> 流量管理</a></li>
-                    <li><a href="management.html"><i class="fa fa-cog" aria-hidden="true"></i> 流量查詢</a></li>
-                </ul>
-            </div>
+<div class="dropdownitem">
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+        <div class="nav-bar">
+            <ul class="nav navbar-nav">
+                <li><a href="@Url.Action("Create","Home")" class="traffic-create"><i class="fa fa-search" aria-hidden="true"></i> 流量管理</a></li>
+                <li><a href="@Url.Action("Query","Home")" class="traffic-query"><i class="fa fa-cog" aria-hidden="true"></i> 流量查詢</a></li>
+            </ul>
         </div>
     </div>
-    @RenderBody()
+</div>
+@RenderBody()
 
-    <footer>
-        <span>桃園市交通資訊中心 流量管理平台</span>
-        <span>Copyright © Taoyuan  2018</span>
-    </footer>
+<footer>
+    <span>桃園市交通資訊中心 流量管理平台</span>
+    <span>Copyright © Taoyuan  2018</span>
+</footer>

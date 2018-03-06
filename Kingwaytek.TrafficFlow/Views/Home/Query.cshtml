@@ -1,0 +1,136 @@
+﻿@{
+    var defaultSelectItem = new List<SelectListItem>() { new SelectListItem() { Text = "請選擇" } };
+    var towns = SiteHelper.GetTowns().ToSelectListItemList(x => x, x => x);
+    towns.Insert(0, new SelectListItem() { Text = "請選擇", Value = string.Empty, Selected = true });
+}
+<!--Content-->
+<div class="content">
+
+    <div class="gis-left">
+        <!--左側滑動收合-->
+
+        <div class="btn-toggle l-hide"></div><!--按鈕：左側隱藏-->
+
+        <div class="btn-toggle l-show"></div><!--按鈕：左側展開--->
+
+        <div class="left-accordion">
+            <!--Accordion-->
+            <!--//一、路口定位設定-->
+            <h5>路口查詢</h5>
+            <div class="Position-Setup">
+
+                <div class="radio-area">
+                    <label class="radio-label"><input type="radio" name="area" value="vehicle" checked><div class="radio-btn-area">車流量</div></label>
+                    <label class="radio-label"><input type="radio" name="area" value="pedestrians"><div class="radio-btn-area">行人量</div></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">行政區：</span>
+                        @Html.DropDownList("Town", towns, new { @class = "selectpicker show-menu-arrow form-control" })
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <span class="input-group-addon">路&nbsp;&nbsp;&nbsp;名：</span>
+                        @Html.DropDownList("Road1", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <span class="input-group-addon">路&nbsp;&nbsp;&nbsp;名：</span>
+                        @Html.DropDownList("Road2", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
+                    </div>
+                </div>
+
+                <button id="next-1" type="button" class="btn btn-primary btn-block" disabled><i class="fa fa-search"></i> 查詢</button>
+            </div>
+            <!--//一、路口定位設定-->
+        </div><!--Accordion end-->
+    </div><!--左側滑動收合 end-->
+    <!-- 右側地圖區塊-->
+    <div class="gis-right">
+        <!--gis-right-->
+        <!--Google Maps-->
+        <div class="gis-map" id="map_canvas"></div>
+        <!--//Google Maps-->
+    </div><!--//gis-right-->
+    <!-- //右側地圖區塊-->
+</div><!--//Content-->
+<!-- 詳細資料 -->
+<div class="div-Info">
+    <!-- Nav tabs -->
+    <div class="tab-content">
+        <button type="button" class="close close-area" id="close-info"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <div class="tab-pane fade in active">
+            <div class="tab-body-pop">
+                <div class="form-group mb-10">
+                    <label>調查日期：</label>
+                    <input type="text" class="form-control input-sm t_date" id="InvestigaionTime">
+                </div>
+                <div class="form-group mb-10">
+                    <label>調查時間</label>
+                    <select id="HourlyIntervals" class="selectpicker show-menu-arrow form-control">
+                        <option>請選擇</option>
+                    </select>
+                </div>
+                <div class="intersection-info">
+                    <div class="form-group mb-10">
+                        <label class="div-Info-label1">站號：</label>
+                        <label id="IntersectionId" class="div-Info-label2">&nbsp;</label>
+                    </div>
+                    <div class="form-group mb-10">
+                        <label class="div-Info-label1">站名：</label>
+                        <label id="IntersectionName" class="div-Info-label2">&nbsp;</label>
+                    </div>
+                    <div class="form-group mb-10">
+                        <label class="div-Info-label1">天氣：</label>
+                        <label id="Weather" class="div-Info-label2">&nbsp;</label>
+                    </div>
+                    <div class="form-group mb-10">
+                        <label class="div-Info-label3">管制說明：</label>
+                        <label id="TrafficControlNote" class="div-Info-label4">&nbsp;</label>
+                    </div>
+                </div>
+
+                <div id="HourlyVehicleChart" class="div-Info-chart">
+                </div>
+
+                <div class="col-xs-12 col-md-12">
+                    <button type="button" class="btn btn-primary btn-block">調查表匯出</button>
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <button type="button" class="btn btn-primary btn-block" id="div-survey">歷次調查車種比例變化</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //詳細資料 -->
+<!--四向路口info windows temple-->
+<div id="IntersectionInfoWindows" style="display: none">
+    <table class="table table-bordered table-PlaceData">
+        <tr style="text-align: center;"><td>右轉</td><td>直行</td><td>左轉</td></tr>
+        <tr style="text-align: center;"><td id="sum" colspan="3">&nbsp;</td></tr>
+        <tr style="text-align: center;"><td id="right">&nbsp;</td><td id="straight">&nbsp;</td><td id="left">&nbsp;</td></tr>
+    </table>
+</div>
+<!--//四向路口info windows temple-->
+<!--五向路口info windows temple-->
+<div id="FivewayInfoWindows" style="display: none">
+    <table class="table table-bordered table-PlaceData">
+        <tr style="text-align: center;"><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+        <tr style="text-align: center;"><td id="sum" colspan="5">&nbsp;</td></tr>
+        <tr style="text-align: center;"><td id="A">&nbsp;</td><td id="B">&nbsp;</td><td id="C">&nbsp;</td><td id="D">&nbsp;</td><td id="E">&nbsp;</td></tr>
+    </table>
+</div>
+<!--//五向路口info windows temple-->
+@section Styles {
+    <script>
+        var GEE_HOST = 'trafficgee.tycg.gov.tw';
+        var GEE_BASE_URL = 'http://' + GEE_HOST;
+    </script>
+    <script src="http://trafficgee.tycg.gov.tw//Taoyuan_2D_01/query?request=Json&var=geeServerDefs&is2d=t" type="text/javascript"></script>
+    <script src="http://trafficgee.tycg.gov.tw/maps/api/bootstrap.js" type="text/javascript"></script>
+    <script src="http://trafficgee.tycg.gov.tw/maps/api/fusion_extended_map.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+}

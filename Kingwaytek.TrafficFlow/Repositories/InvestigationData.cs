@@ -12,7 +12,7 @@ namespace Kingwaytek.TrafficFlow.Repositories
     using System;
     using System.Collections.Generic;
     
-    public partial class InvestigaionData
+    public partial class InvestigationData
     {
         public int Id { get; set; }
         public int InvestigationId { get; set; }
@@ -26,6 +26,6 @@ namespace Kingwaytek.TrafficFlow.Repositories
         public Nullable<int> ThirdQuarterCount { get; set; }
         public Nullable<int> FourthQuarterCount { get; set; }
     
-        public virtual Investigaion Investigaion { get; set; }
+        public virtual Investigation Investigation { get; set; }
     }
 }

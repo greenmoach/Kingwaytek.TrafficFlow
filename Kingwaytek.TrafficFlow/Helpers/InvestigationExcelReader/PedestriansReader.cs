@@ -28,6 +28,9 @@ namespace Kingwaytek.TrafficFlow.Helpers.InvestigationExcelReader
                     return models;
                 }
 
+                // 站號
+                models.IntersectionId = workSheet.Cells[6, 2].Text;
+
                 // The weather data
                 models.Weather = workSheet.Cells[5, 2].Text;
 

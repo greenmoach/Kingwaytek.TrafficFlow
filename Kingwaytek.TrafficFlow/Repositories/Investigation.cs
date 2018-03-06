@@ -12,33 +12,35 @@ namespace Kingwaytek.TrafficFlow.Repositories
     using System;
     using System.Collections.Generic;
     
-    public partial class Investigaion
+    public partial class Investigation
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Investigaion()
+        public Investigation()
         {
-            this.InvestigaionData = new HashSet<InvestigaionData>();
+            this.InvestigationData = new HashSet<InvestigationData>();
         }
     
         public int Id { get; set; }
-        public int PositioningId { get; set; }
         public int InvestigationType { get; set; }
-        public string Weather { get; set; }
-        public System.DateTime InvestigaionTime { get; set; }
-        public string TrafficControlNote { get; set; }
-        public System.Guid FileName { get; set; }
-        public System.DateTime CreateTime { get; set; }
-        public Nullable<System.DateTime> LastEditTime { get; set; }
-        public bool Deleted { get; set; }
-        public bool Enabled { get; set; }
+        public int PositioningId { get; set; }
         public string PositioningCity { get; set; }
         public string PositioningTown { get; set; }
         public string PositioningRoad1 { get; set; }
         public string PositioningRoad2 { get; set; }
         public decimal PositioningLatitude { get; set; }
         public decimal PositioningLongitude { get; set; }
+        public string Positioning { get; set; }
+        public string IntersectionId { get; set; }
+        public string Weather { get; set; }
+        public System.DateTime InvestigaionTime { get; set; }
+        public string TrafficControlNote { get; set; }
+        public string FileName { get; set; }
+        public System.DateTime CreateTime { get; set; }
+        public Nullable<System.DateTime> LastEditTime { get; set; }
+        public bool Deleted { get; set; }
+        public bool Enabled { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InvestigaionData> InvestigaionData { get; set; }
+        public virtual ICollection<InvestigationData> InvestigationData { get; set; }
     }
 }

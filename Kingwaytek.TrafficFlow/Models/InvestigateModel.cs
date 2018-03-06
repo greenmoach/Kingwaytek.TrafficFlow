@@ -9,6 +9,11 @@ namespace Kingwaytek.TrafficFlow
     public class InvestigateModel<T> : IInvestigateModel<T>
     {
         /// <summary>
+        /// 站號
+        /// </summary>
+        public string IntersectionId { get; set; }
+
+        /// <summary>
         /// 天候
         /// </summary>
         public string Weather { get; set; }

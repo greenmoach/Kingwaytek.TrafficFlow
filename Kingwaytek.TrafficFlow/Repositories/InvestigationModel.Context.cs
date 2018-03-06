@@ -25,7 +25,7 @@ namespace Kingwaytek.TrafficFlow.Repositories
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Investigaion> Investigaion { get; set; }
-        public virtual DbSet<InvestigaionData> InvestigaionData { get; set; }
+        public virtual DbSet<InvestigationData> InvestigationData { get; set; }
+        public virtual DbSet<Investigation> Investigation { get; set; }
     }
 }

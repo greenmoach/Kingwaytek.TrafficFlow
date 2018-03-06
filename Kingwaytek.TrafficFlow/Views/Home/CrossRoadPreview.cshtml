@@ -13,6 +13,7 @@
             <div class="modal-body content-from">
                 @Html.HiddenFor(x => Model.FileIdentification)
                 @Html.HiddenFor(x => Model.Weather)
+                @Html.HiddenFor(x => x.IntersectionId)
                 @if (isDataError)
                 {
                     <h1>
@@ -92,7 +93,7 @@
                     else
                     {
                         <div class="col-xs-6"><button type="button" class="btn btn-default btn-block" data-dismiss="modal">取消</button></div>
-                        <div class="col-xs-6"><button type="button" class="btn btn-primary btn-block" data-dismiss="modal">匯入</button></div>
+                        <div class="col-xs-6"><button type="button" class="btn btn-primary btn-block" id="ImportInvestigationData">匯入</button></div>
                     }
                 </div>
             </div>

@@ -11,7 +11,15 @@ namespace Kingwaytek.TrafficFlow.Controllers
     {
         private string InvestigationFileFolder = "InvestigationFiles";
 
-        private readonly MemoryCacheProvider CacheProvider = new MemoryCacheProvider();
+        private readonly MemoryCacheProvider _cacheProvider;
+
+        private readonly InvestigateService _investigateService;
+
+        public HomeController()
+        {
+            _cacheProvider = new MemoryCacheProvider();
+            _investigateService = new InvestigateService();
+        }
 
         public ActionResult Index()
         {
@@ -21,6 +29,25 @@ namespace Kingwaytek.TrafficFlow.Controllers
         public ActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(DataCreatedViewModel viewModel)
+        {
+            _investigateService.Create(viewModel);
+            return Json("");
+        }
+
+        public ActionResult Query()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Query(DataQueryViewModel viewModel)
+        {
+            var model = _investigateService.Query(viewModel);
+            return Json(model);
         }
 
         [HttpPost]
@@ -42,21 +69,21 @@ namespace Kingwaytek.TrafficFlow.Controllers
                     var intersectionReader = new IntersectionReader();
                     var intersectionModel = intersectionReader.Convert(file.InputStream, type);
                     intersectionModel.FileIdentification = fileId;
-                    CacheProvider.Set($"Investigation:Model:{fileId}", intersectionModel, 30 * 60);
+                    _cacheProvider.Set($"Investigation:Model:{fileId}", intersectionModel, 30 * 60);
                     return View("CrossRoadPreview", intersectionModel);
 
                 case InvestigationTypeEnum.Pedestrians:
                     var pedestriansReader = new PedestriansReader();
                     var pedestriansModel = pedestriansReader.Convert(file.InputStream);
                     pedestriansModel.FileIdentification = fileId;
-                    CacheProvider.Set($"Investigation:Model:{fileId}", pedestriansModel, 30 * 60);
+                    _cacheProvider.Set($"Investigation:Model:{fileId}", pedestriansModel, 30 * 60);
                     return View("PedestriansPreview", pedestriansModel);
 
                 case InvestigationTypeEnum.FiveWay:
                     var fivewayReader = new FivewayReader();
                     var fivewayModel = fivewayReader.Convert(file.InputStream);
                     fivewayModel.FileIdentification = fileId;
-                    CacheProvider.Set($"Investigation:Model:{fileId}", fivewayModel, 30 * 60);
+                    _cacheProvider.Set($"Investigation:Model:{fileId}", fivewayModel, 30 * 60);
                     return View("FivewayPreview", fivewayModel);
 
                 default:

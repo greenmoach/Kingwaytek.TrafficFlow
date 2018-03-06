@@ -129,14 +129,17 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\TargetWeightAttribute.cs" />
     <Compile Include="Controllers\ControllerBase\ControllerBase.cs" />
     <Compile Include="Controllers\ControllerBase\WebViewPageBase`1.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ControllerBase\WebViewPageBase.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\InvestigationQueryTypeEnum.cs" />
     <Compile Include="Enums\InvestigationTypeEnum.cs" />
     <Compile Include="Enums\SubmitType.cs" />
+    <Compile Include="Enums\TargetTypeEnum.cs" />
     <Compile Include="Extensions\AttributeExtensions.cs" />
     <Compile Include="Extensions\CacheProviderExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
@@ -161,10 +164,16 @@
     <Compile Include="Interfaces\IInvestigateModel.cs" />
     <Compile Include="Interfaces\ISelectListItem.cs" />
     <Compile Include="Models\BasicDescriptionModel.cs" />
+    <Compile Include="Models\DataCreatedViewModel.cs" />
+    <Compile Include="Models\DataQueryViewModel.cs" />
     <Compile Include="Models\Dto\PositioningDto.cs" />
     <Compile Include="Models\Dto\PositioningTownDto.cs" />
+    <Compile Include="Models\GeometryViewModel.cs" />
     <Compile Include="Models\InvestigateModel.cs" />
     <Compile Include="Models\PedestriansInvestigateModel.cs" />
+    <Compile Include="Models\SingleDateHourlyViewModel.cs" />
+    <Compile Include="Models\SingleDateQueryViewModel.cs" />
+    <Compile Include="Models\TrafficViewModel.cs" />
     <Compile Include="Models\VehicleInvestigateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CacheProvider\ICacheProvider.cs" />
@@ -180,10 +189,12 @@
     <Compile Include="QueryOption\QueryOption.cs" />
     <Compile Include="QueryOption\Queryoption`1.cs" />
     <Compile Include="Repositories\DbContextFactory.cs" />
-    <Compile Include="Repositories\Investigaion.cs">
+    <Compile Include="Repositories\InvestigationDataRepository.cs" />
+    <Compile Include="Repositories\InvestigationRepository.cs" />
+    <Compile Include="Repositories\Investigation.cs">
       <DependentUpon>InvestigationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Repositories\InvestigaionData.cs">
+    <Compile Include="Repositories\InvestigationData.cs">
       <DependentUpon>InvestigationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Repositories\InvestigationModel.Context.cs">
@@ -201,7 +212,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InvestigationModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\Models\Investigation.cs" />
+    <Compile Include="Repositories\Models\InvestigationData.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Services\InvestigateService.cs" />
     <Compile Include="Services\PositioningService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -274,8 +288,12 @@
       <LastGenOutput>InvestigationModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\app\controls\app.control.action.js" />
+    <Content Include="Scripts\app\controls\app.control.left-accordion.js" />
     <Content Include="Scripts\app\controls\app.control.map.js" />
-    <Content Include="Scripts\app\pages\app.page.home.js" />
+    <Content Include="Scripts\app\controls\app.control.road-positioning.js" />
+    <Content Include="Scripts\app\controls\app.control.t-date.js" />
+    <Content Include="Scripts\app\pages\app.page.create.js" />
+    <Content Include="Scripts\app\pages\app.page.query.js" />
     <Content Include="Scripts\bundle\all.js" />
     <Content Include="Scripts\bundle\all.min.js">
       <DependentUpon>all.js</DependentUpon>
@@ -331,6 +349,7 @@
     <Content Include="Views\Home\CrossRoadPreview.cshtml" />
     <Content Include="Views\Home\FivewayPreview.cshtml" />
     <Content Include="Views\Home\PedestriansPreview.cshtml" />
+    <Content Include="Views\Home\Query.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
