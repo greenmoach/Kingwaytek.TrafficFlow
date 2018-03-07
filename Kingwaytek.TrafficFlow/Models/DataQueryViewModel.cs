@@ -17,5 +17,10 @@ namespace Kingwaytek.TrafficFlow
         /// 定位編號
         /// </summary>
         public int PositioningId { get; set; }
+
+        /// <summary>
+        /// 調查日期
+        /// </summary>
+        public DateTime? InvestigaionTime { get; set; }
     }
 }

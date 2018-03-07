@@ -1,50 +1,65 @@
 ﻿@model IQueryOptionMvc<object>
 @{
     Layout = null;
-    // 有回傳結果且超過1頁才須產生paged controller
-    if (Model.Results.IsNullOrEmpty() == false && Model.Results.PageCount > 1)
-    {
-        int pageCount = Model.Results.PageCount,
-            startPage = Math.Max(1, Math.Min(Math.Max(1, Model.Page - 5), (pageCount - 10))),
-            endPage = Math.Min((startPage + 10), pageCount);
-        <nav class="center">
-            <ul class="pagination pager">
-                <li class="lock">
-                    <span>@(string.Format("共{0}頁", pageCount))</span>
-                </li>
-                <li>
-                    <a href="#Prev" class="@string.Format(" {0}", Model.Results.HasPreviousPage ? "" : "disabled")">上一頁</a>
-                    @if (startPage != 1)
-                    {
-                        <a href="#Page_1">1</a>
-                        if ((startPage - 1) > 1)
-                        {
-                            <a href="#" class="disabled">...</a>
-                        }
-                    }
-                </li>
-                @for (int p = startPage; p <= endPage; p++)
-                {
-                    <li class="@string.Format(" {0}",Model.Page == p ? "active" : "")">
-                        <a href="@string.Format("#Page_{0}", p)" class="@string.Format(" {0}",(Model.Page == p ? "disabled" : ""))">@string.Format("{0}", p)</a>
-                    </li>
-                }
-
-                @if (endPage != pageCount)
-                {
-                    <li>
-                        @if ((endPage + 1) < pageCount)
-                        {
-                            <a href="#" class="disabled">...</a>
-
-                        }
-                        <a href="@string.Format("#Page_{0}",pageCount)">@string.Format("{0}", pageCount)</a>
-                    </li>
-                }
-                <li>
-                    <a href="#Next" class="@string.Format(" {0}", Model.Results.HasNextPage ? "" : "disabled")">下一頁</a>
-                </li>
-            </ul>
-        </nav>
-    }
 }
+<div class="panel-footer clearfix">
+    <nav style="text-align:center;">
+        @{
+            // 有回傳結果且超過1頁才須產生paged controller
+            if (Model.Results.IsNullOrEmpty() == false && Model.Results.PageCount > 1)
+            {
+                int pageCount = Model.Results.PageCount,
+                    startPage = Math.Max(1, Math.Min(Math.Max(1, Model.Page - 5), (pageCount - 10))),
+                    endPage = Math.Min((startPage + 10), pageCount);
+
+                <ul class="pagination pagination-sm mtb-0">
+                    <li class="lock">
+                        <span>@(string.Format("共{0}頁", pageCount))</span>
+                    </li>
+                    <li class="@string.Format(" {0}", Model.Results.HasPreviousPage ? "" : "disabled")">
+                        <a href="#Prev">上一頁</a>
+                        @if (startPage != 1)
+                        {
+                            <a href="#Page_1">1</a>
+                            if ((startPage - 1) > 1)
+                            {
+                                <a href="#" class="disabled">...</a>
+                            }
+                        }
+                    </li>
+                    @for (int p = startPage; p <= endPage; p++)
+                    {
+                        <li class="@string.Format(" {0}", Model.Page == p ? "active" : "")">
+                            <a href="@string.Format("#Page_{0}", p)" class="@string.Format(" {0}", (Model.Page == p ? "disabled" : ""))">@string.Format("{0}", p)</a>
+                        </li>
+                    }
+
+                    @if (endPage != pageCount)
+                    {
+                        <li>
+                            @if ((endPage + 1) < pageCount)
+                            {
+                                <a href="#" class="disabled">...</a>
+
+                            }
+                            <a href="@string.Format("#Page_{0}", pageCount)">@string.Format("{0}", pageCount)</a>
+                        </li>
+                    }
+                    <li>
+                        <a href="#Next" class="@string.Format(" {0}", Model.Results.HasNextPage ? "" : "disabled")">下一頁</a>
+                    </li>
+                </ul>
+            }
+
+        }
+        @*<ul class="pagination pagination-sm mtb-0">
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+            </ul>*@
+    </nav>
+</div>

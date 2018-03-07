@@ -96,12 +96,15 @@ namespace Kingwaytek.TrafficFlow
 
             entities = entities.OrderByDescending(x => x.InvestigaionTime);
 
-            var entity = entities.FirstOrDefault();
+            var entity = viewModel.InvestigaionTime.HasValue ? entities.FirstOrDefault(x => x.InvestigaionTime == viewModel.InvestigaionTime) : entities.FirstOrDefault();
 
             if (entity == null)
             {
                 return null;
             }
+
+            var otherInvestigaionTime =
+                entities.Select(x => x.InvestigaionTime).ToList().Select(x => x.ToString("yyyy/MM/dd"));
 
             // 每小時的不同交通工具與路口轉向統計量
             var hourlyData = entity.InvestigationData
@@ -126,7 +129,8 @@ namespace Kingwaytek.TrafficFlow
             var queryResult = new SingleDateQueryViewModel
             {
                 InvestigationType = entity.InvestigationTypeEnum,
-                InvestigaionTime = entity.InvestigaionTime,
+                InvestigaionTime = entity.InvestigaionTime.ToString("yyyy/MM/dd"),
+                OtherInvestigaionTime = otherInvestigaionTime,
                 HourlyIntervals = hourlyData,
                 IntersectionId = entity.IntersectionId,
                 IntersectionName = $"{entity.PositioningTown}{entity.PositioningRoad1}與{entity.PositioningRoad2}",
@@ -137,6 +141,69 @@ namespace Kingwaytek.TrafficFlow
             };
 
             return queryResult;
+        }
+
+        /// <summary>
+        /// 調查資料查詢分頁列表
+        /// </summary>
+        /// <param name="queryOption"></param>
+        public void GetInvestigationList(
+            PagedQueryModel<Investigation, InvestigateListFilterViewModel> queryOption)
+        {
+            var query = _investigationRepository.GetAvailable();
+            if (queryOption.Filter.Town.IsNullOrEmpty() == false)
+            {
+                query = query.Where(x => x.PositioningTown == queryOption.Filter.Town);
+            }
+
+            if (queryOption.Filter.Type.HasValue)
+            {
+                query = query.Where(x => x.InvestigationType == (int)queryOption.Filter.Type);
+            }
+
+            if (queryOption.Filter.CreatedYear.HasValue && queryOption.Filter.CreatedYear.Value != 0)
+            {
+                query = query.Where(x => x.InvestigaionTime.Year == queryOption.Filter.CreatedYear);
+            }
+
+            if (queryOption.Filter.Keyword.IsNullOrEmpty() == false)
+            {
+                query = query.Where(x => x.PositioningRoad1.Contains(queryOption.Filter.Keyword)
+                                         || x.PositioningRoad2.Contains(queryOption.Filter.Keyword)
+                                         || x.PositioningTown.Contains(queryOption.Filter.Keyword)
+                                         || x.TrafficControlNote.Contains(queryOption.Filter.Keyword));
+            }
+
+            queryOption.Apply(query);
+        }
+
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(int id)
+        {
+            var entity = _investigationRepository.GetAvailable().FirstOrDefault(x => x.Id == id);
+            if (entity == null)
+            {
+                return;
+            }
+
+            _investigationRepository.Delete(entity);
+        }
+
+        /// <summary>
+        /// 取得目前調查資料的建置年度清單
+        /// </summary>
+        /// <returns></returns>
+        public List<int> GetAllInvestigationYears()
+        {
+            var years = _investigationRepository.GetAvailable()
+                                                .Select(x => x.InvestigaionTime.Year)
+                                                .Distinct()
+                                                .ToList();
+
+            return years;
         }
 
         #region private methods - create

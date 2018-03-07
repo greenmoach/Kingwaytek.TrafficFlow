@@ -14,6 +14,7 @@ namespace Kingwaytek.TrafficFlow
         /// <summary>
         /// 行人
         /// </summary>
+        [TargetWeight(1)]
         Pedestrians = 1,
 
         /// <summary>

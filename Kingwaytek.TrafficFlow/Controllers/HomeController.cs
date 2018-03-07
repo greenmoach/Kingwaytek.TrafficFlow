@@ -1,9 +1,9 @@
-﻿using System;
-using System.Data.Entity.Infrastructure;
+﻿using Kingwaytek.TrafficFlow.Repositories;
+using System;
 using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Kingwaytek.TrafficFlow.Helpers.InvestigationExcelReader;
 
 namespace Kingwaytek.TrafficFlow.Controllers
 {
@@ -24,6 +24,12 @@ namespace Kingwaytek.TrafficFlow.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult List(PagedQueryModel<Investigation, InvestigateListFilterViewModel> queryOption)
+        {
+            _investigateService.GetInvestigationList(queryOption);
+            return View(queryOption);
         }
 
         public ActionResult Create()
@@ -48,6 +54,12 @@ namespace Kingwaytek.TrafficFlow.Controllers
         {
             var model = _investigateService.Query(viewModel);
             return Json(model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            _investigateService.Delete(id);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [HttpPost]
@@ -89,6 +101,13 @@ namespace Kingwaytek.TrafficFlow.Controllers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+        }
+
+        public ActionResult DownloadInvestigation(string fileName)
+        {
+            var filePath = Path.Combine(AppDataPath, InvestigationFileFolder, fileName);
+            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
         private string GetFileIdentification()

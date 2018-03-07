@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="col-xs-12 col-md-12">
-                    <button type="button" class="btn btn-primary btn-block">調查表匯出</button>
+                    <a id="DownloadInvestigaion" class="btn btn-primary btn-block" href="#">調查表匯出</a>
                 </div>
                 <div class="col-xs-12 col-md-12">
                     <button type="button" class="btn btn-primary btn-block" id="div-survey">歷次調查車種比例變化</button>
@@ -106,7 +106,7 @@
     </div>
 </div>
 <!-- //詳細資料 -->
-<!--四向路口info windows temple-->
+<!--四向路口調查info windows temple-->
 <div id="IntersectionInfoWindows" style="display: none">
     <table class="table table-bordered table-PlaceData">
         <tr style="text-align: center;"><td>右轉</td><td>直行</td><td>左轉</td></tr>
@@ -114,8 +114,8 @@
         <tr style="text-align: center;"><td id="right">&nbsp;</td><td id="straight">&nbsp;</td><td id="left">&nbsp;</td></tr>
     </table>
 </div>
-<!--//四向路口info windows temple-->
-<!--五向路口info windows temple-->
+<!--//四向路口調查info windows temple-->
+<!--五向路口調查info windows temple-->
 <div id="FivewayInfoWindows" style="display: none">
     <table class="table table-bordered table-PlaceData">
         <tr style="text-align: center;"><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
@@ -123,7 +123,16 @@
         <tr style="text-align: center;"><td id="A">&nbsp;</td><td id="B">&nbsp;</td><td id="C">&nbsp;</td><td id="D">&nbsp;</td><td id="E">&nbsp;</td></tr>
     </table>
 </div>
-<!--//五向路口info windows temple-->
+<!--//五向路口調查info windows temple-->
+<!--行人量調查info windows temple-->
+<div id="PedestriansInfoWindows" style="display: none">
+    <table class="table table-bordered table-PlaceData">
+        <tr style="text-align: center;"><th scope="row">方向</th><td>A</td><td>B</td><td>C</td><td>D</td><td>交叉穿越</td></tr>
+        <tr style="text-align: center;"><th scope="row">總量</th><td id="sum" colspan="5">&nbsp;</td></tr>
+        <tr style="text-align: center;"><th scope="row">人數</th><td id="A">&nbsp;</td><td id="B">&nbsp;</td><td id="C">&nbsp;</td><td id="D">&nbsp;</td><td id="Cross">&nbsp;</td></tr>
+    </table>
+</div>
+<!--//行人量調查info windows temple-->
 @section Styles {
     <script>
         var GEE_HOST = 'trafficgee.tycg.gov.tw';

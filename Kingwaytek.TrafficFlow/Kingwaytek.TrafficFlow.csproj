@@ -169,6 +169,8 @@
     <Compile Include="Models\Dto\PositioningDto.cs" />
     <Compile Include="Models\Dto\PositioningTownDto.cs" />
     <Compile Include="Models\GeometryViewModel.cs" />
+    <Compile Include="Models\InvestigateListFilterViewModel.cs" />
+    <Compile Include="Models\InvestigateListViewModel.cs" />
     <Compile Include="Models\InvestigateModel.cs" />
     <Compile Include="Models\PedestriansInvestigateModel.cs" />
     <Compile Include="Models\SingleDateHourlyViewModel.cs" />
@@ -287,12 +289,14 @@
       <DependentUpon>InvestigationModel.edmx</DependentUpon>
       <LastGenOutput>InvestigationModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\app.common.js" />
     <Content Include="Scripts\app\controls\app.control.action.js" />
     <Content Include="Scripts\app\controls\app.control.left-accordion.js" />
     <Content Include="Scripts\app\controls\app.control.map.js" />
+    <Content Include="Scripts\app\controls\app.control.pagedList.js" />
     <Content Include="Scripts\app\controls\app.control.road-positioning.js" />
-    <Content Include="Scripts\app\controls\app.control.t-date.js" />
     <Content Include="Scripts\app\pages\app.page.create.js" />
+    <Content Include="Scripts\app\pages\app.page.index.js" />
     <Content Include="Scripts\app\pages\app.page.query.js" />
     <Content Include="Scripts\bundle\all.js" />
     <Content Include="Scripts\bundle\all.min.js">
@@ -350,6 +354,7 @@
     <Content Include="Views\Home\FivewayPreview.cshtml" />
     <Content Include="Views\Home\PedestriansPreview.cshtml" />
     <Content Include="Views\Home\Query.cshtml" />
+    <Content Include="Views\Home\List.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

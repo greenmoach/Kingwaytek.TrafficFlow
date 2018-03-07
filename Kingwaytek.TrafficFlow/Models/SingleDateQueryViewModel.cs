@@ -16,12 +16,12 @@ namespace Kingwaytek.TrafficFlow
         /// <summary>
         /// 調查時間
         /// </summary>
-        public DateTime InvestigaionTime { get; set; }
+        public string InvestigaionTime { get; set; }
 
         /// <summary>
         /// 其他可查詢的調查時間
         /// </summary>
-        public IEnumerable<DateTime> OtherInvestigaionTime { get; set; }
+        public IEnumerable<string> OtherInvestigaionTime { get; set; }
 
         /// <summary>
         /// 小時區間資料

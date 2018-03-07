@@ -1,6 +1,10 @@
 ﻿var geeMap;
 
 (function ($) {
+    if ($('#map_canvas').length === 0) {
+        return;
+    }
+
     $(function () {
         // Define map.
         var mapOpts = {

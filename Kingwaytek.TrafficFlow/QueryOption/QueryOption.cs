@@ -14,7 +14,7 @@ namespace Kingwaytek.TrafficFlow
         public QueryOption() : base()
         {
             this.Page = 1;
-            this.DefaultPageSize = 20;
+            this.DefaultPageSize = 10;
             this.Query = string.Empty;
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 
-namespace Kingwaytek.TrafficFlow.Helpers.InvestigationExcelReader
+namespace Kingwaytek.TrafficFlow
 {
     public class PedestriansReader
     {
@@ -44,9 +44,9 @@ namespace Kingwaytek.TrafficFlow.Helpers.InvestigationExcelReader
                         StartTime = workSheet.Cells[i, 2].Text,
                         EndTime = workSheet.Cells[i, 3].Text,
                         BD = workSheet.Cells[i, 4].Text.ToInt(),
-                        AC = workSheet.Cells[i, 4].Text.ToInt(),
-                        AB2CD = workSheet.Cells[i, 4].Text.ToInt(),
-                        AD2BC = workSheet.Cells[i, 4].Text.ToInt()
+                        AC = workSheet.Cells[i, 5].Text.ToInt(),
+                        AB2CD = workSheet.Cells[i, 6].Text.ToInt(),
+                        AD2BC = workSheet.Cells[i, 7].Text.ToInt()
                     };
 
                     models.Data.Add(rowData);

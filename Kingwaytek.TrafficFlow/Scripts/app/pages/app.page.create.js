@@ -16,12 +16,12 @@
     $('.traffic-create').parent().addClass('active');
 
     $('.t_date').datetimepicker({
+        closeOnDateSelect: true,
         timepicker: false,
-        mounthpicker: false,
         defaultDate: new Date(),
         maxDate: new Date(),
         format: 'Y/m/d',
-        lang: 'ch'
+        lang: 'zh-TW'
     });
 
     $this
@@ -175,6 +175,14 @@
     function positioningMarkers() {
         var selectedType = $('select[name="InvestigationType"] option:selected').val();
 
+        // clean center and direct markers
+        if (centerMarker) { centerMarker.setMap(null); centerMarker = null; }
+        if (directA) { directA.setMap(null); directA = null; }
+        if (directB) { directB.setMap(null); directB = null; }
+        if (directC) { directC.setMap(null); directC = null; }
+        if (directD) { directD.setMap(null); directD = null; }
+        if (directE) { directE.setMap(null); directE = null; }
+
         // update conter marker
         var centerLatLng =
             new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude);
@@ -194,13 +202,6 @@
             latLng: centerLatLng,
             draggable: false
         });
-
-        // clean direct markers
-        if (directA) { directA.setMap(null); directA = null; }
-        if (directB) { directB.setMap(null); directB = null; }
-        if (directC) { directC.setMap(null); directC = null; }
-        if (directD) { directD.setMap(null); directD = null; }
-        if (directE) { directE.setMap(null); directE = null; }
 
         // update direct markers
         switch (selectedType) {

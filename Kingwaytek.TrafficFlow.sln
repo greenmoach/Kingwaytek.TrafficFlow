@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingwaytek.TrafficFlow", "Kingwaytek.TrafficFlow\Kingwaytek.TrafficFlow.csproj", "{CF41CA81-350F-4669-B39B-626BF0F13D2B}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Kingwaytek.TrafficFlow.Database", "Kingwaytek.TrafficFlow.Database\Kingwaytek.TrafficFlow.Database.sqlproj", "{637BD69A-F7AE-4314-8186-7EBC02772202}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{CF41CA81-350F-4669-B39B-626BF0F13D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF41CA81-350F-4669-B39B-626BF0F13D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF41CA81-350F-4669-B39B-626BF0F13D2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{637BD69A-F7AE-4314-8186-7EBC02772202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{637BD69A-F7AE-4314-8186-7EBC02772202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{637BD69A-F7AE-4314-8186-7EBC02772202}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{637BD69A-F7AE-4314-8186-7EBC02772202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{637BD69A-F7AE-4314-8186-7EBC02772202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{637BD69A-F7AE-4314-8186-7EBC02772202}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

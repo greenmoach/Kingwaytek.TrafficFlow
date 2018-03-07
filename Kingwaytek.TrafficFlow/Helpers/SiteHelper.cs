@@ -16,13 +16,26 @@ namespace Kingwaytek.TrafficFlow
             {
                 var service = new PositioningService();
                 var models = service.GetTowns()
-                                   .Select(x => x.TownName)
-                                   .ToList();
+                                    .Select(x => x.TownName)
+                                    .ToList();
 
                 return models;
             });
 
             return towns;
+        }
+
+        public static List<int> GetInvestigationYears()
+        {
+            var years = CacheProvider.Get("Investigation:Year:List", 24 * 60 * 60, () =>
+            {
+                var service = new InvestigateService();
+                var models = service.GetAllInvestigationYears();
+
+                return models;
+            });
+
+            return years;
         }
     }
 }
