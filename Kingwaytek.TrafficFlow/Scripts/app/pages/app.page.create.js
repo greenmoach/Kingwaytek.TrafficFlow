@@ -58,7 +58,7 @@
             }
 
             var formData = new FormData(),
-                url = '/Home/UploadInvestigation',
+                url = sitepath + 'Home/UploadInvestigation',
                 file = document.getElementById('FileUpload').files[0];
             if (!file) {
                 alert('請選擇要會上傳的調查資料');
@@ -109,7 +109,7 @@
                 intersectionId: $('#IntersectionId').val()
             }
 
-            $.post('/home/create', data)
+            $.post(sitepath + 'home/create', data)
                 .done(function () {
                     alert('調查資料匯入成功');
                     location.reload();
@@ -191,10 +191,10 @@
             icon = {
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(20, 20),
-                url: '/content/images/arrow-walking02.svg'
+                url: sitepath + 'content/images/arrow-walking02.svg'
             }
         } else {
-            icon = '/content/images/center.svg';
+            icon = sitepath + 'content/images/center.svg';
         }
         centerMarker = updateMarker({
             id: 'center',
@@ -208,21 +208,21 @@
             case 'TRoad':
                 directA = updateMarker({
                     id: 'A',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
@@ -264,27 +264,27 @@
             case 'Intersection':
                 directA = updateMarker({
                     id: 'A',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: '/content/images/arrow-01.svg',
+                    icon: sitepath + 'content/images/arrow-01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -336,27 +336,27 @@
             case 'Pedestrians':
                 directA = updateMarker({
                     id: 'A',
-                    icon: '/content/images/arrow-walking01.svg',
+                    icon: sitepath + 'content/images/arrow-walking01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: '/content/images/arrow-walking01.svg',
+                    icon: sitepath + 'content/images/arrow-walking01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: '/content/images/arrow-walking01.svg',
+                    icon: sitepath + 'content/images/arrow-walking01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: '/content/images/arrow-walking01.svg',
+                    icon: sitepath + 'content/images/arrow-walking01.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -409,33 +409,33 @@
             case 'FiveWay':
                 directA = updateMarker({
                     id: 'A',
-                    icon: '/content/images/arrow-02.svg',
+                    icon: sitepath + 'content/images/arrow-02.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: '/content/images/arrow-02.svg',
+                    icon: sitepath + 'content/images/arrow-02.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .0001, positioningOfIntersection.Longitude + .00013)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: '/content/images/arrow-02.svg',
+                    icon: sitepath + 'content/images/arrow-02.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude - .00013)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: '/content/images/arrow-02.svg',
+                    icon: sitepath + 'content/images/arrow-02.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directE = updateMarker({
                     id: 'E',
-                    icon: '/content/images/arrow-02.svg',
+                    icon: sitepath + 'content/images/arrow-02.svg',
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });

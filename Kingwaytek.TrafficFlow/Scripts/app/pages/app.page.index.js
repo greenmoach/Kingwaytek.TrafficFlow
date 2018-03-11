@@ -17,7 +17,7 @@
             $modal.find('#deleteTarget').val(investigationId);
         })
         .on('click', '#deleteConfirmBtn', function () {
-            $.post('/home/delete/' + $('#deleteTarget').val())
+            $.post(sitepath + 'home/delete/' + $('#deleteTarget').val())
                 .done(function () {
                     alert('調查資料刪除成功');
                     $('.home-index').find('form').submit();

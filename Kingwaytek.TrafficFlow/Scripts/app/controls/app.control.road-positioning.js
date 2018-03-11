@@ -30,7 +30,7 @@
                 return;
             }
 
-            $.post('/Location/GetRoadsByTown?town=' + selectedTown)
+            $.post(sitepath + 'Location/GetRoadsByTown?town=' + selectedTown)
                 .done(function (data) {
                     if (Array.isArray(data) && data.length > 0) {
                         data.forEach(function (value) {
@@ -60,7 +60,7 @@
                 return;
             }
 
-            $.post('/Location/GetRoadsByIntersection?town=' + selectedTown + '&road=' + selectedRoad1)
+            $.post(sitepath + 'Location/GetRoadsByIntersection?town=' + selectedTown + '&road=' + selectedRoad1)
                 .done(function (data) {
                     if (Array.isArray(data) && data.length > 0) {
                         data.forEach(function (value) {
@@ -85,7 +85,7 @@
                 return;
             }
 
-            $.post('/Location/GetPositioning?town=' +
+            $.post(sitepath + 'Location/GetPositioning?town=' +
                 selectedTown +
                 '&road1=' +
                 selectedRoad1 +

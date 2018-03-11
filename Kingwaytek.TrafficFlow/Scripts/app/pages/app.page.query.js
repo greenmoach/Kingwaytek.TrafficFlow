@@ -39,7 +39,7 @@
             investigaionTime: dateTime
         };
 
-        $.post('/home/query', data)
+        $.post(sitepath + 'home/query', data)
             .done(function (data) {
                 singleData = data;
                 initDisplayObjects();
@@ -78,13 +78,13 @@
             centerIcon = {
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(20, 20),
-                url: '/content/images/arrow-walking02.svg'
+                url: sitepath + 'content/images/arrow-walking02.svg'
             };
-            directionIcon = '/content/images/arrow-walking01.svg';
+            directionIcon = sitepath + 'content/images/arrow-walking01.svg';
         }
         else {
-            centerIcon = '/content/images/center.svg';
-            directionIcon = '/content/images/arrow-01.svg';
+            centerIcon = sitepath + 'content/images/center.svg';
+            directionIcon = sitepath + 'content/images/arrow-01.svg';
         }
 
         var positionObj = JSON.parse(singleData.Positioning);
@@ -144,7 +144,7 @@
         $('#IntersectionName').text(singleData.IntersectionName === null ? '' : singleData.IntersectionName);
         $('#Weather').text(singleData.Weather === null ? '' : singleData.Weather);
         $('#TrafficControlNote').text(singleData.TrafficControlNote === null ? '' : singleData.TrafficControlNote);
-        $('#DownloadInvestigaion').attr('href', '/home/DownloadInvestigation?filename=' + singleData.FileIdentification);
+        $('#DownloadInvestigaion').attr('href', sitepath + 'home/DownloadInvestigation?filename=' + singleData.FileIdentification);
 
         // 車種統計圖
         initHourlyVehicleChart();
