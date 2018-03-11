@@ -7,7 +7,7 @@
     };
 
     $.kingwaytek.util.eventBootLoader = function () {
-        for (var key in $.senao.eventBind) {
+        for (var key in $.kingwaytek.eventBind) {
             if ($.kingwaytek.eventBind.hasOwnProperty(key)) {
                 $.kingwaytek.eventBind[key]();
             }

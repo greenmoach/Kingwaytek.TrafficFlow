@@ -266,3 +266,6 @@ Doc/
 *.eml
 
 **/InvestigationFiles/*
+
+# Sqlserver project
+*.jfm

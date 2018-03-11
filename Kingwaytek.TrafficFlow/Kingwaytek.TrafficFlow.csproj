@@ -329,6 +329,7 @@
     <Content Include="Scripts\plugins\jquery.validate\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\plugins\modernizr\modernizr-2.6.2.js" />
     <Content Include="Scripts\plugins\respond\respond.js" />
+    <Content Include="shared_assets\images\empty4.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

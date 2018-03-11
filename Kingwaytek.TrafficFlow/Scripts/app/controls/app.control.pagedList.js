@@ -3,6 +3,10 @@
 
     var $this = $('.control_pager');
 
+    if ($this.length === 0) {
+        return;
+    }
+
     $this
         .on('submit', '.paged-query-form', function () {
             var $f = $(this),
