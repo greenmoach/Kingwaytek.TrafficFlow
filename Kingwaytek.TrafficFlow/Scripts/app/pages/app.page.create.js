@@ -1,8 +1,10 @@
 ﻿(function ($) {
     'use strict';
 
-    var $this = $('.home-create'),
+    var $this = $('.home-create, .home-edit'),
         centerMarker = null,
+        strokeColor = '#F00',
+        scale = 5,
         directA,
         directB,
         directC,
@@ -12,6 +14,34 @@
     if ($this.length === 0) {
         return;
     }
+    $(function () {
+        var model = $this.find('.content').data('model');
+        if (model !== null) {
+            // 調查資料編輯
+            $('input[name="Id"]').val(model.id);
+            $('#InvestigationType').val($('#HiddenInvestigationType').val());
+            $('input[name = "InvestigaionTime"]').val(model.investigaionTime);
+            $('textarea[name = "TrafficControlNote"]').val(model.trafficControlNote);
+            positioningOfIntersection.Id = model.positioningId;
+            positioningOfIntersection.CityName = model.positioningCity;
+            positioningOfIntersection.TownName = model.positioningTown;
+            positioningOfIntersection.Road1 = model.positioningRoad1;
+            positioningOfIntersection.Road2 = model.positioningRoad2;
+            positioningOfIntersection.Latitude = model.positioningLatitude;
+            positioningOfIntersection.Longitude = model.positioningLongitude;
+            $('body').append(
+                $('<div id="Modal-upload-success">').append(
+                    $('<input>').attr({
+                        type: 'hidden',
+                        id: 'FileIdentification',
+                        name: 'FileIdentification',
+                        value: model.fileName
+                    })));
+
+            createMarkersInEditMode(JSON.parse(model.positioning));
+            $('.left-accordion').accordion({ active: 1 });
+        }
+    });
 
     $('.traffic-create').parent().addClass('active');
 
@@ -62,15 +92,18 @@
                 file = document.getElementById('FileUpload').files[0];
             if (!file) {
                 alert('請選擇要會上傳的調查資料');
+                return;
             }
 
             if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
                 alert('上傳的調查資料檔案類型非EXCEL');
+                return;
             }
 
             // 上傳檔案上限10MB
             if (file.size > 10 * 1024 * 1024) {
                 alert('檔案大小超過10MB');
+                return;
             }
 
             formData.append('file', file);
@@ -91,8 +124,9 @@
                 alert('檔案上傳錯誤，請確認網路設定並稍後再試');
             });
         })
-        .on('click', '#ImportInvestigationData', function () {
+        .on('click', '#ImportInvestigationData, #SubmitNoUpload', function () {
             var data = {
+                id: $('input[name="Id"]').val(),
                 type: $('#InvestigationType').find('option:selected').val(),
                 positioningId: positioningOfIntersection.Id,
                 city: positioningOfIntersection.CityName,
@@ -103,7 +137,7 @@
                 longitude: positioningOfIntersection.Longitude,
                 positioning: JSON.stringify(getPositionInfoOfMarkers()),
                 investigaionTime: $('input[name = "InvestigaionTime"]').val(),
-                trafficControlNote: $('input[name = "TrafficControlNote"]').val(),
+                trafficControlNote: $('textarea[name = "TrafficControlNote"]').val(),
                 weather: $('#Weather').val(),
                 fileIdentification: $('#FileIdentification').val(),
                 intersectionId: $('#IntersectionId').val()
@@ -242,7 +276,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 270,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
@@ -253,7 +288,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 0,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
@@ -264,7 +300,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 90,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
@@ -319,7 +356,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 270,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
@@ -330,7 +368,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 0,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
@@ -341,7 +380,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 90,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
@@ -351,7 +391,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 180,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
@@ -419,7 +460,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 270,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
@@ -430,7 +472,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 0,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
@@ -441,7 +484,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 90,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
@@ -451,7 +495,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 180,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
@@ -520,7 +565,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 270,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
@@ -531,7 +577,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 300,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .0001, positioningOfIntersection.Longitude + .00013)
@@ -542,7 +589,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 30,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude - .00013)
@@ -552,7 +600,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 90,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
@@ -562,7 +611,8 @@
                     icon: {
                         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                         rotation: 180,
-                        scale: 5
+                        scale: scale,
+                        strokeColor: strokeColor
                     },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
@@ -638,6 +688,200 @@
                 );
                 break;
             default:
+        }
+
+        geeMap.panTo(centerLatLng);
+        geeMap.setZoom(21);
+    }
+
+    function createMarkersInEditMode(positioning) {
+        var selectedType = $('select[name="InvestigationType"] option:selected').val();
+        // update conter marker
+        var centerLatLng =
+            new google.maps.LatLng(positioning.center.latitude, positioning.center.longitude);
+        var icon;
+        if (selectedType === 'Pedestrians') {
+            icon = {
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(20, 20),
+                url: sitepath + 'content/images/arrow-walking02.svg'
+            }
+        } else {
+            icon = sitepath + 'content/images/center.svg';
+        }
+        centerMarker = updateMarker({
+            id: 'center',
+            icon: icon,
+            latLng: centerLatLng,
+            draggable: false
+        });
+
+        var objectA = positioning.directions.find(function (o) { return o.id === 'A' });
+        var objectB = positioning.directions.find(function (o) { return o.id === 'B' });
+        var objectC = positioning.directions.find(function (o) { return o.id === 'C' });
+        var objectD = positioning.directions.find(function (o) { return o.id === 'D' });
+        var objectE = positioning.directions.find(function (o) { return o.id === 'E' });
+
+        // update direct markers
+        $('#roadDirect div,#roadDirect br').remove();
+
+        if (objectA) {
+            directA = updateMarker({
+                id: 'A',
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    rotation: objectA.rotate,
+                    scale: scale,
+                    strokeColor: strokeColor
+                },
+                draggable: true,
+                latLng: new google.maps.LatLng(objectA.latitude, objectA.longitude)
+            });
+
+            $('#roadDirect').append(
+                $('#roadDirectName').clone()
+                    .find('div.input-group')
+                    .attr('id', 'roadNameA')
+                    .end()
+                    .find('.roadtext')
+                    .attr('value', objectA.name)
+                    .end()
+                    .find('span.roadName')
+                    .text('A')
+                    .end()
+                    .find('.rotate')
+                    .attr('value', objectA.rotate)
+                    .end()
+                    .html()
+            );
+        }
+
+        if (objectB) {
+            directB = updateMarker({
+                id: 'B',
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    rotation: objectB.rotate,
+                    scale: scale,
+                    strokeColor: strokeColor
+                },
+                draggable: true,
+                latLng: new google.maps.LatLng(objectB.latitude, objectB.longitude)
+            });
+
+            $('#roadDirect').append(
+                $('#roadDirectName').clone()
+                    .find('div.input-group')
+                    .attr('id', 'roadNameB')
+                    .val(objectB.name)
+                    .end()
+                    .find('.roadtext')
+                    .attr('value', objectB.name)
+                    .end()
+                    .find('span.roadName')
+                    .text('B')
+                    .end()
+                    .find('.rotate')
+                    .attr('value', objectB.rotate)
+                    .end()
+                    .html()
+            );
+        }
+
+        if (objectC) {
+            directC = updateMarker({
+                id: 'C',
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    rotation: objectC.rotate,
+                    scale: scale,
+                    strokeColor: strokeColor
+                },
+                draggable: true,
+                latLng: new google.maps.LatLng(objectC.latitude, objectC.longitude)
+            });
+
+            $('#roadDirect').append(
+                $('#roadDirectName').clone()
+                    .find('div.input-group')
+                    .attr('id', 'roadNameC')
+                    .val(objectC.name)
+                    .end()
+                    .find('.roadtext')
+                    .attr('value', objectC.name)
+                    .end()
+                    .find('span.roadName')
+                    .text('C')
+                    .end()
+                    .find('.rotate')
+                    .attr('value', objectC.rotate)
+                    .end()
+                    .html()
+            );
+        }
+
+        if (objectD) {
+            directD = updateMarker({
+                id: 'D',
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    rotation: objectD.rotate,
+                    scale: scale,
+                    strokeColor: strokeColor
+                },
+                draggable: true,
+                latLng: new google.maps.LatLng(objectD.latitude, objectD.longitude)
+            });
+
+            $('#roadDirect').append(
+                $('#roadDirectName').clone()
+                    .find('div.input-group')
+                    .attr('id', 'roadNameD')
+                    .val(objectD.name)
+                    .end()
+                    .find('.roadtext')
+                    .attr('value', objectD.name)
+                    .end()
+                    .find('span.roadName')
+                    .text('D')
+                    .end()
+                    .find('.rotate')
+                    .attr('value', objectD.rotate)
+                    .end()
+                    .html()
+            );
+        }
+
+        if (objectE) {
+            directE = updateMarker({
+                id: 'E',
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    rotation: objectE.rotate,
+                    scale: scale,
+                    strokeColor: strokeColor
+                },
+                draggable: true,
+                latLng: new google.maps.LatLng(objectE.latitude, objectE.longitude)
+            });
+
+            $('#roadDirect').append(
+                $('#roadDirectName').clone()
+                    .find('div.input-group')
+                    .attr('id', 'roadNameE')
+                    .val(objectE.name)
+                    .end()
+                    .find('.roadtext')
+                    .attr('value', objectE.name)
+                    .end()
+                    .find('span.roadName')
+                    .text('E')
+                    .end()
+                    .find('.rotate')
+                    .attr('value', objectE.rotate)
+                    .end()
+                    .html()
+            );
         }
 
         geeMap.panTo(centerLatLng);

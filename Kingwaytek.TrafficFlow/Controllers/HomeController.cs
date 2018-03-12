@@ -40,8 +40,15 @@ namespace Kingwaytek.TrafficFlow.Controllers
         [HttpPost]
         public ActionResult Create(DataCreatedViewModel viewModel)
         {
-            _investigateService.Create(viewModel);
+            _investigateService.CreateOrUpdate(viewModel);
             return Json("");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var model = _investigateService.GetById(id);
+
+            return View("Create", model);
         }
 
         public ActionResult Query()

@@ -5,6 +5,8 @@
         hourlyVehicleChart,
         historicalVehicleChart,
         centerMarker,
+        strokeColor = '#FF0000',
+        scale = 5,
         markers = [],
         infos = [];
 
@@ -159,7 +161,8 @@
                 icon: {
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     rotation: d.rotate,
-                    scale: 5
+                    scale: scale,
+                    strokeColor: strokeColor
                 },
                 draggable: false,
                 map: geeMap
