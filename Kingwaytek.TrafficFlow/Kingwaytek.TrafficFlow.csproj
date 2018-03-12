@@ -172,6 +172,8 @@
     <Compile Include="Models\BasicDescriptionModel.cs" />
     <Compile Include="Models\DataCreatedViewModel.cs" />
     <Compile Include="Models\DataQueryViewModel.cs" />
+    <Compile Include="Models\DirectHistoricalQueryViewModel.cs" />
+    <Compile Include="Models\DirectHistoricalViewModel.cs" />
     <Compile Include="Models\Dto\PositioningDto.cs" />
     <Compile Include="Models\Dto\PositioningTownDto.cs" />
     <Compile Include="Models\GeometryViewModel.cs" />

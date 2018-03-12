@@ -71,15 +71,7 @@ namespace Kingwaytek.TrafficFlow
                     editEntity.IntersectionId = viewModel.IntersectionId;
                 }
 
-                try
-                {
-                    _investigationRepository.Update(editEntity);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                _investigationRepository.Update(editEntity);
 
                 // 調查資料更新
                 if (editEntity.FileName != viewModel.FileIdentification)
@@ -293,6 +285,29 @@ namespace Kingwaytek.TrafficFlow
                     Pedestrians = x.InvestigationData.Where(m => m.HourlyInterval == viewModel.HourlyInterval).Sum(m => m.Amount)
                 })
                 .ToList();
+            return models;
+        }
+
+        /// <summary>
+        /// 取得調查路口歷年轉向資料
+        /// </summary>
+        /// <param name="viewModel"></param>
+        public IEnumerable<DirectHistoricalViewModel> DirectionHistoricalQuery(DirectHistoricalQueryViewModel viewModel)
+        {
+            var models = _investigationRepository
+                .GetAvailable()
+                .Where(x => x.PositioningId == viewModel.PositioningId
+                            && x.InvestigationType != (int)InvestigationTypeEnum.Pedestrians
+                            && x.InvestigationData.Any(m => m.HourlyInterval == viewModel.HourlyInterval))
+                .OrderBy(x => x.InvestigaionTime)
+                .ToList()
+                .Select(x => new DirectHistoricalViewModel
+                {
+                    InvestigaionTime = x.InvestigaionTime.ToString("yyyy/MM/dd"),
+                    Directions = x.InvestigationData.Where(m => m.Intersection == viewModel.Intersection)
+                                                    .GroupBy(m => m.Direction)
+                                                    .ToDictionary(m => m.Key, m => m.Sum(a => a.Amount))
+                });
             return models;
         }
 

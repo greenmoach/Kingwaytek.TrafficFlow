@@ -82,6 +82,14 @@ namespace Kingwaytek.TrafficFlow.Controllers
         }
 
         [HttpPost]
+        public ActionResult DirectHistoricalData(DirectHistoricalQueryViewModel viewModel)
+        {
+            var models = _investigateService.DirectionHistoricalQuery(viewModel);
+
+            return Json(models);
+        }
+
+        [HttpPost]
         public ActionResult UploadInvestigation(HttpPostedFileBase file, InvestigationTypeEnum type)
         {
             var fileId = GetFileIdentification();

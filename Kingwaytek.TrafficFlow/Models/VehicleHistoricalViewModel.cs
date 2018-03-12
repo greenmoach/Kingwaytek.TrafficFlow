@@ -8,6 +8,9 @@ namespace Kingwaytek.TrafficFlow
 {
     public class VehicleHistoricalViewModel
     {
+        /// <summary>
+        /// 調查時間
+        /// </summary>
         public string InvestigaionTime { get; set; }
 
         /// <summary>
