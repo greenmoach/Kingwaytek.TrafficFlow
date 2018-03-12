@@ -178,10 +178,13 @@
     <Compile Include="Models\InvestigateListFilterViewModel.cs" />
     <Compile Include="Models\InvestigateListViewModel.cs" />
     <Compile Include="Models\InvestigateModel.cs" />
+    <Compile Include="Models\PedestriansHistoricalViewModel.cs" />
     <Compile Include="Models\PedestriansInvestigateModel.cs" />
     <Compile Include="Models\SingleDateHourlyViewModel.cs" />
     <Compile Include="Models\SingleDateQueryViewModel.cs" />
     <Compile Include="Models\TrafficViewModel.cs" />
+    <Compile Include="Models\VehicleHistoricalQueryViewModel.cs" />
+    <Compile Include="Models\VehicleHistoricalViewModel.cs" />
     <Compile Include="Models\VehicleInvestigateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CacheProvider\ICacheProvider.cs" />

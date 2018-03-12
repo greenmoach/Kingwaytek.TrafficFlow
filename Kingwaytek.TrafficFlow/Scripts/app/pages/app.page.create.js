@@ -117,6 +117,32 @@
                 .fail(function () {
                     alert('調查資料匯入失敗，請與系統管理員聯繫');
                 });
+        })
+        .on('change', '.rotate', function () {
+            var $this = $(this),
+                direct;
+            switch ($this.closest('.input-group').prop('id')) {
+                case 'roadNameA':
+                    direct = directA;
+                    break;
+                case 'roadNameB':
+                    direct = directB;
+                    break;
+                case 'roadNameC':
+                    direct = directC;
+                    break;
+                case 'roadNameD':
+                    direct = directD;
+                    break;
+                case 'roadNameE':
+                    direct = directE;
+                    break;
+                default:
+            }
+
+            var icon = direct.getIcon();
+            icon.rotation = $this.val();
+            direct.setIcon(icon);
         });
 
     function getPositionInfoOfMarkers() {
@@ -132,40 +158,45 @@
 
         markers.directions.push({
             id: directA.id,
-            name: $('#roadNameA > input').val(),
+            name: $('#roadNameA > input[type="text"]').val(),
             latitude: directA.getPosition().lat(),
-            longitude: directA.getPosition().lng()
+            longitude: directA.getPosition().lng(),
+            rotate: $('#roadNameA > input[type="number"]').val()
         });
 
         markers.directions.push({
             id: directB.id,
-            name: $('#roadNameB > input').val(),
+            name: $('#roadNameB > input[type="text"]').val(),
             latitude: directB.getPosition().lat(),
-            longitude: directB.getPosition().lng()
+            longitude: directB.getPosition().lng(),
+            rotate: $('#roadNameB > input[type="number"]').val()
         });
 
         markers.directions.push({
             id: directC.id,
-            name: $('#roadNameC > input').val(),
+            name: $('#roadNameC > input[type="text"]').val(),
             latitude: directC.getPosition().lat(),
-            longitude: directC.getPosition().lng()
+            longitude: directC.getPosition().lng(),
+            rotate: $('#roadNameC > input[type="number"]').val()
         });
 
         if (selectedType === 'Intersection' || selectedType === 'Pedestrians' || selectedType === 'FiveWay') {
             markers.directions.push({
                 id: directD.id,
-                name: $('#roadNameD > input').val(),
+                name: $('#roadNameD > input[type="text"]').val(),
                 latitude: directD.getPosition().lat(),
-                longitude: directD.getPosition().lng()
+                longitude: directD.getPosition().lng(),
+                rotate: $('#roadNameD > input[type="number"]').val()
             });
         }
 
         if (selectedType === 'FiveWay') {
             markers.directions.push({
                 id: directE.id,
-                name: $('#roadNameE > input').val(),
+                name: $('#roadNameE > input[type="text"]').val(),
                 latitude: directE.getPosition().lat(),
-                longitude: directE.getPosition().lng()
+                longitude: directE.getPosition().lng(),
+                rotate: $('#roadNameE > input[type="number"]').val()
             });
         }
 
@@ -208,21 +239,33 @@
             case 'TRoad':
                 directA = updateMarker({
                     id: 'A',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 270,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 0,
+                        scale: 5
+                    },
                     draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
+                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 90,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
@@ -233,8 +276,11 @@
                         .find('div.input-group')
                         .attr('id', 'roadNameA')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('A')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '270')
                         .end()
                         .html()
                 );
@@ -244,8 +290,11 @@
                         .find('div.input-group')
                         .attr('id', 'roadNameB')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('B')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '0')
                         .end()
                         .html()
                 );
@@ -255,8 +304,11 @@
                         .find('div.input-group')
                         .attr('id', 'roadNameC')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('C')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '90')
                         .end()
                         .html()
                 );
@@ -264,27 +316,43 @@
             case 'Intersection':
                 directA = updateMarker({
                     id: 'A',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 270,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 0,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 90,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: sitepath + 'content/images/arrow-01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 180,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -298,6 +366,9 @@
                         .find('span')
                         .text('A')
                         .end()
+                        .find('.rotate')
+                        .attr('value', '270')
+                        .end()
                         .html()
                 );
 
@@ -308,6 +379,9 @@
                         .end()
                         .find('span')
                         .text('B')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '0')
                         .end()
                         .html()
                 );
@@ -320,6 +394,9 @@
                         .find('span')
                         .text('C')
                         .end()
+                        .find('.rotate')
+                        .attr('value', '90')
+                        .end()
                         .html()
                 );
                 $('#roadDirect').append(
@@ -329,6 +406,9 @@
                         .end()
                         .find('span')
                         .text('D')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '180')
                         .end()
                         .html()
                 );
@@ -336,27 +416,43 @@
             case 'Pedestrians':
                 directA = updateMarker({
                     id: 'A',
-                    icon: sitepath + 'content/images/arrow-walking01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 270,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: sitepath + 'content/images/arrow-walking01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 0,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: sitepath + 'content/images/arrow-walking01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 90,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: sitepath + 'content/images/arrow-walking01.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 180,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -370,6 +466,9 @@
                         .find('span')
                         .text('A')
                         .end()
+                        .find('.rotate')
+                        .attr('value', '270')
+                        .end()
                         .html()
                 );
 
@@ -380,6 +479,9 @@
                         .end()
                         .find('span')
                         .text('B')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '0')
                         .end()
                         .html()
                 );
@@ -392,6 +494,9 @@
                         .find('span')
                         .text('C')
                         .end()
+                        .find('.rotate')
+                        .attr('value', '90')
+                        .end()
                         .html()
                 );
                 $('#roadDirect').append(
@@ -401,6 +506,9 @@
                         .end()
                         .find('span')
                         .text('D')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '180')
                         .end()
                         .html()
                 );
@@ -409,33 +517,53 @@
             case 'FiveWay':
                 directA = updateMarker({
                     id: 'A',
-                    icon: sitepath + 'content/images/arrow-02.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 270,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: sitepath + 'content/images/arrow-02.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 300,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .0001, positioningOfIntersection.Longitude + .00013)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: sitepath + 'content/images/arrow-02.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 30,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude - .00013)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: sitepath + 'content/images/arrow-02.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 90,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directE = updateMarker({
                     id: 'E',
-                    icon: sitepath + 'content/images/arrow-02.svg',
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        rotation: 180,
+                        scale: 5
+                    },
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -449,6 +577,9 @@
                         .find('span')
                         .text('A')
                         .end()
+                        .find('.rotate')
+                        .attr('value', '270')
+                        .end()
                         .html()
                 );
 
@@ -459,6 +590,9 @@
                         .end()
                         .find('span')
                         .text('B')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '300')
                         .end()
                         .html()
                 );
@@ -471,6 +605,9 @@
                         .find('span')
                         .text('C')
                         .end()
+                        .find('.rotate')
+                        .attr('value', '30')
+                        .end()
                         .html()
                 );
                 $('#roadDirect').append(
@@ -480,6 +617,9 @@
                         .end()
                         .find('span')
                         .text('D')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '90')
                         .end()
                         .html()
                 );
@@ -490,6 +630,9 @@
                         .end()
                         .find('span')
                         .text('E')
+                        .end()
+                        .find('.rotate')
+                        .attr('value', '180')
                         .end()
                         .html()
                 );

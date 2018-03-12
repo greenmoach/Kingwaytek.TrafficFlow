@@ -3,6 +3,7 @@
     var $this = $('.home-query'),
         singleData,
         hourlyVehicleChart,
+        historicalVehicleChart,
         centerMarker,
         markers = [],
         infos = [];
@@ -22,7 +23,13 @@
             submitQuery();
         })
         .on('click', '#close-info', function () {
-            $(".div-Info").fadeOut("fast");
+            $('.div-Info').fadeOut('fast');
+        })
+        .on('click', '#close-history', function () {
+            $('.div-history').fadeOut('fast');
+        })
+        .on('click', '#close-turn-history', function () {
+            $('.div-turn-history').fadeOut('fast');
         })
         .on('change', '#HourlyIntervals', function () {
             var hourlyData = singleData.HourlyIntervals.find(function (item) {
@@ -30,16 +37,46 @@
             });
             updateInfoWindows(hourlyData);
             updateHourlyVehicleChart(hourlyData);
+        })
+        .on('click', '#div-survey', function () {
+            var parameters = {
+                queryType: $('input[name="area"]:checked').val(),
+                hourlyInterval: $('#HourlyIntervals option:selected').val(),
+                positioningId: positioningOfIntersection.Id
+            };
+
+            $.post(sitepath + 'home/VehicleHistoricalData', parameters)
+                .done(function (data) {
+                    $('.div-history').fadeIn();
+                    updateHistoricalVehicleChart(data);
+                })
+                .fail(function () {
+                    $('.div-history').fadeOut();
+                    alert('取得歷次調查車種資料失敗');
+                });
         });
 
+    // Set div draggable
+    $('.div-history').draggable({
+        handle: 'legend',
+        containment: ".gis-map",
+        scroll: false
+    });
+
+    $('.div-turn-history').draggable({
+        handle: 'legend',
+        containment: ".gis-map",
+        scroll: false
+    });
+
     function submitQuery(dateTime) {
-        var data = {
+        var parameters = {
             queryType: $('input[name="area"]:checked').val(),
             positioningId: positioningOfIntersection.Id,
             investigaionTime: dateTime
         };
 
-        $.post(sitepath + 'home/query', data)
+        $.post(sitepath + 'home/query', parameters)
             .done(function (data) {
                 singleData = data;
                 initDisplayObjects();
@@ -64,6 +101,7 @@
 
         // Hide hourly query panel
         $('.div-Info').fadeOut('fast');
+        $('.div-history').fadeOut('fast');
 
         // 清空info windows
         if (infos.length !== 0) {
@@ -71,8 +109,7 @@
             infos = [];
         }
 
-        var centerIcon,
-            directionIcon;
+        var centerIcon;
         // 車流量 or 行人量
         if (singleData.InvestigationType === 3) {
             centerIcon = {
@@ -80,11 +117,9 @@
                 anchor: new google.maps.Point(20, 20),
                 url: sitepath + 'content/images/arrow-walking02.svg'
             };
-            directionIcon = sitepath + 'content/images/arrow-walking01.svg';
         }
         else {
             centerIcon = sitepath + 'content/images/center.svg';
-            directionIcon = sitepath + 'content/images/arrow-01.svg';
         }
 
         var positionObj = JSON.parse(singleData.Positioning);
@@ -121,7 +156,11 @@
             markers.push(new google.maps.Marker({
                 id: d.id,
                 position: new google.maps.LatLng(d.latitude, d.longitude),
-                icon: directionIcon,
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    rotation: d.rotate,
+                    scale: 5
+                },
                 draggable: false,
                 map: geeMap
             }));
@@ -148,6 +187,9 @@
 
         // 車種統計圖
         initHourlyVehicleChart();
+
+        // 歷次調查車種比例變化統計圖
+        initHistoricalVehicleChart();
 
         // 調查日期時間選擇器
         $('.t_date').datetimepicker({
@@ -189,6 +231,27 @@
         hourlyVehicleChart.draw(data, options);
     }
 
+    function initHistoricalVehicleChart() {
+        var isVehicle = $('input[name="area"]:checked').val() === 'vehicle';
+        $('#div-survey').text(isVehicle ? '歷次調查車種比例變化' : '歷次行人量數據變化');
+        $('.div-history').find('legend').text(isVehicle ? '歷次調查車種比例變化' : '歷次行人量數據變化');
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+
+        // Set chart options
+        var options = {
+            width: 288,
+            height: 234,
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        historicalVehicleChart = new google.visualization.LineChart(document.getElementById('HistoricalVehicleChart'));
+        historicalVehicleChart.draw(data, options);
+    }
+
     function updateHourlyVehicleChart(hourlyData) {
         if (singleData.InvestigationType === 3) {
             $('#HourlyVehicleChart').hide();
@@ -206,6 +269,38 @@
             ]);
 
             hourlyVehicleChart.draw(data);
+        }
+    }
+
+    function updateHistoricalVehicleChart(objects) {
+        var rows, data;
+        if ($('input[name="area"]:checked').val() === 'vehicle') {
+            rows = objects.map(function (element) {
+                return [
+                    element.InvestigaionTime, element.LargeVehicle, element.LightVehicle, element.Motocycle, element.Bicycle
+                ];
+            });
+
+            data = new google.visualization.DataTable();
+            data.addColumn('string', '日期');
+            data.addColumn('number', '大型車');
+            data.addColumn('number', '小型車');
+            data.addColumn('number', '機車');
+            data.addColumn('number', '自行車');
+            data.addRows(rows);
+            historicalVehicleChart.draw(data);
+        } else {
+            rows = objects.map(function (element) {
+                return [
+                    element.InvestigaionTime, element.Pedestrians
+                ];
+            });
+
+            data = new google.visualization.DataTable();
+            data.addColumn('string', '日期');
+            data.addColumn('number', '行人');
+            data.addRows(rows);
+            historicalVehicleChart.draw(data);
         }
     }
 

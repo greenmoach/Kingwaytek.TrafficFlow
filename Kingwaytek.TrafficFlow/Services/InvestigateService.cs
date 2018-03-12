@@ -206,6 +206,49 @@ namespace Kingwaytek.TrafficFlow
             return years;
         }
 
+        public List<VehicleHistoricalViewModel> VehicleHistoricalQuery(VehicleHistoricalQueryViewModel viewModel)
+        {
+            var models = _investigationRepository
+                .GetAvailable()
+                .Where(x => x.PositioningId == viewModel.PositioningId
+                            && x.InvestigationType != (int)InvestigationTypeEnum.Pedestrians
+                            && x.InvestigationData.Any(m => m.HourlyInterval == viewModel.HourlyInterval))
+                .OrderBy(x => x.InvestigaionTime)
+                .ToList()
+                .Select(x => new VehicleHistoricalViewModel
+                {
+                    InvestigaionTime = x.InvestigaionTime.ToString("yyyy/MM/dd"),
+                    LargeVehicle = x.InvestigationData.Where(m => m.TargetTypeEnum == TargetTypeEnum.LargeVehicle && m.HourlyInterval == viewModel.HourlyInterval)
+                        .Sum(m => m.Amount),
+                    LightVehicle = x.InvestigationData.Where(m => m.TargetTypeEnum == TargetTypeEnum.LightVehicle && m.HourlyInterval == viewModel.HourlyInterval)
+                        .Sum(m => m.Amount),
+                    Motocycle = x.InvestigationData.Where(m => m.TargetTypeEnum == TargetTypeEnum.Motocycle && m.HourlyInterval == viewModel.HourlyInterval)
+                        .Sum(m => m.Amount),
+                    Bicycle = x.InvestigationData.Where(m => m.TargetTypeEnum == TargetTypeEnum.Bicycle && m.HourlyInterval == viewModel.HourlyInterval)
+                        .Sum(m => m.Amount)
+                })
+                .ToList();
+            return models;
+        }
+
+        public List<PedestriansHistoricalViewModel> PedestriansHistoricalQuery(VehicleHistoricalQueryViewModel viewModel)
+        {
+            var models = _investigationRepository
+                .GetAvailable()
+                .Where(x => x.PositioningId == viewModel.PositioningId
+                            && x.InvestigationType == (int)InvestigationTypeEnum.Pedestrians
+                            && x.InvestigationData.Any(m => m.HourlyInterval == viewModel.HourlyInterval))
+                .OrderBy(x => x.InvestigaionTime)
+                .ToList()
+                .Select(x => new PedestriansHistoricalViewModel
+                {
+                    InvestigaionTime = x.InvestigaionTime.ToString("yyyy/MM/dd"),
+                    Pedestrians = x.InvestigationData.Where(m => m.HourlyInterval == viewModel.HourlyInterval).Sum(m => m.Amount)
+                })
+                .ToList();
+            return models;
+        }
+
         #region private methods - create
 
         private IEnumerable<InvestigationData> TRoadProcess(int investigateId, InvestigateModel<VehicleInvestigateModel> model)

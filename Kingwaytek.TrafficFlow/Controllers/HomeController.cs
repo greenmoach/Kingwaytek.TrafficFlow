@@ -63,6 +63,18 @@ namespace Kingwaytek.TrafficFlow.Controllers
         }
 
         [HttpPost]
+        public ActionResult VehicleHistoricalData(VehicleHistoricalQueryViewModel viewModel)
+        {
+            if (viewModel.QueryType == InvestigationQueryTypeEnum.Vehicle)
+            {
+                var vehicleModels = _investigateService.VehicleHistoricalQuery(viewModel);
+                return Json(vehicleModels);
+            }
+            var pedestriansModels = _investigateService.PedestriansHistoricalQuery(viewModel);
+            return Json(pedestriansModels);
+        }
+
+        [HttpPost]
         public ActionResult UploadInvestigation(HttpPostedFileBase file, InvestigationTypeEnum type)
         {
             var fileId = GetFileIdentification();

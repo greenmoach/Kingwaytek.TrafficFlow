@@ -49,15 +49,6 @@
             <!--路口指向設定-->
             <h5>二、路口指向設定</h5>
             <div class="direction-setup">
-                <div class="form-group">
-                    <label>旋轉箭頭：</label>
-                    <div class="mb-10">
-                        <button type="button" class="btn btn-gray rotate-btn"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-gray rotate-btn"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-gray rotate-btn"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-gray rotate-btn"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
-                    </div>
-                </div>
                 <div id="roadDirect" class="form-group">
                     <label>路口指向：</label>
                 </div>
@@ -116,8 +107,10 @@
 <!--clone object-->
 <div id="roadDirectName" style="display: none;">
     <div class="input-group">
-        <span class="input-group-addon">&nbsp;</span>
-        <input type="text" class="form-control" placeholder="請輸入路名">
+        <span class="input-group-addon roadName">&nbsp;</span>
+        <input type="text" class="form-control" style="width: 90px" placeholder="請輸入路名">
+        <span class="input-group-addon">旋轉</span>
+        <input type="number" class="form-control rotate" max="360" min="0">
     </div>
     <br />
 </div>
