@@ -1,13 +1,17 @@
-﻿@{
+﻿@model Investigation
+@{
     var investigationTypes = Enum.GetValues(typeof(InvestigationTypeEnum))
                                 .Cast<InvestigationTypeEnum>()
                                 .ToSelectListItemList(x => x.GetDisplayName("Name"), x => x.ToString());
     var defaultSelectItem = new List<SelectListItem>() { new SelectListItem() { Text = "請選擇" } };
     var towns = SiteHelper.GetTowns().ToSelectListItemList(x => x, x => x);
     towns.Insert(0, new SelectListItem() { Text = "請選擇", Value = string.Empty, Selected = true });
+
+    var dataModel = Model.ToJson();
 }
 <!--Content-->
-<div class="content">
+<div class="content" data-model="@dataModel">
+    <input type="hidden" name="Id" value="" />
     <div class="gis-left">
         <!--左側滑動收合-->
 
@@ -22,6 +26,10 @@
             <div class="Position-Setup">
                 <div class="form-group">
                     <label>1、調查型態：</label>
+                    @if (Model != null)
+                    {
+                        @Html.Hidden("HiddenInvestigationType", Model.InvestigationTypeEnum.ToString())
+                    }
                     @Html.DropDownList("InvestigationType", investigationTypes, new { @class = "selectpicker show-menu-arrow form-control" })
                 </div>
 
@@ -83,13 +91,21 @@
                         </span>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6">
+                        <button type="button" id="prev-2" class="btn btn-primary btn-block"><i class="fa fa-arrow-left" aria-hidden="true"></i> 上一步</button>
+                    </div>
+                    <div class="col-xs-6 col-md-6">
+                        <button type="button" class="btn btn-primary btn-block" id="FileUploadButton"><i class="fa fa-upload" aria-hidden="true"></i> 上傳檔案</button>
+                    </div>
+                </div>
 
-                <div class="col-xs-6 col-md-6">
-                    <button type="button" id="prev-2" class="btn btn-primary btn-block"><i class="fa fa-arrow-left" aria-hidden="true"></i> 上一步</button>
-                </div>
-                <div class="col-xs-6 col-md-6">
-                    <button type="button" class="btn btn-primary btn-block" id="FileUploadButton"><i class="fa fa-upload" aria-hidden="true"></i> 上傳檔案</button>
-                </div>
+                @if (Model != null)
+                {
+                    <div class="col-xs-12 col-md-12">
+                        <button type="button" class="btn btn-info btn-block" id="SubmitNoUpload"><i class="fa fa-upload" aria-hidden="true"></i> 送出</button>
+                    </div>
+                }
             </div>
             <!--//三、資料匯入-->
         </div><!--Accordion end-->
@@ -108,7 +124,7 @@
 <div id="roadDirectName" style="display: none;">
     <div class="input-group">
         <span class="input-group-addon roadName">&nbsp;</span>
-        <input type="text" class="form-control" style="width: 90px" placeholder="請輸入路名">
+        <input type="text" class="form-control roadtext" style="width: 90px" placeholder="請輸入路名">
         <span class="input-group-addon">旋轉</span>
         <input type="number" class="form-control rotate" max="360" min="0">
     </div>

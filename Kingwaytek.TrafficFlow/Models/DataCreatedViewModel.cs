@@ -9,6 +9,11 @@ namespace Kingwaytek.TrafficFlow
     public class DataCreatedViewModel : GeometryViewModel
     {
         /// <summary>
+        /// 調查資料編號
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// 調查型態
         /// </summary>
         public InvestigationTypeEnum Type { get; set; }

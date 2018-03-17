@@ -40,8 +40,15 @@ namespace Kingwaytek.TrafficFlow.Controllers
         [HttpPost]
         public ActionResult Create(DataCreatedViewModel viewModel)
         {
-            _investigateService.Create(viewModel);
+            _investigateService.CreateOrUpdate(viewModel);
             return Json("");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var model = _investigateService.GetById(id);
+
+            return View("Create", model);
         }
 
         public ActionResult Query()
@@ -117,7 +124,18 @@ namespace Kingwaytek.TrafficFlow.Controllers
 
         public ActionResult DownloadInvestigation(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return null;
+            }
+
             var filePath = Path.Combine(AppDataPath, InvestigationFileFolder, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                throw new ArgumentNullException("Kingwaytek.TrafficFlow.Controllers.HomeController.DownloadInvestigation", "File not Exists");
+            }
+
             Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
@@ -130,6 +148,13 @@ namespace Kingwaytek.TrafficFlow.Controllers
 
         private void SaveFile(Stream stream, string fileName)
         {
+            var folder = Path.Combine(AppDataPath, InvestigationFileFolder);
+
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
             var filePath = Path.Combine(AppDataPath, InvestigationFileFolder, fileName);
             FileStream fileStream = System.IO.File.Create(filePath, (int)stream.Length);
             // Initialize the bytes array with the stream length and then fill it with data

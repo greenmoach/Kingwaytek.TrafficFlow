@@ -4,7 +4,10 @@
         singleData,
         hourlyVehicleChart,
         historicalVehicleChart,
+        historicalDirectChart,
         centerMarker,
+        strokeColor = '#FF0000',
+        scale = 5,
         markers = [],
         infos = [];
 
@@ -102,6 +105,7 @@
         // Hide hourly query panel
         $('.div-Info').fadeOut('fast');
         $('.div-history').fadeOut('fast');
+        $('.div-turn-history').fadeOut('fast');
 
         // 清空info windows
         if (infos.length !== 0) {
@@ -153,17 +157,39 @@
             });
 
         positionObj.directions.forEach(function (d) {
-            markers.push(new google.maps.Marker({
+            var m = new google.maps.Marker({
                 id: d.id,
                 position: new google.maps.LatLng(d.latitude, d.longitude),
                 icon: {
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     rotation: d.rotate,
-                    scale: 5
+                    scale: scale,
+                    strokeColor: strokeColor
                 },
                 draggable: false,
                 map: geeMap
-            }));
+            });
+            if (singleData.InvestigationType !== 3) {
+                m.addListener('click', function () {
+                    // 歷年轉向變化查詢
+                    var parameters = {
+                        Intersection: m.id,
+                        hourlyInterval: $('#HourlyIntervals option:selected').val(),
+                        positioningId: positioningOfIntersection.Id
+                    };
+
+                    $.post(sitepath + 'home/DirectHistoricalData', parameters)
+                        .done(function (data) {
+                            $('.div-turn-history').fadeIn();
+                            updateHistoricalDirectChart(data);
+                        })
+                        .fail(function () {
+                            $('.div-turn-history').fadeOut();
+                            alert('取得歷次調查車種資料失敗');
+                        });
+                });
+            }
+            markers.push(m);
         });
 
         // 更新調查資料查詢介面
@@ -190,6 +216,9 @@
 
         // 歷次調查車種比例變化統計圖
         initHistoricalVehicleChart();
+
+        // 歷年轉向流量變化統計圖
+        initHistoricalDirectChart();
 
         // 調查日期時間選擇器
         $('.t_date').datetimepicker({
@@ -252,6 +281,23 @@
         historicalVehicleChart.draw(data, options);
     }
 
+    function initHistoricalDirectChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+
+        // Set chart options
+        var options = {
+            width: 288,
+            height: 234,
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        historicalDirectChart = new google.visualization.LineChart(document.getElementById('HistoricalDirectChart'));
+        historicalDirectChart.draw(data, options);
+    }
+
     function updateHourlyVehicleChart(hourlyData) {
         if (singleData.InvestigationType === 3) {
             $('#HourlyVehicleChart').hide();
@@ -302,6 +348,23 @@
             data.addRows(rows);
             historicalVehicleChart.draw(data);
         }
+    }
+
+    function updateHistoricalDirectChart(objects) {
+        var rows = objects.map(function (element) {
+            var row = Object.values(element.Directions);
+            row.unshift(element.InvestigaionTime);
+            return row;
+        });
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '日期');
+        Object.keys(objects[0].Directions).forEach(function (e) {
+            data.addColumn('number', e);
+        });
+        data.addRows(rows);
+
+        historicalDirectChart.draw(data);
     }
 
     function updateInfoWindows(hourlyData) {
