@@ -233,7 +233,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\InvestigationFiles\Investigation.txt" />
-    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\app\controls\app.control.button.css" />
     <Content Include="Content\app\controls\app.control.footer.css" />
     <Content Include="Content\app\controls\app.control.general.css" />
@@ -371,7 +370,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
