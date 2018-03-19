@@ -5,25 +5,19 @@
 }
 <!--Content-->
 <div class="content">
-
     <div class="gis-left">
         <!--左側滑動收合-->
-
         <div class="btn-toggle l-hide"></div><!--按鈕：左側隱藏-->
-
         <div class="btn-toggle l-show"></div><!--按鈕：左側展開--->
-
         <div class="left-accordion">
             <!--Accordion-->
             <!--//一、路口定位設定-->
             <h5>路口查詢</h5>
             <div class="Position-Setup">
-
                 <div class="radio-area">
                     <label class="radio-label"><input type="radio" name="area" value="vehicle" checked><div class="radio-btn-area">車流量</div></label>
                     <label class="radio-label"><input type="radio" name="area" value="pedestrians"><div class="radio-btn-area">行人量</div></label>
                 </div>
-
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon">行政區：</span>
@@ -32,7 +26,7 @@
                     <br />
                     <div class="input-group">
                         <span class="input-group-addon">路&nbsp;&nbsp;&nbsp;名：</span>
-                        @Html.DropDownList("Road1", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
+                        @Html.TextBox("Road1", null, new { @class = "form-control", placeholder = "請輸入正確路名" })
                     </div>
                     <br />
                     <div class="input-group">
@@ -40,7 +34,6 @@
                         @Html.DropDownList("Road2", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
                     </div>
                 </div>
-
                 <button id="next-1" type="button" class="btn btn-primary btn-block" disabled><i class="fa fa-search"></i> 查詢</button>
             </div>
             <!--//一、路口定位設定-->
@@ -64,7 +57,7 @@
             <div class="tab-body-pop">
                 <div class="form-group mb-10">
                     <label>調查日期：</label>
-                    <input type="text" class="form-control input-sm t_date" id="InvestigaionTime">
+                    <select id="InvestigaionTime" class="selectpicker show-menu-arrow form-control"></select>
                 </div>
                 <div class="form-group mb-10">
                     <label>調查時間</label>
@@ -90,10 +83,8 @@
                         <label id="TrafficControlNote" class="div-Info-label4">&nbsp;</label>
                     </div>
                 </div>
-
                 <div id="HourlyVehicleChart" class="div-Info-chart">
                 </div>
-
                 <div class="col-xs-12 col-md-12">
                     <a id="DownloadInvestigaion" class="btn btn-primary btn-block" href="#">調查表匯出</a>
                 </div>

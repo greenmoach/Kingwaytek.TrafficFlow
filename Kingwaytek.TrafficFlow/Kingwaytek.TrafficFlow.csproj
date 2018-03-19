@@ -237,6 +237,7 @@
     <Content Include="Content\app\controls\app.control.footer.css" />
     <Content Include="Content\app\controls\app.control.general.css" />
     <Content Include="Content\app\controls\app.control.header.css" />
+    <Content Include="Content\app\controls\app.control.road-positioning.css" />
     <Content Include="Content\app\controls\app.control.slider.css" />
     <Content Include="Content\app\controls\app.control.tablist.css" />
     <Content Include="Content\app\pages\app.page.home.css">
@@ -341,6 +342,7 @@
     <Content Include="Scripts\plugins\jquery.validate\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\plugins\modernizr\modernizr-2.6.2.js" />
     <Content Include="Scripts\plugins\respond\respond.js" />
+    <Content Include="Scripts\plugins\spin\spin.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

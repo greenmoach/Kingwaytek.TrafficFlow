@@ -41,6 +41,10 @@
             updateInfoWindows(hourlyData);
             updateHourlyVehicleChart(hourlyData);
         })
+        .on('change', '#InvestigaionTime', function () {
+            var investigaionTime = $('#InvestigaionTime option:selected').val();
+            submitQuery(investigaionTime);
+        })
         .on('click', '#div-survey', function () {
             var parameters = {
                 queryType: $('input[name="area"]:checked').val(),
@@ -221,15 +225,9 @@
         initHistoricalDirectChart();
 
         // 調查日期時間選擇器
-        $('.t_date').datetimepicker({
-            timepicker: false,
-            defaultDate: singleData.InvestigaionTime,
-            format: 'Y/m/d',
-            lang: 'zh-TW',
-            allowDates: singleData.OtherInvestigaionTime,
-            onSelectDate: function (ct, $i) {
-                submitQuery(ct.toLocaleDateString());
-            }
+        $('#InvestigaionTime').html('');
+        singleData.OtherInvestigaionTime.forEach(function (otherTime) {
+            $('<option value="' + otherTime + '">' + otherTime + '</option>').appendTo('#InvestigaionTime');
         });
 
         geeMap.panTo(centerLatLng);

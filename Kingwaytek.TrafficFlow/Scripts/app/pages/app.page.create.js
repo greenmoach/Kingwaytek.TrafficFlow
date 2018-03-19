@@ -3,8 +3,6 @@
 
     var $this = $('.home-create, .home-edit'),
         centerMarker = null,
-        strokeColor = '#F00',
-        scale = 5,
         directA,
         directB,
         directC,
@@ -14,6 +12,17 @@
     if ($this.length === 0) {
         return;
     }
+
+    var markerOption =
+        {
+            fillColor: 'red',
+            fillOpacity: 1,
+            scale: 1,
+            strokeColor: 'red',
+            strokeWeight: 1,
+            anchor: new google.maps.Point(21, 16)
+        };
+
     $(function () {
         var model = $this.find('.content').data('model');
         if (model !== null) {
@@ -273,36 +282,30 @@
             case 'TRoad':
                 directA = updateMarker({
                     id: 'A',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 270,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 270
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 0,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 0
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 90,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 90
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
@@ -353,47 +356,39 @@
             case 'Intersection':
                 directA = updateMarker({
                     id: 'A',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 270,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 270
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 0,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 0
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 90,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 90
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 180,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 180
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -457,47 +452,39 @@
             case 'Pedestrians':
                 directA = updateMarker({
                     id: 'A',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 270,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 270
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 0,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 0
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 90,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 90
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 180,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 180
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -562,58 +549,48 @@
             case 'FiveWay':
                 directA = updateMarker({
                     id: 'A',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 270,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 270
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
                 directB = updateMarker({
                     id: 'B',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 300,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 300
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .0001, positioningOfIntersection.Longitude + .00013)
                 });
 
                 directC = updateMarker({
                     id: 'C',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 30,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 30
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude - .00013)
                 });
                 directD = updateMarker({
                     id: 'D',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 90,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 90
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
                 directE = updateMarker({
                     id: 'E',
-                    icon: {
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        rotation: 180,
-                        scale: scale,
-                        strokeColor: strokeColor
-                    },
+                    icon: $.extend(Object.assign({}, markerOption), {
+                        path: kingwaytek.SymbolPath.Intersection,
+                        rotation: 180
+                    }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
                 });
@@ -728,12 +705,10 @@
         if (objectA) {
             directA = updateMarker({
                 id: 'A',
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    rotation: objectA.rotate,
-                    scale: scale,
-                    strokeColor: strokeColor
-                },
+                icon: $.extend(Object.assign({}, markerOption), {
+                    path: kingwaytek.SymbolPath.Intersection,
+                    rotation: objectA.rotate
+                }),
                 draggable: true,
                 latLng: new google.maps.LatLng(objectA.latitude, objectA.longitude)
             });
@@ -759,12 +734,10 @@
         if (objectB) {
             directB = updateMarker({
                 id: 'B',
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    rotation: objectB.rotate,
-                    scale: scale,
-                    strokeColor: strokeColor
-                },
+                icon: $.extend(Object.assign({}, markerOption), {
+                    path: kingwaytek.SymbolPath.Intersection,
+                    rotation: objectB.rotate
+                }),
                 draggable: true,
                 latLng: new google.maps.LatLng(objectB.latitude, objectB.longitude)
             });
@@ -791,12 +764,10 @@
         if (objectC) {
             directC = updateMarker({
                 id: 'C',
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    rotation: objectC.rotate,
-                    scale: scale,
-                    strokeColor: strokeColor
-                },
+                icon: $.extend(Object.assign({}, markerOption), {
+                    path: kingwaytek.SymbolPath.Intersection,
+                    rotation: objectC.rotate
+                }),
                 draggable: true,
                 latLng: new google.maps.LatLng(objectC.latitude, objectC.longitude)
             });
@@ -823,12 +794,10 @@
         if (objectD) {
             directD = updateMarker({
                 id: 'D',
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    rotation: objectD.rotate,
-                    scale: scale,
-                    strokeColor: strokeColor
-                },
+                icon: $.extend(Object.assign({}, markerOption), {
+                    path: kingwaytek.SymbolPath.Intersection,
+                    rotation: objectD.rotate
+                }),
                 draggable: true,
                 latLng: new google.maps.LatLng(objectD.latitude, objectD.longitude)
             });
@@ -855,12 +824,10 @@
         if (objectE) {
             directE = updateMarker({
                 id: 'E',
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    rotation: objectE.rotate,
-                    scale: scale,
-                    strokeColor: strokeColor
-                },
+                icon: $.extend(Object.assign({}, markerOption), {
+                    path: kingwaytek.SymbolPath.Intersection,
+                    rotation: objectE.rotate
+                }),
                 draggable: true,
                 latLng: new google.maps.LatLng(objectE.latitude, objectE.longitude)
             });

@@ -25,5 +25,11 @@
                 .fail(function () {
                     alert('調查資料刪除失敗，請與系統管理員聯繫');
                 });
+        })
+        .on('click', '#reset', function () {
+            $('#Filter_Town').prop('selectedIndex', 0);
+            $('#Filter_CreatedYear').prop('selectedIndex', 0);
+            $('#Filter_Type').prop('selectedIndex', 0);
+            $('#Filter_Keyword').val('');
         });
 })(jQuery);

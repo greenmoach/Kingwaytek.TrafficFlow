@@ -14,11 +14,8 @@
     <input type="hidden" name="Id" value="" />
     <div class="gis-left">
         <!--左側滑動收合-->
-
         <div class="btn-toggle l-hide"></div><!--按鈕：左側隱藏-->
-
         <div class="btn-toggle l-show"></div><!--按鈕：左側展開--->
-
         <div class="left-accordion">
             <!--Accordion-->
             <!--//一、路口定位設定-->
@@ -32,7 +29,6 @@
                     }
                     @Html.DropDownList("InvestigationType", investigationTypes, new { @class = "selectpicker show-menu-arrow form-control" })
                 </div>
-
                 <div class="form-group">
                     <label>2、路口定位：</label>
                     <div class="input-group">
@@ -42,7 +38,7 @@
                     <br />
                     <div class="input-group">
                         <span class="input-group-addon">路&nbsp;&nbsp;&nbsp;名：</span>
-                        @Html.DropDownList("Road1", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
+                        @Html.TextBox("Road1", null, new { @class = "form-control", placeholder = "請輸入正確路名" })
                     </div>
                     <br />
                     <div class="input-group">
@@ -50,7 +46,6 @@
                         @Html.DropDownList("Road2", defaultSelectItem, new { @class = "selectpicker show-menu-arrow form-control" })
                     </div>
                 </div>
-
                 <button type="button" id="next-1" class="btn btn-primary btn-block" disabled><i class="fa fa-map-marker" aria-hidden="true"></i> 定位</button>
             </div>
             <!--//一、路口定位設定-->
@@ -60,7 +55,6 @@
                 <div id="roadDirect" class="form-group">
                     <label>路口指向：</label>
                 </div>
-
                 <div class="col-xs-6 col-md-6">
                     <button type="button" id="prev-1" class="btn btn-primary btn-block"><i class="fa fa-arrow-left" aria-hidden="true"></i> 上一步</button>
                 </div>
@@ -76,12 +70,10 @@
                     <label>1、調查日期：</label>
                     <input type="text" class="form-control input-sm t_date" name="InvestigaionTime" placeholder="">
                 </div>
-
                 <div class="form-group">
                     <label>2、路口管制說明：</label>
                     <textarea rows="4" cols="36" name="TrafficControlNote"></textarea>
                 </div>
-
                 <div class="form-group">
                     <label>3、資料匯入：</label>
                     <div class="input-group">
@@ -99,7 +91,6 @@
                         <button type="button" class="btn btn-primary btn-block" id="FileUploadButton"><i class="fa fa-upload" aria-hidden="true"></i> 上傳檔案</button>
                     </div>
                 </div>
-
                 @if (Model != null)
                 {
                     <div class="col-xs-12 col-md-12">

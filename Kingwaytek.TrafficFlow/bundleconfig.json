@@ -21,6 +21,7 @@
       "Scripts/plugins/bootstrap/bootstrap.js",
       "Scripts/plugins/jquery.datetimepicker/jquery.datetimepicker.js",
       "Scripts/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js",
+      "Scripts/plugins/spin/spin.js",
       "scripts/app.common.js",
       "Scripts/app/controls/app.control.*.js",
       "Scripts/app/pages/app.page.*.js"
