@@ -368,15 +368,19 @@ namespace Kingwaytek.TrafficFlow
                     var hourData = model.Data.Where(x => x.StartTime.StartsWith(hour) && x.DirectionCode == intersection).ToList();
 
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnLeft, TargetTypeEnum.LargeVehicle, hourData, hour));
+                    investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, Straight, TargetTypeEnum.LargeVehicle, hourData, hour));
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnRight, TargetTypeEnum.LargeVehicle, hourData, hour));
 
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnLeft, TargetTypeEnum.LightVehicle, hourData, hour));
+                    investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, Straight, TargetTypeEnum.LightVehicle, hourData, hour));
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnRight, TargetTypeEnum.LightVehicle, hourData, hour));
 
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnLeft, TargetTypeEnum.Motocycle, hourData, hour));
+                    investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, Straight, TargetTypeEnum.Motocycle, hourData, hour));
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnRight, TargetTypeEnum.Motocycle, hourData, hour));
 
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnLeft, TargetTypeEnum.Bicycle, hourData, hour));
+                    investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, Straight, TargetTypeEnum.Bicycle, hourData, hour));
                     investigationData.Add(GetVehicleData(directionArray, investigateId, intersection, TurnRight, TargetTypeEnum.Bicycle, hourData, hour));
                 }
             }

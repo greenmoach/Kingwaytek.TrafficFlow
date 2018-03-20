@@ -265,6 +265,7 @@
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\icon_calendar.png" />
     <Content Include="Content\images\left-toggle.png" />
+    <Content Include="Content\plugins\bootstrap.slider\bootstrap-slider.css" />
     <Content Include="Content\plugins\bootstrap\bootstrap.css" />
     <Content Include="Content\plugins\font-awesome\css\font-awesome.css" />
     <Content Include="Content\plugins\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -315,6 +316,7 @@
     <Content Include="Scripts\bundle\all.min.js">
       <DependentUpon>all.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\plugins\bootstrap.slider\bootstrap-slider.js" />
     <Content Include="Scripts\plugins\bootstrap\bootstrap.js" />
     <Content Include="bundleconfig.json" />
     <Content Include="Scripts\plugins\jquery-ui\jquery-ui-1.10.3.custom.min.js" />

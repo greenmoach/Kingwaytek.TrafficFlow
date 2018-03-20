@@ -3,11 +3,14 @@
 
     var $this = $('.home-create, .home-edit'),
         centerMarker = null,
-        directA,
-        directB,
-        directC,
-        directD,
-        directE;
+        directSet =
+            {
+                directA: null,
+                directB: null,
+                directC: null,
+                directD: null,
+                directE: null
+            };
 
     if ($this.length === 0) {
         return;
@@ -160,32 +163,6 @@
                 .fail(function () {
                     alert('調查資料匯入失敗，請與系統管理員聯繫');
                 });
-        })
-        .on('change', '.rotate', function () {
-            var $this = $(this),
-                direct;
-            switch ($this.closest('.input-group').prop('id')) {
-                case 'roadNameA':
-                    direct = directA;
-                    break;
-                case 'roadNameB':
-                    direct = directB;
-                    break;
-                case 'roadNameC':
-                    direct = directC;
-                    break;
-                case 'roadNameD':
-                    direct = directD;
-                    break;
-                case 'roadNameE':
-                    direct = directE;
-                    break;
-                default:
-            }
-
-            var icon = direct.getIcon();
-            icon.rotation = $this.val();
-            direct.setIcon(icon);
         });
 
     function getPositionInfoOfMarkers() {
@@ -200,46 +177,41 @@
         };
 
         markers.directions.push({
-            id: directA.id,
-            name: $('#roadNameA > input[type="text"]').val(),
-            latitude: directA.getPosition().lat(),
-            longitude: directA.getPosition().lng(),
-            rotate: $('#roadNameA > input[type="number"]').val()
+            id: directSet.directA.id,
+            latitude: directSet.directA.getPosition().lat(),
+            longitude: directSet.directA.getPosition().lng(),
+            rotate: $('.roadName:contains("A")').siblings('.rotate').val()
         });
 
         markers.directions.push({
-            id: directB.id,
-            name: $('#roadNameB > input[type="text"]').val(),
-            latitude: directB.getPosition().lat(),
-            longitude: directB.getPosition().lng(),
-            rotate: $('#roadNameB > input[type="number"]').val()
+            id: directSet.directB.id,
+            latitude: directSet.directB.getPosition().lat(),
+            longitude: directSet.directB.getPosition().lng(),
+            rotate: $('.roadName:contains("B")').siblings('.rotate').val()
         });
 
         markers.directions.push({
-            id: directC.id,
-            name: $('#roadNameC > input[type="text"]').val(),
-            latitude: directC.getPosition().lat(),
-            longitude: directC.getPosition().lng(),
-            rotate: $('#roadNameC > input[type="number"]').val()
+            id: directSet.directC.id,
+            latitude: directSet.directC.getPosition().lat(),
+            longitude: directSet.directC.getPosition().lng(),
+            rotate: $('.roadName:contains("C")').siblings('.rotate').val()
         });
 
         if (selectedType === 'Intersection' || selectedType === 'Pedestrians' || selectedType === 'FiveWay') {
             markers.directions.push({
-                id: directD.id,
-                name: $('#roadNameD > input[type="text"]').val(),
-                latitude: directD.getPosition().lat(),
-                longitude: directD.getPosition().lng(),
-                rotate: $('#roadNameD > input[type="number"]').val()
+                id: directSet.directD.id,
+                latitude: directSet.directD.getPosition().lat(),
+                longitude: directSet.directD.getPosition().lng(),
+                rotate: $('.roadName:contains("D")').siblings('.rotate').val()
             });
         }
 
         if (selectedType === 'FiveWay') {
             markers.directions.push({
-                id: directE.id,
-                name: $('#roadNameE > input[type="text"]').val(),
-                latitude: directE.getPosition().lat(),
-                longitude: directE.getPosition().lng(),
-                rotate: $('#roadNameE > input[type="number"]').val()
+                id: directSet.directE.id,
+                latitude: directSet.directE.getPosition().lat(),
+                longitude: directSet.directE.getPosition().lng(),
+                rotate: $('.roadName:contains("E")').siblings('.rotate').val()
             });
         }
 
@@ -251,11 +223,10 @@
 
         // clean center and direct markers
         if (centerMarker) { centerMarker.setMap(null); centerMarker = null; }
-        if (directA) { directA.setMap(null); directA = null; }
-        if (directB) { directB.setMap(null); directB = null; }
-        if (directC) { directC.setMap(null); directC = null; }
-        if (directD) { directD.setMap(null); directD = null; }
-        if (directE) { directE.setMap(null); directE = null; }
+        ['A', 'B', 'C', 'D', 'E'].forEach(function (dir) {
+            var direct = directSet['direct' + dir];
+            if (direct) { direct.setMap(null); direct = null; }
+        });
 
         // update conter marker
         var centerLatLng =
@@ -280,30 +251,33 @@
         // update direct markers
         switch (selectedType) {
             case 'TRoad':
-                directA = updateMarker({
+                directSet.directA = updateMarker({
                     id: 'A',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(21, 20),
+                        path: kingwaytek.SymbolPath.TRoad,
                         rotation: 270
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
-                directB = updateMarker({
+                directSet.directB = updateMarker({
                     id: 'B',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(21, 20),
+                        path: kingwaytek.SymbolPath.TRoad,
                         rotation: 0
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
-                directC = updateMarker({
+                directSet.directC = updateMarker({
                     id: 'C',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(21, 20),
+                        path: kingwaytek.SymbolPath.TRoad,
                         rotation: 90
                     }),
                     draggable: true,
@@ -311,10 +285,11 @@
                 });
 
                 $('#roadDirect div,#roadDirect br').remove();
+
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameA')
+                        .find('.slider')
+                        .attr('data-slider-value', '270')
                         .end()
                         .find('span.roadName')
                         .text('A')
@@ -322,13 +297,12 @@
                         .find('.rotate')
                         .attr('value', '270')
                         .end()
-                        .html()
-                );
+                        .html());
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameB')
+                        .find('.slider')
+                        .attr('data-slider-value', '0')
                         .end()
                         .find('span.roadName')
                         .text('B')
@@ -336,13 +310,12 @@
                         .find('.rotate')
                         .attr('value', '0')
                         .end()
-                        .html()
-                );
+                        .html());
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameC')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
                         .find('span.roadName')
                         .text('C')
@@ -350,13 +323,14 @@
                         .find('.rotate')
                         .attr('value', '90')
                         .end()
-                        .html()
-                );
+                        .html());
+
                 break;
             case 'Intersection':
-                directA = updateMarker({
+                directSet.directA = updateMarker({
                     id: 'A',
                     icon: $.extend(Object.assign({}, markerOption), {
+                        anchor: new google.maps.Point(25, 20),
                         path: kingwaytek.SymbolPath.Intersection,
                         rotation: 270
                     }),
@@ -364,9 +338,10 @@
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
-                directB = updateMarker({
+                directSet.directB = updateMarker({
                     id: 'B',
                     icon: $.extend(Object.assign({}, markerOption), {
+                        anchor: new google.maps.Point(25, 20),
                         path: kingwaytek.SymbolPath.Intersection,
                         rotation: 0
                     }),
@@ -374,18 +349,20 @@
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
-                directC = updateMarker({
+                directSet.directC = updateMarker({
                     id: 'C',
                     icon: $.extend(Object.assign({}, markerOption), {
+                        anchor: new google.maps.Point(25, 20),
                         path: kingwaytek.SymbolPath.Intersection,
                         rotation: 90
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
-                directD = updateMarker({
+                directSet.directD = updateMarker({
                     id: 'D',
                     icon: $.extend(Object.assign({}, markerOption), {
+                        anchor: new google.maps.Point(25, 20),
                         path: kingwaytek.SymbolPath.Intersection,
                         rotation: 180
                     }),
@@ -396,10 +373,10 @@
                 $('#roadDirect div,#roadDirect br').remove();
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameA')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('A')
                         .end()
                         .find('.rotate')
@@ -410,10 +387,10 @@
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameB')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('B')
                         .end()
                         .find('.rotate')
@@ -424,10 +401,10 @@
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameC')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('C')
                         .end()
                         .find('.rotate')
@@ -437,10 +414,10 @@
                 );
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameD')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('D')
                         .end()
                         .find('.rotate')
@@ -450,39 +427,43 @@
                 );
                 break;
             case 'Pedestrians':
-                directA = updateMarker({
+                directSet.directA = updateMarker({
                     id: 'A',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(7, 24),
+                        path: kingwaytek.SymbolPath.Pedestrians,
                         rotation: 270
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
-                directB = updateMarker({
+                directSet.directB = updateMarker({
                     id: 'B',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(7, 24),
+                        path: kingwaytek.SymbolPath.Pedestrians,
                         rotation: 0
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
                 });
 
-                directC = updateMarker({
+                directSet.directC = updateMarker({
                     id: 'C',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(7, 24),
+                        path: kingwaytek.SymbolPath.Pedestrians,
                         rotation: 90
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
-                directD = updateMarker({
+                directSet.directD = updateMarker({
                     id: 'D',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(7, 24),
+                        path: kingwaytek.SymbolPath.Pedestrians,
                         rotation: 180
                     }),
                     draggable: true,
@@ -492,10 +473,10 @@
                 $('#roadDirect div,#roadDirect br').remove();
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameA')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('A')
                         .end()
                         .find('.rotate')
@@ -506,10 +487,10 @@
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameB')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('B')
                         .end()
                         .find('.rotate')
@@ -520,10 +501,10 @@
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameC')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('C')
                         .end()
                         .find('.rotate')
@@ -533,10 +514,10 @@
                 );
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameD')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('D')
                         .end()
                         .find('.rotate')
@@ -547,48 +528,53 @@
                 break;
 
             case 'FiveWay':
-                directA = updateMarker({
+                directSet.directA = updateMarker({
                     id: 'A',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(28, 20),
+                        path: kingwaytek.SymbolPath.FiveWay,
                         rotation: 270
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
                 });
 
-                directB = updateMarker({
+                directSet.directB = updateMarker({
                     id: 'B',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(28, 20),
+                        path: kingwaytek.SymbolPath.FiveWay,
                         rotation: 300
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .0001, positioningOfIntersection.Longitude + .00013)
                 });
 
-                directC = updateMarker({
+                directSet.directC = updateMarker({
                     id: 'C',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(28, 20),
+                        path: kingwaytek.SymbolPath.FiveWay,
                         rotation: 30
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude - .00013)
                 });
-                directD = updateMarker({
+                directSet.directD = updateMarker({
                     id: 'D',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(28, 20),
+                        path: kingwaytek.SymbolPath.FiveWay,
                         rotation: 90
                     }),
                     draggable: true,
                     latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
                 });
-                directE = updateMarker({
+                directSet.directE = updateMarker({
                     id: 'E',
                     icon: $.extend(Object.assign({}, markerOption), {
-                        path: kingwaytek.SymbolPath.Intersection,
+                        anchor: new google.maps.Point(28, 20),
+                        path: kingwaytek.SymbolPath.FiveWay,
                         rotation: 180
                     }),
                     draggable: true,
@@ -598,10 +584,10 @@
                 $('#roadDirect div,#roadDirect br').remove();
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameA')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('A')
                         .end()
                         .find('.rotate')
@@ -612,10 +598,10 @@
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameB')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('B')
                         .end()
                         .find('.rotate')
@@ -626,10 +612,10 @@
 
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameC')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('C')
                         .end()
                         .find('.rotate')
@@ -639,10 +625,10 @@
                 );
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameD')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('D')
                         .end()
                         .find('.rotate')
@@ -652,10 +638,10 @@
                 );
                 $('#roadDirect').append(
                     $('#roadDirectName').clone()
-                        .find('div.input-group')
-                        .attr('id', 'roadNameE')
+                        .find('.slider')
+                        .attr('data-slider-value', '90')
                         .end()
-                        .find('span')
+                        .find('span.roadName')
                         .text('E')
                         .end()
                         .find('.rotate')
@@ -666,6 +652,13 @@
                 break;
             default:
         }
+
+        $('#roadDirect').find('.slider').bootstrapSlider();
+        $('#roadDirect').find('.slider').on('slide', function (slideEvt) {
+            var $target = $(slideEvt.target);
+            $target.parent().next().find('.rotate').val(slideEvt.value);
+            rotateMarker($target.parent().next().find('span.roadName').text(), slideEvt.value);
+        });
 
         geeMap.panTo(centerLatLng);
         geeMap.setZoom(21);
@@ -693,6 +686,25 @@
             draggable: false
         });
 
+        var iconPath = {
+            TRoad: {
+                anchor: new google.maps.Point(21, 20),
+                path: kingwaytek.SymbolPath.TRoad
+            },
+            Intersection: {
+                anchor: new google.maps.Point(25, 20),
+                path: kingwaytek.SymbolPath.Intersection
+            },
+            Pedestrians: {
+                anchor: new google.maps.Point(7, 24),
+                path: kingwaytek.SymbolPath.Pedestrians
+            },
+            FiveWay: {
+                anchor: new google.maps.Point(28, 20),
+                path: kingwaytek.SymbolPath.FiveWay
+            }
+        };
+
         var objectA = positioning.directions.find(function (o) { return o.id === 'A' });
         var objectB = positioning.directions.find(function (o) { return o.id === 'B' });
         var objectC = positioning.directions.find(function (o) { return o.id === 'C' });
@@ -703,10 +715,9 @@
         $('#roadDirect div,#roadDirect br').remove();
 
         if (objectA) {
-            directA = updateMarker({
+            directSet.directA = updateMarker({
                 id: 'A',
-                icon: $.extend(Object.assign({}, markerOption), {
-                    path: kingwaytek.SymbolPath.Intersection,
+                icon: $.extend(Object.assign({}, markerOption), iconPath[selectedType], {
                     rotation: objectA.rotate
                 }),
                 draggable: true,
@@ -715,11 +726,8 @@
 
             $('#roadDirect').append(
                 $('#roadDirectName').clone()
-                    .find('div.input-group')
-                    .attr('id', 'roadNameA')
-                    .end()
-                    .find('.roadtext')
-                    .attr('value', objectA.name)
+                    .find('.slider')
+                    .attr('data-slider-value', objectA.rotate)
                     .end()
                     .find('span.roadName')
                     .text('A')
@@ -732,10 +740,9 @@
         }
 
         if (objectB) {
-            directB = updateMarker({
+            directSet.directB = updateMarker({
                 id: 'B',
-                icon: $.extend(Object.assign({}, markerOption), {
-                    path: kingwaytek.SymbolPath.Intersection,
+                icon: $.extend(Object.assign({}, markerOption), iconPath[selectedType], {
                     rotation: objectB.rotate
                 }),
                 draggable: true,
@@ -744,12 +751,8 @@
 
             $('#roadDirect').append(
                 $('#roadDirectName').clone()
-                    .find('div.input-group')
-                    .attr('id', 'roadNameB')
-                    .val(objectB.name)
-                    .end()
-                    .find('.roadtext')
-                    .attr('value', objectB.name)
+                    .find('.slider')
+                    .attr('data-slider-value', objectB.rotate)
                     .end()
                     .find('span.roadName')
                     .text('B')
@@ -762,10 +765,9 @@
         }
 
         if (objectC) {
-            directC = updateMarker({
+            directSet.directC = updateMarker({
                 id: 'C',
-                icon: $.extend(Object.assign({}, markerOption), {
-                    path: kingwaytek.SymbolPath.Intersection,
+                icon: $.extend(Object.assign({}, markerOption), iconPath[selectedType], {
                     rotation: objectC.rotate
                 }),
                 draggable: true,
@@ -774,12 +776,8 @@
 
             $('#roadDirect').append(
                 $('#roadDirectName').clone()
-                    .find('div.input-group')
-                    .attr('id', 'roadNameC')
-                    .val(objectC.name)
-                    .end()
-                    .find('.roadtext')
-                    .attr('value', objectC.name)
+                    .find('.slider')
+                    .attr('data-slider-value', objectC.rotate)
                     .end()
                     .find('span.roadName')
                     .text('C')
@@ -792,10 +790,9 @@
         }
 
         if (objectD) {
-            directD = updateMarker({
+            directSet.directD = updateMarker({
                 id: 'D',
-                icon: $.extend(Object.assign({}, markerOption), {
-                    path: kingwaytek.SymbolPath.Intersection,
+                icon: $.extend(Object.assign({}, markerOption), iconPath[selectedType], {
                     rotation: objectD.rotate
                 }),
                 draggable: true,
@@ -804,12 +801,8 @@
 
             $('#roadDirect').append(
                 $('#roadDirectName').clone()
-                    .find('div.input-group')
-                    .attr('id', 'roadNameD')
-                    .val(objectD.name)
-                    .end()
-                    .find('.roadtext')
-                    .attr('value', objectD.name)
+                    .find('.slider')
+                    .attr('data-slider-value', objectD.rotate)
                     .end()
                     .find('span.roadName')
                     .text('D')
@@ -822,10 +815,9 @@
         }
 
         if (objectE) {
-            directE = updateMarker({
+            directSet.directE = updateMarker({
                 id: 'E',
-                icon: $.extend(Object.assign({}, markerOption), {
-                    path: kingwaytek.SymbolPath.Intersection,
+                icon: $.extend(Object.assign({}, markerOption), iconPath[selectedType], {
                     rotation: objectE.rotate
                 }),
                 draggable: true,
@@ -834,12 +826,8 @@
 
             $('#roadDirect').append(
                 $('#roadDirectName').clone()
-                    .find('div.input-group')
-                    .attr('id', 'roadNameE')
-                    .val(objectE.name)
-                    .end()
-                    .find('.roadtext')
-                    .attr('value', objectE.name)
+                    .find('.slider')
+                    .attr('data-slider-value', objectE.rotate)
                     .end()
                     .find('span.roadName')
                     .text('E')
@@ -850,6 +838,13 @@
                     .html()
             );
         }
+
+        $('#roadDirect').find('.slider').bootstrapSlider();
+        $('#roadDirect').find('.slider').on('slide', function (slideEvt) {
+            var $target = $(slideEvt.target);
+            $target.parent().next().find('.rotate').val(slideEvt.value);
+            rotateMarker($target.parent().next().find('span.roadName').text(), slideEvt.value);
+        });
 
         geeMap.panTo(centerLatLng);
         geeMap.setZoom(21);
@@ -865,5 +860,13 @@
         });
 
         return marker;
+    }
+
+    function rotateMarker(code, rotate) {
+        var direct = directSet['direct' + code];
+
+        var icon = direct.getIcon();
+        icon.rotation = rotate;
+        direct.setIcon(icon);
     }
 })(jQuery);

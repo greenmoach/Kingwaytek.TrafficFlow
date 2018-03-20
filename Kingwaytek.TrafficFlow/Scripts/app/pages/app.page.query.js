@@ -6,14 +6,22 @@
         historicalVehicleChart,
         historicalDirectChart,
         centerMarker,
-        strokeColor = '#FF0000',
-        scale = 5,
         markers = [],
         infos = [];
 
     if ($this.length === 0) {
         return;
     }
+
+    var markerOption =
+        {
+            fillColor: 'red',
+            fillOpacity: 1,
+            scale: 1,
+            strokeColor: 'red',
+            strokeWeight: 1,
+            anchor: new google.maps.Point(21, 16)
+        };
 
     // active function tab
     $('.traffic-query').parent().addClass('active');
@@ -160,16 +168,32 @@
                 });
             });
 
+        var iconPath = {
+            1: {
+                anchor: new google.maps.Point(21, 20),
+                path: kingwaytek.SymbolPath.TRoad
+            },
+            2: {
+                anchor: new google.maps.Point(25, 20),
+                path: kingwaytek.SymbolPath.Intersection
+            },
+            3: {
+                anchor: new google.maps.Point(7, 24),
+                path: kingwaytek.SymbolPath.Pedestrians
+            },
+            4: {
+                anchor: new google.maps.Point(28, 20),
+                path: kingwaytek.SymbolPath.FiveWay
+            }
+        };
+
         positionObj.directions.forEach(function (d) {
             var m = new google.maps.Marker({
                 id: d.id,
                 position: new google.maps.LatLng(d.latitude, d.longitude),
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    rotation: d.rotate,
-                    scale: scale,
-                    strokeColor: strokeColor
-                },
+                icon: $.extend(Object.assign({}, markerOption), iconPath[singleData.InvestigationType], {
+                    rotation: d.rotate
+                }),
                 draggable: false,
                 map: geeMap
             });
@@ -235,27 +259,8 @@
     }
 
     function initHourlyVehicleChart() {
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', '車種');
-        data.addColumn('number', '數量');
-        data.addRows([
-            ['大型車', 0],
-            ['小型車', 0],
-            ['機車', 0],
-            ['自行車', 0]
-        ]);
-
-        // Set chart options
-        var options = {
-            'title': 'PCU',
-            'width': 278,
-            'height': 150
-        };
-
         // Instantiate and draw our chart, passing in some options.
         hourlyVehicleChart = new google.visualization.ColumnChart(document.getElementById('HourlyVehicleChart'));
-        hourlyVehicleChart.draw(data, options);
     }
 
     function initHistoricalVehicleChart() {
@@ -263,37 +268,13 @@
         $('#div-survey').text(isVehicle ? '歷次調查車種比例變化' : '歷次行人量數據變化');
         $('.div-history').find('legend').text(isVehicle ? '歷次調查車種比例變化' : '歷次行人量數據變化');
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-
-        // Set chart options
-        var options = {
-            width: 288,
-            height: 234,
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
-
         // Instantiate and draw our chart, passing in some options.
         historicalVehicleChart = new google.visualization.LineChart(document.getElementById('HistoricalVehicleChart'));
-        historicalVehicleChart.draw(data, options);
     }
 
     function initHistoricalDirectChart() {
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-
-        // Set chart options
-        var options = {
-            width: 288,
-            height: 234,
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
-
         // Instantiate and draw our chart, passing in some options.
         historicalDirectChart = new google.visualization.LineChart(document.getElementById('HistoricalDirectChart'));
-        historicalDirectChart.draw(data, options);
     }
 
     function updateHourlyVehicleChart(hourlyData) {
@@ -301,6 +282,14 @@
             $('#HourlyVehicleChart').hide();
         }
         else {
+            // Set chart options
+            var options = {
+                'title': 'PCU',
+                'width': 278,
+                'height': 150,
+                'legend': { position: 'none' }
+            };
+
             $('#HourlyVehicleChart').show();
             var data = new google.visualization.DataTable();
             data.addColumn('string', '車種');
@@ -312,12 +301,19 @@
                 ['自行車', hourlyData.Bicycle]
             ]);
 
-            hourlyVehicleChart.draw(data);
+            hourlyVehicleChart.draw(data, options);
         }
     }
 
     function updateHistoricalVehicleChart(objects) {
-        var rows, data;
+        var rows,
+            data,
+            options = {
+                width: 288,
+                height: 234,
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
         if ($('input[name="area"]:checked').val() === 'vehicle') {
             rows = objects.map(function (element) {
                 return [
@@ -332,7 +328,7 @@
             data.addColumn('number', '機車');
             data.addColumn('number', '自行車');
             data.addRows(rows);
-            historicalVehicleChart.draw(data);
+            historicalVehicleChart.draw(data, options);
         } else {
             rows = objects.map(function (element) {
                 return [
@@ -344,7 +340,7 @@
             data.addColumn('string', '日期');
             data.addColumn('number', '行人');
             data.addRows(rows);
-            historicalVehicleChart.draw(data);
+            historicalVehicleChart.draw(data, options);
         }
     }
 
@@ -355,6 +351,13 @@
             return row;
         });
 
+        var options = {
+            width: 288,
+            height: 234,
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
         var data = new google.visualization.DataTable();
         data.addColumn('string', '日期');
         Object.keys(objects[0].Directions).forEach(function (e) {
@@ -362,7 +365,7 @@
         });
         data.addRows(rows);
 
-        historicalDirectChart.draw(data);
+        historicalDirectChart.draw(data, options);
     }
 
     function updateInfoWindows(hourlyData) {
@@ -430,9 +433,9 @@
 
                     infoHtml = $('#IntersectionInfoWindows')
                         .clone().find('#sum').text(sum)
-                        .end().find('#left').text(leftData.Amount + '(' + (Math.round(leftData.Amount / sum * 1000) / 10) + '%)')
-                        .end().find('#straight').text(straightData.Amount + '(' + (Math.round(straightData.Amount / sum * 1000) / 10) + '%)')
-                        .end().find('#right').text(rightData.Amount + '(' + (Math.round(rightData.Amount / sum * 1000) / 10) + '%)')
+                        .end().find('#left').text(leftData !== undefined ? (leftData.Amount + '(' + (Math.round(leftData.Amount / sum * 1000) / 10) + '%)') : '')
+                        .end().find('#straight').text(straightData !== undefined ? (straightData.Amount + '(' + (Math.round(straightData.Amount / sum * 1000) / 10) + '%)') : '')
+                        .end().find('#right').text(rightData !== undefined ? (rightData.Amount + '(' + (Math.round(rightData.Amount / sum * 1000) / 10) + '%)') : '')
                         .end().html();
 
                     maxWidth = 250;

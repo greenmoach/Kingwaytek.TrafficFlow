@@ -3,6 +3,7 @@
     "outputFileName": "content/bundle/site.css",
     "inputFiles": [
       "Content/plugins/bootstrap/bootstrap.css",
+      "Content/plugins/bootstrap.slider/bootstrap-slider.css",
       "Content/plugins/jquery-ui/jquery-ui-1.10.3.custom.css",
       "Content/plugins/jquery.datetimepicker/jquery.datetimepicker.css",
       "Content/plugins/font-awesome/css/font-awesome.css",
@@ -22,6 +23,7 @@
       "Scripts/plugins/jquery.datetimepicker/jquery.datetimepicker.js",
       "Scripts/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js",
       "Scripts/plugins/spin/spin.js",
+      "Scripts/plugins/bootstrap.slider/bootstrap-slider.js",
       "scripts/app.common.js",
       "Scripts/app/controls/app.control.*.js",
       "Scripts/app/pages/app.page.*.js"
