@@ -269,3 +269,6 @@ Doc/
 
 # Sqlserver project
 *.jfm
+
+# elmah log files
+**/App_Data/Elmah.Errors/*.xml

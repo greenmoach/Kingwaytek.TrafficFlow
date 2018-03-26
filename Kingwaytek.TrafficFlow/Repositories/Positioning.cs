@@ -15,14 +15,14 @@ namespace Kingwaytek.TrafficFlow.Repositories
 using System;
     using System.Collections.Generic;
     
-public partial class Investigation
+public partial class Positioning
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public Investigation()
+    public Positioning()
     {
 
-        this.InvestigationData = new HashSet<InvestigationData>();
+        this.Investigation = new HashSet<Investigation>();
 
     }
 
@@ -31,33 +31,25 @@ public partial class Investigation
 
     public int InvestigationType { get; set; }
 
-    public int PositioningId { get; set; }
+    public string City { get; set; }
 
-    public string IntersectionId { get; set; }
+    public string Town { get; set; }
 
-    public string Weather { get; set; }
+    public string Road1 { get; set; }
 
-    public System.DateTime InvestigaionTime { get; set; }
+    public string Road2 { get; set; }
 
-    public string TrafficControlNote { get; set; }
+    public decimal Latitude { get; set; }
 
-    public string FileName { get; set; }
+    public decimal Longitude { get; set; }
 
-    public System.DateTime CreateTime { get; set; }
-
-    public Nullable<System.DateTime> LastEditTime { get; set; }
-
-    public bool Deleted { get; set; }
-
-    public bool Enabled { get; set; }
+    public string Positioning1 { get; set; }
 
 
-
-    public virtual Positioning Positioning { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<InvestigationData> InvestigationData { get; set; }
+    public virtual ICollection<Investigation> Investigation { get; set; }
 
 }
 

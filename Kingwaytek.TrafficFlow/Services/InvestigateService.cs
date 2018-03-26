@@ -18,13 +18,19 @@ namespace Kingwaytek.TrafficFlow
 
         private readonly InvestigationDataRepository _investigationDataRepository;
 
+        private readonly PositioningRepository _positioningRepository;
+
         private readonly MemoryCacheProvider _cacheProvider;
 
+        /// <summary>
+        /// Construct
+        /// </summary>
         public InvestigateService()
         {
             _cacheProvider = new MemoryCacheProvider();
             _investigationRepository = new InvestigationRepository();
             _investigationDataRepository = new InvestigationDataRepository();
+            _positioningRepository = new PositioningRepository();
         }
 
         /// <summary>
@@ -44,6 +50,21 @@ namespace Kingwaytek.TrafficFlow
         /// <param name="viewModel"></param>
         public void CreateOrUpdate(DataCreatedViewModel viewModel)
         {
+            var positioningEntity = new Positioning
+            {
+                Id = viewModel.PositioningId,
+                InvestigationTypeEnum = viewModel.Type,
+                City = viewModel.City,
+                Town = viewModel.Town,
+                Road1 = viewModel.Road1,
+                Road2 = viewModel.Road2,
+                Latitude = viewModel.Latitude,
+                Longitude = viewModel.Longitude,
+                Positioning1 = viewModel.Positioning
+            };
+
+            _positioningRepository.AddOrUpdate(positioningEntity);
+
             if (viewModel.Id != 0)
             {
                 var editEntity = _investigationRepository.GetAvailable().FirstOrDefault(x => x.Id == viewModel.Id);
@@ -54,13 +75,6 @@ namespace Kingwaytek.TrafficFlow
 
                 editEntity.InvestigationTypeEnum = viewModel.Type;
                 editEntity.PositioningId = viewModel.PositioningId;
-                editEntity.PositioningCity = viewModel.City;
-                editEntity.PositioningTown = viewModel.Town;
-                editEntity.PositioningRoad1 = viewModel.Road1;
-                editEntity.PositioningRoad2 = viewModel.Road2;
-                editEntity.PositioningLatitude = viewModel.Latitude;
-                editEntity.PositioningLongitude = viewModel.Longitude;
-                editEntity.Positioning = viewModel.Positioning;
                 editEntity.InvestigaionTime = viewModel.InvestigaionTime;
                 editEntity.TrafficControlNote = viewModel.TrafficControlNote;
 
@@ -83,8 +97,7 @@ namespace Kingwaytek.TrafficFlow
 
                     // add new data
                     AddInvestigationData(viewModel.Type, viewModel.FileIdentification, viewModel.Id);
-                }
-                ;
+                };
             }
             else
             {
@@ -92,13 +105,6 @@ namespace Kingwaytek.TrafficFlow
                 {
                     InvestigationTypeEnum = viewModel.Type,
                     PositioningId = viewModel.PositioningId,
-                    PositioningCity = viewModel.City,
-                    PositioningTown = viewModel.Town,
-                    PositioningRoad1 = viewModel.Road1,
-                    PositioningRoad2 = viewModel.Road2,
-                    PositioningLatitude = viewModel.Latitude,
-                    PositioningLongitude = viewModel.Longitude,
-                    Positioning = viewModel.Positioning,
                     Weather = viewModel.Weather,
                     InvestigaionTime = viewModel.InvestigaionTime,
                     TrafficControlNote = viewModel.TrafficControlNote,
@@ -162,10 +168,10 @@ namespace Kingwaytek.TrafficFlow
                 OtherInvestigaionTime = otherInvestigaionTime,
                 HourlyIntervals = hourlyData,
                 IntersectionId = entity.IntersectionId,
-                IntersectionName = $"{entity.PositioningTown}{entity.PositioningRoad1}與{entity.PositioningRoad2}",
+                IntersectionName = $"{entity.Positioning.Town}{entity.Positioning.Road1}與{entity.Positioning.Road2}",
                 Weather = entity.Weather,
                 FileIdentification = entity.FileName,
-                Positioning = entity.Positioning,
+                Positioning = entity.Positioning.Positioning1,
                 TrafficControlNote = entity.TrafficControlNote
             };
 
@@ -182,7 +188,7 @@ namespace Kingwaytek.TrafficFlow
             var query = _investigationRepository.GetAvailable();
             if (queryOption.Filter.Town.IsNullOrEmpty() == false)
             {
-                query = query.Where(x => x.PositioningTown == queryOption.Filter.Town);
+                query = query.Where(x => x.Positioning.Town == queryOption.Filter.Town);
             }
 
             if (queryOption.Filter.Type.HasValue)
@@ -197,10 +203,19 @@ namespace Kingwaytek.TrafficFlow
 
             if (queryOption.Filter.Keyword.IsNullOrEmpty() == false)
             {
-                query = query.Where(x => x.PositioningRoad1.Contains(queryOption.Filter.Keyword)
-                                         || x.PositioningRoad2.Contains(queryOption.Filter.Keyword)
-                                         || x.PositioningTown.Contains(queryOption.Filter.Keyword)
-                                         || x.TrafficControlNote.Contains(queryOption.Filter.Keyword));
+                if (DateTime.TryParse(queryOption.Filter.Keyword, out DateTime queryDate))
+                {
+                    // 根據調查日期查詢
+                    query = query.Where(x => DbFunctions.TruncateTime(x.InvestigaionTime) == DbFunctions.TruncateTime(queryDate));
+                }
+                else
+                {
+                    // 根據關鍵字查詢
+                    query = query.Where(x => x.Positioning.Road1.Contains(queryOption.Filter.Keyword)
+                                             || x.Positioning.Road2.Contains(queryOption.Filter.Keyword)
+                                             || x.Positioning.Town.Contains(queryOption.Filter.Keyword)
+                                             || x.TrafficControlNote.Contains(queryOption.Filter.Keyword));
+                }
             }
 
             queryOption.Apply(query);
@@ -313,6 +328,12 @@ namespace Kingwaytek.TrafficFlow
 
         #region private methods - create
 
+        /// <summary>
+        /// 新增調查數據資料進資料庫
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="fileIdentification"></param>
+        /// <param name="investigateId"></param>
         private void AddInvestigationData(InvestigationTypeEnum type, string fileIdentification, int investigateId)
         {
             switch (type)
@@ -343,6 +364,12 @@ namespace Kingwaytek.TrafficFlow
             }
         }
 
+        /// <summary>
+        /// 整理T字路口調查資料
+        /// </summary>
+        /// <param name="investigateId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private IEnumerable<InvestigationData> TRoadProcess(int investigateId, InvestigateModel<VehicleInvestigateModel> model)
         {
             var investigationData = new List<InvestigationData>();
@@ -388,6 +415,12 @@ namespace Kingwaytek.TrafficFlow
             return investigationData;
         }
 
+        /// <summary>
+        /// 整理十字路口調查資料
+        /// </summary>
+        /// <param name="investigateId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private IEnumerable<InvestigationData> IntersectionProcess(int investigateId, InvestigateModel<VehicleInvestigateModel> model)
         {
             var investigationData = new List<InvestigationData>();
@@ -433,6 +466,12 @@ namespace Kingwaytek.TrafficFlow
             return investigationData;
         }
 
+        /// <summary>
+        /// 整理五向路口資料
+        /// </summary>
+        /// <param name="investigateId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private IEnumerable<InvestigationData> FiveWayProcess(int investigateId, InvestigateModel<VehicleInvestigateModel> model)
         {
             var investigationData = new List<InvestigationData>();
@@ -486,6 +525,12 @@ namespace Kingwaytek.TrafficFlow
             return investigationData;
         }
 
+        /// <summary>
+        /// 整理行人資料
+        /// </summary>
+        /// <param name="investigateId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private IEnumerable<InvestigationData> PedestriansProcess(int investigateId,
             InvestigateModel<PedestriansInvestigateModel> model)
         {
@@ -519,6 +564,16 @@ namespace Kingwaytek.TrafficFlow
             return investigationData;
         }
 
+        /// <summary>
+        /// 取得行人調查資料
+        /// </summary>
+        /// <param name="investigateId"></param>
+        /// <param name="intersection"></param>
+        /// <param name="direction"></param>
+        /// <param name="type"></param>
+        /// <param name="hourData"></param>
+        /// <param name="hour"></param>
+        /// <returns></returns>
         private InvestigationData GetPedestriansData(
             int investigateId,
             string intersection,
@@ -586,6 +641,17 @@ namespace Kingwaytek.TrafficFlow
             return model;
         }
 
+        /// <summary>
+        /// 取得車輛調查資料
+        /// </summary>
+        /// <param name="directionArray"></param>
+        /// <param name="investigateId"></param>
+        /// <param name="intersection"></param>
+        /// <param name="direction"></param>
+        /// <param name="type"></param>
+        /// <param name="hourData"></param>
+        /// <param name="hour"></param>
+        /// <returns></returns>
         private InvestigationData GetVehicleData(
             List<string> directionArray,
             int investigateId,

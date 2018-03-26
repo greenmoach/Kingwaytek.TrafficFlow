@@ -52,5 +52,12 @@ namespace Kingwaytek.TrafficFlow.Controllers
 
             return Json(models);
         }
+
+        [HttpPost]
+        public ActionResult GetDirects(int positionId, decimal latitude, decimal longitude, InvestigationTypeEnum type)
+        {
+            var value = PositioningService.DirectionPositioning(positionId, latitude, longitude, type);
+            return Content(value);
+        }
     }
 }

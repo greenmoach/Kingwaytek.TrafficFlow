@@ -13,10 +13,10 @@ namespace Kingwaytek.TrafficFlow
         public int Id { get; set; }
 
         [JsonProperty("YCOR")]
-        public double Latitude { get; set; }
+        public decimal Latitude { get; set; }
 
         [JsonProperty("XCOR")]
-        public double Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
         [JsonProperty("CITYNAME_1")]
         public string CityName { get; set; }
@@ -29,5 +29,8 @@ namespace Kingwaytek.TrafficFlow
 
         [JsonProperty("RD_NAME_2")]
         public string Road2 { get; set; }
+
+        [JsonIgnore]
+        public string Positioning { get; set; }
     }
 }

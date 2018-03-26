@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security;
+using Kingwaytek.TrafficFlow.Models;
+using Kingwaytek.TrafficFlow.Repositories;
 
 namespace Kingwaytek.TrafficFlow
 {
@@ -16,6 +20,13 @@ namespace Kingwaytek.TrafficFlow
         private readonly string GetByIntersectionUri = "/TytfmWeb/api/SelectAPI/GetIntnodelist2?town={0}&rn1={1}";
 
         private readonly string PositioningUri = "/TytfmWeb/api/SelectAPI/GetIntnodeposition?town={0}&rn1={1}&rn2={2}";
+
+        private readonly PositioningRepository _positioningRepository;
+
+        public PositioningService()
+        {
+            _positioningRepository = new PositioningRepository();
+        }
 
         /// <summary>
         /// 取得桃園鄉鎮區清單
@@ -136,6 +147,185 @@ namespace Kingwaytek.TrafficFlow
                 var model = content.ToTypedObject<PositioningDto>();
                 return model;
             }
+        }
+
+        public string DirectionPositioning(int positionId, decimal latitude, decimal longitude, InvestigationTypeEnum type)
+        {
+            var entity = _positioningRepository.GetAvailable()
+                                               .FirstOrDefault(x => x.Id == positionId && x.InvestigationType == (int)type);
+            if (entity != null)
+            {
+                return entity.Positioning1;
+            }
+
+            switch (type)
+            {
+                case InvestigationTypeEnum.TRoad:
+                    return CreateDirectionPositioningWithTRoad(latitude, longitude);
+
+                case InvestigationTypeEnum.Intersection:
+                case InvestigationTypeEnum.Pedestrians:
+                    return CreateDirectionPositioningWithIntersection(latitude, longitude);
+
+                case InvestigationTypeEnum.FiveWay:
+                    return CreateDirectionPositioningWithFiveWay(latitude, longitude);
+
+                default:
+                    throw new Exception();
+            }
+        }
+
+        /// <summary>
+        /// T自路口車輛調查定位
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        private string CreateDirectionPositioningWithTRoad(decimal latitude, decimal longitude)
+        {
+            var directViewModel = new DirectViewModel
+            {
+                Center = new DirectPositionViewModel
+                {
+                    Id = "center",
+                    Latitude = latitude,
+                    Longitude = longitude
+                },
+                Directions = new List<DirectPositionViewModel>
+                {
+                    new DirectPositionViewModel
+                    {
+                        Id = "A",
+                        Latitude = latitude,
+                        Longitude = longitude + 0.00015m,
+                        Rotate = 270
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "B",
+                        Latitude = latitude - 0.00015m,
+                        Longitude = longitude,
+                        Rotate = 0
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "C",
+                        Latitude = latitude,
+                        Longitude = longitude - 0.00015m,
+                        Rotate = 90
+                    },
+                }
+            };
+            return directViewModel.ToJson();
+        }
+
+        /// <summary>
+        /// 十字路口調查定位
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        private string CreateDirectionPositioningWithIntersection(decimal latitude, decimal longitude)
+        {
+            var directViewModel = new DirectViewModel
+            {
+                Center = new DirectPositionViewModel
+                {
+                    Id = "center",
+                    Latitude = latitude,
+                    Longitude = longitude
+                },
+                Directions = new List<DirectPositionViewModel>
+                {
+                    new DirectPositionViewModel
+                    {
+                        Id = "A",
+                        Latitude = latitude,
+                        Longitude = longitude + 0.00015m,
+                        Rotate = 270
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "B",
+                        Latitude = latitude - 0.00015m,
+                        Longitude = longitude,
+                        Rotate = 0
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "C",
+                        Latitude = latitude,
+                        Longitude = longitude - 0.00015m,
+                        Rotate = 90
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "D",
+                        Latitude = latitude + 0.00015m,
+                        Longitude = longitude,
+                        Rotate = 180
+                    }
+                }
+            };
+            return directViewModel.ToJson();
+        }
+
+        /// <summary>
+        /// 五向路口車輛調查定位
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        private string CreateDirectionPositioningWithFiveWay(decimal latitude, decimal longitude)
+        {
+            var directViewModel = new DirectViewModel
+            {
+                Center = new DirectPositionViewModel
+                {
+                    Id = "center",
+                    Latitude = latitude,
+                    Longitude = longitude
+                },
+                Directions = new List<DirectPositionViewModel>
+                {
+                    new DirectPositionViewModel
+                    {
+                        Id = "A",
+                        Latitude = latitude,
+                        Longitude = longitude + 0.00015m,
+                        Rotate = 270
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "B",
+                        Latitude = latitude - 0.0001m,
+                        Longitude = longitude + 0.00013m,
+                        Rotate = 300
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "C",
+                        Latitude = latitude- 0.00015m,
+                        Longitude = longitude - 0.00013m,
+                        Rotate = 30
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "D",
+                        Latitude = latitude,
+                        Longitude = longitude-0.00015m,
+                        Rotate = 90
+                    },
+                    new DirectPositionViewModel
+                    {
+                        Id = "E",
+                        Latitude = latitude + 0.00015m,
+                        Longitude = longitude,
+                        Rotate = 180
+                    }
+                }
+            };
+            return directViewModel.ToJson();
         }
     }
 }

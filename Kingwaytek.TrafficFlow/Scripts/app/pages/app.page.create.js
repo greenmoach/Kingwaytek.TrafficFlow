@@ -35,12 +35,12 @@
             $('input[name = "InvestigaionTime"]').val(model.investigaionTime);
             $('textarea[name = "TrafficControlNote"]').val(model.trafficControlNote);
             positioningOfIntersection.Id = model.positioningId;
-            positioningOfIntersection.CityName = model.positioningCity;
-            positioningOfIntersection.TownName = model.positioningTown;
-            positioningOfIntersection.Road1 = model.positioningRoad1;
-            positioningOfIntersection.Road2 = model.positioningRoad2;
-            positioningOfIntersection.Latitude = model.positioningLatitude;
-            positioningOfIntersection.Longitude = model.positioningLongitude;
+            positioningOfIntersection.CityName = model.positioning.city;
+            positioningOfIntersection.TownName = model.positioning.town;
+            positioningOfIntersection.Road1 = model.positioning.road1;
+            positioningOfIntersection.Road2 = model.positioning.road2;
+            positioningOfIntersection.Latitude = model.positioning.latitude;
+            positioningOfIntersection.Longitude = model.positioning.longitude;
             $('body').append(
                 $('<div id="Modal-upload-success">').append(
                     $('<input>').attr({
@@ -50,7 +50,7 @@
                         value: model.fileName
                     })));
 
-            createMarkersInEditMode(JSON.parse(model.positioning));
+            createMarkersInEditMode(JSON.parse(model.positioning.positioning1));
             $('.left-accordion').accordion({ active: 1 });
         }
     });
@@ -71,8 +71,19 @@
         '#next-1',
         function () {
             //this will open 1st accordian.
-            positioningMarkers();
-            $('.left-accordion').accordion({ active: 1 });
+            $.ajax({
+                url: sitepath + 'Location/GetDirects?positionId=' + positioningOfIntersection.Id + '&latitude=' + positioningOfIntersection.Latitude + '&longitude=' + positioningOfIntersection.Longitude + '&type=' + $('select[name="InvestigationType"] option:selected').val(),
+                method: 'POST'
+            })
+                .done(function (data) {
+                    positioningOfIntersection.Positioning = data;
+                    positioningMarkers();
+                    $('.left-accordion').accordion({ active: 1 });
+                })
+                .fail(function () {
+                    positioningOfIntersection.Positioning = {};
+                    alert('路口定位資料取得失敗');
+                });
         })
         .on('click',
         '#next-2',
@@ -249,409 +260,57 @@
         });
 
         // update direct markers
+        var anchor, path;
         switch (selectedType) {
             case 'TRoad':
-                directSet.directA = updateMarker({
-                    id: 'A',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(21, 20),
-                        path: kingwaytek.SymbolPath.TRoad,
-                        rotation: 270
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
-                });
-
-                directSet.directB = updateMarker({
-                    id: 'B',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(21, 20),
-                        path: kingwaytek.SymbolPath.TRoad,
-                        rotation: 0
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
-                });
-
-                directSet.directC = updateMarker({
-                    id: 'C',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(21, 20),
-                        path: kingwaytek.SymbolPath.TRoad,
-                        rotation: 90
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
-                });
-
-                $('#roadDirect div,#roadDirect br').remove();
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '270')
-                        .end()
-                        .find('span.roadName')
-                        .text('A')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '270')
-                        .end()
-                        .html());
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '0')
-                        .end()
-                        .find('span.roadName')
-                        .text('B')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '0')
-                        .end()
-                        .html());
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('C')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '90')
-                        .end()
-                        .html());
+                anchor = new google.maps.Point(21, 20);
+                path = kingwaytek.SymbolPath.TRoad;
 
                 break;
             case 'Intersection':
-                directSet.directA = updateMarker({
-                    id: 'A',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(25, 20),
-                        path: kingwaytek.SymbolPath.Intersection,
-                        rotation: 270
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
-                });
+                anchor = new google.maps.Point(25, 20);
+                path = kingwaytek.SymbolPath.Intersection;
 
-                directSet.directB = updateMarker({
-                    id: 'B',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(25, 20),
-                        path: kingwaytek.SymbolPath.Intersection,
-                        rotation: 0
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
-                });
-
-                directSet.directC = updateMarker({
-                    id: 'C',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(25, 20),
-                        path: kingwaytek.SymbolPath.Intersection,
-                        rotation: 90
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
-                });
-                directSet.directD = updateMarker({
-                    id: 'D',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(25, 20),
-                        path: kingwaytek.SymbolPath.Intersection,
-                        rotation: 180
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
-                });
-
-                $('#roadDirect div,#roadDirect br').remove();
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('A')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '270')
-                        .end()
-                        .html()
-                );
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('B')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '0')
-                        .end()
-                        .html()
-                );
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('C')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '90')
-                        .end()
-                        .html()
-                );
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('D')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '180')
-                        .end()
-                        .html()
-                );
                 break;
             case 'Pedestrians':
-                directSet.directA = updateMarker({
-                    id: 'A',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(7, 24),
-                        path: kingwaytek.SymbolPath.Pedestrians,
-                        rotation: 270
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
-                });
-
-                directSet.directB = updateMarker({
-                    id: 'B',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(7, 24),
-                        path: kingwaytek.SymbolPath.Pedestrians,
-                        rotation: 0
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude)
-                });
-
-                directSet.directC = updateMarker({
-                    id: 'C',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(7, 24),
-                        path: kingwaytek.SymbolPath.Pedestrians,
-                        rotation: 90
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
-                });
-                directSet.directD = updateMarker({
-                    id: 'D',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(7, 24),
-                        path: kingwaytek.SymbolPath.Pedestrians,
-                        rotation: 180
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
-                });
-
-                $('#roadDirect div,#roadDirect br').remove();
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('A')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '270')
-                        .end()
-                        .html()
-                );
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('B')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '0')
-                        .end()
-                        .html()
-                );
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('C')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '90')
-                        .end()
-                        .html()
-                );
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('D')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '180')
-                        .end()
-                        .html()
-                );
+                anchor = new google.maps.Point(7, 24);
+                path = kingwaytek.SymbolPath.Pedestrians;
                 break;
 
             case 'FiveWay':
-                directSet.directA = updateMarker({
-                    id: 'A',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(28, 20),
-                        path: kingwaytek.SymbolPath.FiveWay,
-                        rotation: 270
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude + .00015)
-                });
-
-                directSet.directB = updateMarker({
-                    id: 'B',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(28, 20),
-                        path: kingwaytek.SymbolPath.FiveWay,
-                        rotation: 300
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .0001, positioningOfIntersection.Longitude + .00013)
-                });
-
-                directSet.directC = updateMarker({
-                    id: 'C',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(28, 20),
-                        path: kingwaytek.SymbolPath.FiveWay,
-                        rotation: 30
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude - .00015, positioningOfIntersection.Longitude - .00013)
-                });
-                directSet.directD = updateMarker({
-                    id: 'D',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(28, 20),
-                        path: kingwaytek.SymbolPath.FiveWay,
-                        rotation: 90
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude, positioningOfIntersection.Longitude - .00015)
-                });
-                directSet.directE = updateMarker({
-                    id: 'E',
-                    icon: $.extend(Object.assign({}, markerOption), {
-                        anchor: new google.maps.Point(28, 20),
-                        path: kingwaytek.SymbolPath.FiveWay,
-                        rotation: 180
-                    }),
-                    draggable: true,
-                    latLng: new google.maps.LatLng(positioningOfIntersection.Latitude + .00015, positioningOfIntersection.Longitude)
-                });
-
-                $('#roadDirect div,#roadDirect br').remove();
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('A')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '270')
-                        .end()
-                        .html()
-                );
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('B')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '300')
-                        .end()
-                        .html()
-                );
-
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('C')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '30')
-                        .end()
-                        .html()
-                );
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('D')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '90')
-                        .end()
-                        .html()
-                );
-                $('#roadDirect').append(
-                    $('#roadDirectName').clone()
-                        .find('.slider')
-                        .attr('data-slider-value', '90')
-                        .end()
-                        .find('span.roadName')
-                        .text('E')
-                        .end()
-                        .find('.rotate')
-                        .attr('value', '180')
-                        .end()
-                        .html()
-                );
+                anchor = new google.maps.Point(28, 20);
+                path = kingwaytek.SymbolPath.FiveWay;
                 break;
             default:
         }
+
+        $('#roadDirect div,#roadDirect br').remove();
+        var positioning = JSON.parse(positioningOfIntersection.Positioning);
+        positioning.directions.forEach(function (direct) {
+            directSet['direct' + direct.id] = updateMarker({
+                id: direct.id,
+                icon: $.extend(Object.assign({}, markerOption), {
+                    anchor: anchor,
+                    path: path,
+                    rotation: direct.rotate
+                }),
+                draggable: true,
+                latLng: new google.maps.LatLng(direct.latitude, direct.longitude)
+            });
+
+            $('#roadDirect').append(
+                $('#roadDirectName').clone()
+                    .find('.slider')
+                    .attr('data-slider-value', direct.rotate)
+                    .end()
+                    .find('span.roadName')
+                    .text(direct.id)
+                    .end()
+                    .find('.rotate')
+                    .attr('value', direct.rotate)
+                    .end()
+                    .html());
+        });
 
         $('#roadDirect').find('.slider').bootstrapSlider();
         $('#roadDirect').find('.slider').on('slide', function (slideEvt) {

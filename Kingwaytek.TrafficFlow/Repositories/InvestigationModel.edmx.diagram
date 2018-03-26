@@ -5,10 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="5eb31af40ab94db286e28eeb58941bcb" Name="Diagram1">
-        <EntityTypeShape EntityType="TaoyuanTrafficModel.InvestigationData" Width="1.5" PointX="3" PointY="1.75" />
-        <EntityTypeShape EntityType="TaoyuanTrafficModel.Investigation" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="TaoyuanTrafficModel.Investigation" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="TaoyuanTrafficModel.InvestigationData" Width="1.5" PointX="5.25" PointY="1.25" />
+        <EntityTypeShape EntityType="TaoyuanTrafficModel.Positioning" Width="1.5" PointX="0.75" PointY="1.375" />
+        <AssociationConnector Association="TaoyuanTrafficModel.FK_Investigation_Positioning" />
         <AssociationConnector Association="TaoyuanTrafficModel.FK_InvestigationData_Investigation" />
-        </Diagram>
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
