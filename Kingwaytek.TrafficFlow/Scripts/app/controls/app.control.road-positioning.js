@@ -55,9 +55,9 @@
         })
         .on('autocompleteselect',
         '#Road1',
-        function () {
+        function (event, ui) {
             var selectedTown = $town.find('option:selected').val(),
-                selectedRoad1 = $road1.val();
+                selectedRoad1 = ui.item.value;
 
             $road2.html('');
             $road2.append('<option>請選擇</option>');

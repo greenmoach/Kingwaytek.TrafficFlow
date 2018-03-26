@@ -127,6 +127,18 @@ namespace Kingwaytek.TrafficFlow
         /// <returns>positioning data</returns>
         public PositioningDto GetPositioningByIntersection(string town, string road1, string road2)
         {
+            var position = DoPositioning(town, road1, road2);
+            if (position != null)
+            {
+                return position;
+            }
+
+            position = DoPositioning(town, road2, road1);
+            return position;
+        }
+
+        private PositioningDto DoPositioning(string town, string road1, string road2)
+        {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(BaseAddress);
@@ -149,6 +161,14 @@ namespace Kingwaytek.TrafficFlow
             }
         }
 
+        /// <summary>
+        /// 取得定位點的路口定位資料
+        /// </summary>
+        /// <param name="positionId"></param>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public string DirectionPositioning(int positionId, decimal latitude, decimal longitude, InvestigationTypeEnum type)
         {
             var entity = _positioningRepository.GetAvailable()
