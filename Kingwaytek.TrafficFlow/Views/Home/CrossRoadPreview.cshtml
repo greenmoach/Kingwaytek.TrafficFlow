@@ -14,6 +14,7 @@
                 @Html.HiddenFor(x => Model.FileIdentification)
                 @Html.HiddenFor(x => Model.Weather)
                 @Html.HiddenFor(x => x.IntersectionId)
+                @Html.HiddenFor(x => Model.HasOverlayData)
                 @if (isDataError)
                 {
                     <h1>

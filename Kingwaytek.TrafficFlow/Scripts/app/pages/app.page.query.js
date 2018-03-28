@@ -2,6 +2,7 @@
     'use strict';
     var $this = $('.home-query'),
         singleData,
+        hourlyData,
         hourlyVehicleChart,
         historicalVehicleChart,
         historicalDirectChart,
@@ -43,11 +44,11 @@
             $('.div-turn-history').fadeOut('fast');
         })
         .on('change', '#HourlyIntervals', function () {
-            var hourlyData = singleData.HourlyIntervals.find(function (item) {
+            hourlyData = singleData.HourlyIntervals.find(function (item) {
                 return item.HourlyInterval === $('#HourlyIntervals option:selected').val();
             });
-            updateInfoWindows(hourlyData);
-            updateHourlyVehicleChart(hourlyData);
+            updatePedestriansInfoWindows();
+            updateHourlyVehicleChart();
         })
         .on('change', '#InvestigaionTime', function () {
             var investigaionTime = $('#InvestigaionTime option:selected').val();
@@ -153,11 +154,11 @@
                 $('.div-Info').fadeToggle('fast', function () {
                     if ($('.div-Info').is(':visible')) {
                         // 顯示調查資料
-                        var hourlyData = singleData.HourlyIntervals.find(function (item) {
+                        hourlyData = singleData.HourlyIntervals.find(function (item) {
                             return item.HourlyInterval === $('#HourlyIntervals option:selected').val();
                         });
-                        updateInfoWindows(hourlyData);
-                        updateHourlyVehicleChart(hourlyData);
+                        updatePedestriansInfoWindows();
+                        updateHourlyVehicleChart();
                     } else {
                         // 清空info windows
                         if (infos.length !== 0) {
@@ -210,6 +211,7 @@
                         .done(function (data) {
                             $('.div-turn-history').fadeIn();
                             updateHistoricalDirectChart(data);
+                            showVehicleInfoWindow(m);
                         })
                         .fail(function () {
                             $('.div-turn-history').fadeOut();
@@ -277,7 +279,7 @@
         historicalDirectChart = new google.visualization.LineChart(document.getElementById('HistoricalDirectChart'));
     }
 
-    function updateHourlyVehicleChart(hourlyData) {
+    function updateHourlyVehicleChart() {
         if (singleData.InvestigationType === 3) {
             $('#HourlyVehicleChart').hide();
         }
@@ -368,7 +370,7 @@
         historicalDirectChart.draw(data, options);
     }
 
-    function updateInfoWindows(hourlyData) {
+    function updatePedestriansInfoWindows() {
         // Cleaning
         if (infos.length !== 0) {
             infos.forEach(function (info) { info.close(); });
@@ -415,58 +417,57 @@
             info.open(geeMap, centerMarker);
             infos.push(info);
         }
-        else {
-            markers.forEach(function (marker) {
-                var trafficData = hourlyData.TrafficData.filter(function (item) {
-                    return item.Intersection === marker.id;
-                });
-                var sum = trafficData.reduce(function (accumulator, currentValue) {
-                    return accumulator + currentValue.Amount;
-                }, 0);
+    }
 
-                var infoHtml, maxWidth;
+    function showVehicleInfoWindow(marker) {
+        var trafficData = hourlyData.TrafficData.filter(function (item) {
+            return item.Intersection === marker.id;
+        });
+        var sum = trafficData.reduce(function (accumulator, currentValue) {
+            return accumulator + currentValue.Amount;
+        }, 0);
 
-                if (singleData.InvestigationType === 1 || singleData.InvestigationType === 2) {
-                    var leftData = trafficData.find(function (item) { return item.Direction === '左轉'; });
-                    var straightData = trafficData.find(function (item) { return item.Direction === '直行'; });
-                    var rightData = trafficData.find(function (item) { return item.Direction === '右轉'; });
+        var infoHtml, maxWidth;
 
-                    infoHtml = $('#IntersectionInfoWindows')
-                        .clone().find('#sum').text(sum)
-                        .end().find('#left').text(leftData !== undefined ? (leftData.Amount + '(' + (Math.round(leftData.Amount / sum * 1000) / 10) + '%)') : '')
-                        .end().find('#straight').text(straightData !== undefined ? (straightData.Amount + '(' + (Math.round(straightData.Amount / sum * 1000) / 10) + '%)') : '')
-                        .end().find('#right').text(rightData !== undefined ? (rightData.Amount + '(' + (Math.round(rightData.Amount / sum * 1000) / 10) + '%)') : '')
-                        .end().html();
+        if (singleData.InvestigationType === 1 || singleData.InvestigationType === 2) {
+            var leftData = trafficData.find(function (item) { return item.Direction === '左轉'; });
+            var straightData = trafficData.find(function (item) { return item.Direction === '直行'; });
+            var rightData = trafficData.find(function (item) { return item.Direction === '右轉'; });
 
-                    maxWidth = 250;
-                }
+            infoHtml = $('#IntersectionInfoWindows')
+                .clone().find('#sum').text(sum)
+                .end().find('#left').text(leftData !== undefined ? (leftData.Amount + '(' + (Math.round(leftData.Amount / sum * 1000) / 10) + '%)') : '')
+                .end().find('#straight').text(straightData !== undefined ? (straightData.Amount + '(' + (Math.round(straightData.Amount / sum * 1000) / 10) + '%)') : '')
+                .end().find('#right').text(rightData !== undefined ? (rightData.Amount + '(' + (Math.round(rightData.Amount / sum * 1000) / 10) + '%)') : '')
+                .end().html();
 
-                if (singleData.InvestigationType === 4) {
-                    var aData = trafficData.find(function (item) { return item.Direction === 'A'; });
-                    var bData = trafficData.find(function (item) { return item.Direction === 'B'; });
-                    var cData = trafficData.find(function (item) { return item.Direction === 'C'; });
-                    var dData = trafficData.find(function (item) { return item.Direction === 'D'; });
-                    var eData = trafficData.find(function (item) { return item.Direction === 'E'; });
-
-                    infoHtml = $('#FivewayInfoWindows')
-                        .clone().find('#sum').text(sum)
-                        .end().find('#A').text(aData.Amount + '(' + (Math.round(aData.Amount / sum * 1000) / 10) + '%)')
-                        .end().find('#B').text(bData.Amount + '(' + (Math.round(bData.Amount / sum * 1000) / 10) + '%)')
-                        .end().find('#C').text(cData.Amount + '(' + (Math.round(cData.Amount / sum * 1000) / 10) + '%)')
-                        .end().find('#D').text(dData.Amount + '(' + (Math.round(dData.Amount / sum * 1000) / 10) + '%)')
-                        .end().find('#E').text(eData.Amount + '(' + (Math.round(eData.Amount / sum * 1000) / 10) + '%)')
-                        .end().html();
-
-                    maxWidth = 350;
-                }
-
-                var info = new google.maps.InfoWindow({
-                    content: infoHtml,
-                    maxWidth: maxWidth
-                });
-                info.open(geeMap, marker);
-                infos.push(info);
-            });
+            maxWidth = 250;
         }
+
+        if (singleData.InvestigationType === 4) {
+            var aData = trafficData.find(function (item) { return item.Direction === 'A'; });
+            var bData = trafficData.find(function (item) { return item.Direction === 'B'; });
+            var cData = trafficData.find(function (item) { return item.Direction === 'C'; });
+            var dData = trafficData.find(function (item) { return item.Direction === 'D'; });
+            var eData = trafficData.find(function (item) { return item.Direction === 'E'; });
+
+            infoHtml = $('#FivewayInfoWindows')
+                .clone().find('#sum').text(sum)
+                .end().find('#A').text(aData.Amount + '(' + (Math.round(aData.Amount / sum * 1000) / 10) + '%)')
+                .end().find('#B').text(bData.Amount + '(' + (Math.round(bData.Amount / sum * 1000) / 10) + '%)')
+                .end().find('#C').text(cData.Amount + '(' + (Math.round(cData.Amount / sum * 1000) / 10) + '%)')
+                .end().find('#D').text(dData.Amount + '(' + (Math.round(dData.Amount / sum * 1000) / 10) + '%)')
+                .end().find('#E').text(eData.Amount + '(' + (Math.round(eData.Amount / sum * 1000) / 10) + '%)')
+                .end().html();
+
+            maxWidth = 350;
+        }
+
+        var info = new google.maps.InfoWindow({
+            content: infoHtml,
+            maxWidth: maxWidth
+        });
+        info.open(geeMap, marker);
+        infos.push(info);
     }
 })(jQuery);

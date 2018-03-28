@@ -27,5 +27,10 @@ namespace Kingwaytek.TrafficFlow
         /// 匯入的調查檔案識別編號
         /// </summary>
         public string FileIdentification { get; set; }
+
+        /// <summary>
+        /// 匯入的資料是否與既有的資料有重複
+        /// </summary>
+        public bool HasOverlayData { get; set; }
     }
 }

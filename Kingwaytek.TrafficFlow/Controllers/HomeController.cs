@@ -1,6 +1,8 @@
 ﻿using Kingwaytek.TrafficFlow.Repositories;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -90,7 +92,7 @@ namespace Kingwaytek.TrafficFlow.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadInvestigation(HttpPostedFileBase file, InvestigationTypeEnum type)
+        public ActionResult UploadInvestigation(HttpPostedFileBase file, InvestigationTypeEnum type, DateTime date, int positioningId)
         {
             var fileId = GetFileIdentification();
             var fileExtension = Path.GetExtension(file.FileName);
@@ -101,12 +103,16 @@ namespace Kingwaytek.TrafficFlow.Controllers
 
             SaveFile(file.InputStream, fileId);
 
+            var hours = _investigateService.GetExistInvestigationHourlys(type, date, positioningId);
+            List<string> investigationHoursly;
             switch (type)
             {
                 case InvestigationTypeEnum.TRoad:
                 case InvestigationTypeEnum.Intersection:
                     var intersectionReader = new IntersectionReader();
                     var intersectionModel = intersectionReader.Convert(file.InputStream, type);
+                    investigationHoursly = intersectionModel.Data.Select(x => x.StartTime.Substring(0, 2)).ToList();
+                    intersectionModel.HasOverlayData = hours.Intersect(investigationHoursly).Any();
                     intersectionModel.FileIdentification = fileId;
                     _cacheProvider.Set($"Investigation:Model:{fileId}", intersectionModel, 30 * 60);
                     return View("CrossRoadPreview", intersectionModel);
@@ -114,6 +120,8 @@ namespace Kingwaytek.TrafficFlow.Controllers
                 case InvestigationTypeEnum.Pedestrians:
                     var pedestriansReader = new PedestriansReader();
                     var pedestriansModel = pedestriansReader.Convert(file.InputStream);
+                    investigationHoursly = pedestriansModel.Data.Select(x => x.StartTime.Substring(0, 2)).ToList();
+                    pedestriansModel.HasOverlayData = hours.Intersect(investigationHoursly).Any();
                     pedestriansModel.FileIdentification = fileId;
                     _cacheProvider.Set($"Investigation:Model:{fileId}", pedestriansModel, 30 * 60);
                     return View("PedestriansPreview", pedestriansModel);
@@ -121,6 +129,8 @@ namespace Kingwaytek.TrafficFlow.Controllers
                 case InvestigationTypeEnum.FiveWay:
                     var fivewayReader = new FivewayReader();
                     var fivewayModel = fivewayReader.Convert(file.InputStream);
+                    investigationHoursly = fivewayModel.Data.Select(x => x.StartTime.Substring(0, 2)).ToList();
+                    fivewayModel.HasOverlayData = hours.Intersect(investigationHoursly).Any();
                     fivewayModel.FileIdentification = fileId;
                     _cacheProvider.Set($"Investigation:Model:{fileId}", fivewayModel, 30 * 60);
                     return View("FivewayPreview", fivewayModel);

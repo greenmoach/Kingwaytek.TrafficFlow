@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -65,6 +66,19 @@ namespace Kingwaytek.TrafficFlow
 
             _positioningRepository.AddOrUpdate(positioningEntity);
 
+            // 檢查該路口是否已存在相同的調查日期的資料，如果有則採用更新的方式
+            var entity = _investigationRepository.GetAvailable()
+                .Include(x => x.InvestigationData)
+                .FirstOrDefault(x =>
+                    x.PositioningId == viewModel.PositioningId
+                    && x.InvestigaionTime == viewModel.InvestigaionTime
+                    && x.InvestigationType == (int)viewModel.Type);
+
+            if (entity != null)
+            {
+                viewModel.Id = entity.Id;
+            }
+
             if (viewModel.Id != 0)
             {
                 var editEntity = _investigationRepository.GetAvailable().FirstOrDefault(x => x.Id == viewModel.Id);
@@ -73,12 +87,14 @@ namespace Kingwaytek.TrafficFlow
                     return;
                 }
 
+                var hasNewData = editEntity.FileName != viewModel.FileIdentification;
+
                 editEntity.InvestigationTypeEnum = viewModel.Type;
                 editEntity.PositioningId = viewModel.PositioningId;
                 editEntity.InvestigaionTime = viewModel.InvestigaionTime;
                 editEntity.TrafficControlNote = viewModel.TrafficControlNote;
 
-                if (editEntity.FileName != viewModel.FileIdentification)
+                if (hasNewData)
                 {
                     editEntity.Weather = viewModel.Weather;
                     editEntity.FileName = viewModel.FileIdentification;
@@ -88,16 +104,20 @@ namespace Kingwaytek.TrafficFlow
                 _investigationRepository.Update(editEntity);
 
                 // 調查資料更新
-                if (editEntity.FileName != viewModel.FileIdentification)
+                if (hasNewData)
                 {
-                    // delete all data
+                    // get data
+                    var investigationData = GetInvestigationData(viewModel.Type, viewModel.FileIdentification, viewModel.Id);
+                    var toBeOverrideData = investigationData.Select(x => x.HourlyInterval).ToList();
+
+                    // delete old data
                     var data = _investigationDataRepository.GetAvailable()
-                        .Where(x => x.InvestigationId == viewModel.Id);
+                                                           .Where(x => x.InvestigationId == viewModel.Id && toBeOverrideData.Contains(x.HourlyInterval));
                     _investigationDataRepository.DeleteRange(data);
 
                     // add new data
-                    AddInvestigationData(viewModel.Type, viewModel.FileIdentification, viewModel.Id);
-                };
+                    _investigationDataRepository.AddRange(investigationData);
+                }
             }
             else
             {
@@ -112,7 +132,8 @@ namespace Kingwaytek.TrafficFlow
                     IntersectionId = viewModel.IntersectionId
                 };
                 var investigateEntity = _investigationRepository.Add(investigation);
-                AddInvestigationData(viewModel.Type, viewModel.FileIdentification, investigateEntity.Id);
+                var investigationData = GetInvestigationData(viewModel.Type, viewModel.FileIdentification, investigateEntity.Id);
+                _investigationDataRepository.AddRange(investigationData);
             }
         }
 
@@ -326,6 +347,30 @@ namespace Kingwaytek.TrafficFlow
             return models;
         }
 
+        /// <summary>
+        /// 取得既有調查的小時資料
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="date"></param>
+        /// <param name="positioningId"></param>
+        /// <returns></returns>
+        public IEnumerable<string> GetExistInvestigationHourlys(InvestigationTypeEnum type, DateTime date, int positioningId)
+        {
+            var entity = _investigationRepository.GetAvailable()
+                .Include(x => x.InvestigationData)
+                .FirstOrDefault(x =>
+                    x.PositioningId == positioningId
+                    && x.InvestigaionTime == date
+                    && x.InvestigationType == (int)type);
+            if (entity == null)
+            {
+                return new List<string>();
+            }
+            return entity.InvestigationData
+                         .Select(x => x.HourlyInterval.Substring(0, 2))
+                         .ToList();
+        }
+
         #region private methods - create
 
         /// <summary>
@@ -334,34 +379,39 @@ namespace Kingwaytek.TrafficFlow
         /// <param name="type"></param>
         /// <param name="fileIdentification"></param>
         /// <param name="investigateId"></param>
-        private void AddInvestigationData(InvestigationTypeEnum type, string fileIdentification, int investigateId)
+        private IEnumerable<InvestigationData> GetInvestigationData(InvestigationTypeEnum type, string fileIdentification, int investigateId)
         {
+            IEnumerable<InvestigationData> entities;
             switch (type)
             {
                 case InvestigationTypeEnum.TRoad:
                     var tRoadData = _cacheProvider.Get<InvestigateModel<VehicleInvestigateModel>>($"Investigation:Model:{fileIdentification}");
-                    var tRoadEntities = TRoadProcess(investigateId, tRoadData);
-                    _investigationDataRepository.AddRange(tRoadEntities);
+                    entities = TRoadProcess(investigateId, tRoadData);
+
                     break;
 
                 case InvestigationTypeEnum.Intersection:
                     var intersectionData = _cacheProvider.Get<InvestigateModel<VehicleInvestigateModel>>($"Investigation:Model:{fileIdentification}");
-                    var intersectionEntities = IntersectionProcess(investigateId, intersectionData);
-                    _investigationDataRepository.AddRange(intersectionEntities);
+                    entities = IntersectionProcess(investigateId, intersectionData);
+
                     break;
 
                 case InvestigationTypeEnum.FiveWay:
                     var fiveWayData = _cacheProvider.Get<InvestigateModel<VehicleInvestigateModel>>($"Investigation:Model:{fileIdentification}");
-                    var fiveWayEntities = FiveWayProcess(investigateId, fiveWayData);
-                    _investigationDataRepository.AddRange(fiveWayEntities);
+                    entities = FiveWayProcess(investigateId, fiveWayData);
+
                     break;
 
                 case InvestigationTypeEnum.Pedestrians:
                     var pedestriansData = _cacheProvider.Get<InvestigateModel<PedestriansInvestigateModel>>($"Investigation:Model:{fileIdentification}");
-                    var pedestriansEntities = PedestriansProcess(investigateId, pedestriansData);
-                    _investigationDataRepository.AddRange(pedestriansEntities);
+                    entities = PedestriansProcess(investigateId, pedestriansData);
+
                     break;
+
+                default:
+                    throw new InvalidEnumArgumentException();
             }
+            return entities;
         }
 
         /// <summary>

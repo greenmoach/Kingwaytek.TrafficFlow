@@ -131,6 +131,8 @@
 
             formData.append('file', file);
             formData.append('type', $('#InvestigationType').find('option:selected').val());
+            formData.append('date', $('input[name="InvestigaionTime"]').val());
+            formData.append('positioningId', positioningOfIntersection.Id);
             $.ajax(url, {
                 method: 'post',
                 processData: false,
@@ -139,10 +141,21 @@
             }).done(function (data) {
                 $('#Modal-upload-success').remove();
                 $('body').append(data);
-                $('#Modal-upload-success').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+
+                if ($('#HasOverlayData').val() === 'True') {
+                    var r = confirm('匯入資料已有部份時段存有資料，是否進行覆蓋?');
+                    if (r) {
+                        $('#Modal-upload-success').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    }
+                } else {
+                    $('#Modal-upload-success').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
             }).fail(function () {
                 alert('檔案上傳錯誤，請確認網路設定並稍後再試');
             });
