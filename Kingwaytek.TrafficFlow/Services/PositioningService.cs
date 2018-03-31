@@ -5,27 +5,34 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security;
 using Kingwaytek.TrafficFlow.Models;
+using Kingwaytek.TrafficFlow.Provider;
 using Kingwaytek.TrafficFlow.Repositories;
 
 namespace Kingwaytek.TrafficFlow
 {
     public class PositioningService
     {
-        private readonly string BaseAddress = "https://gistraffic.tycg.gov.tw";
+        private readonly string _baseAddress;
 
-        private readonly string GetTownsUri = "/TytfmWeb/Content/data.json";
+        private readonly string _getTownsUri;
 
-        private readonly string GetByTownUri = "/TytfmWeb/api/SelectAPI/GetIntnodelist1?town={0}";
+        private readonly string _getByTownUri;
 
-        private readonly string GetByIntersectionUri = "/TytfmWeb/api/SelectAPI/GetIntnodelist2?town={0}&rn1={1}";
+        private readonly string _getByIntersectionUri;
 
-        private readonly string PositioningUri = "/TytfmWeb/api/SelectAPI/GetIntnodeposition?town={0}&rn1={1}&rn2={2}";
+        private readonly string _positioningUri;
 
         private readonly PositioningRepository _positioningRepository;
 
         public PositioningService()
         {
             _positioningRepository = new PositioningRepository();
+            var config = new ConfigProvider();
+            _baseAddress = config.Get("api:position:baseAddress");
+            _getTownsUri = config.Get("api:position:getTownsUri");
+            _getByTownUri = config.Get("api:position:getByTownUri");
+            _getByIntersectionUri = config.Get("api:position:getByIntersectionUri");
+            _positioningUri = config.Get("api:position:positioningUri");
         }
 
         /// <summary>
@@ -37,10 +44,10 @@ namespace Kingwaytek.TrafficFlow
             var models = new List<PositioningTownDto>();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseAddress);
+                client.BaseAddress = new Uri(_baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync(GetTownsUri).Result;
+                HttpResponseMessage response = client.GetAsync(_getTownsUri).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
                     return models;
@@ -67,10 +74,10 @@ namespace Kingwaytek.TrafficFlow
             var models = new List<string>();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseAddress);
+                client.BaseAddress = new Uri(_baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync(string.Format(GetByTownUri, town)).Result;
+                HttpResponseMessage response = client.GetAsync(string.Format(_getByTownUri, town)).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
                     return models;
@@ -98,10 +105,10 @@ namespace Kingwaytek.TrafficFlow
             var models = new List<string>();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseAddress);
+                client.BaseAddress = new Uri(_baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync(string.Format(GetByIntersectionUri, town, road)).Result;
+                HttpResponseMessage response = client.GetAsync(string.Format(_getByIntersectionUri, town, road)).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
                     return models;
@@ -141,10 +148,10 @@ namespace Kingwaytek.TrafficFlow
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseAddress);
+                client.BaseAddress = new Uri(_baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync(string.Format(PositioningUri, town, road1, road2)).Result;
+                HttpResponseMessage response = client.GetAsync(string.Format(_positioningUri, town, road1, road2)).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
                     return null;

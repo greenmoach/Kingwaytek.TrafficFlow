@@ -91,12 +91,14 @@
             positioningId: positioningOfIntersection.Id,
             investigaionTime: dateTime
         };
-
-        $.post(sitepath + 'home/query', parameters)
-            .done(function (data) {
-                singleData = data;
-                initDisplayObjects();
-            })
+        $.ajax({
+            url: sitepath + 'home/query',
+            method: 'post',
+            data: parameters
+        }).done(function (data) {
+            singleData = data;
+            initDisplayObjects();
+        })
             .fail(function () {
                 alert('該路口尚未有調查資料');
             });
@@ -125,6 +127,9 @@
             infos.forEach(function (info) { info.close(); });
             infos = [];
         }
+
+        // empty hourlyData
+        hourlyData = null;
 
         var centerIcon;
         // 車流量 or 行人量
@@ -209,7 +214,6 @@
 
                     $.post(sitepath + 'home/DirectHistoricalData', parameters)
                         .done(function (data) {
-                            $('.div-turn-history').fadeIn();
                             updateHistoricalDirectChart(data);
                             showVehicleInfoWindow(m);
                         })
@@ -280,6 +284,11 @@
     }
 
     function updateHourlyVehicleChart() {
+        // Not select hourly data yet
+        if (hourlyData === null) {
+            return;
+        }
+
         if (singleData.InvestigationType === 3) {
             $('#HourlyVehicleChart').hide();
         }
@@ -311,8 +320,8 @@
         var rows,
             data,
             options = {
-                width: 288,
-                height: 234,
+                width: 390,
+                height: 246,
                 curveType: 'function',
                 legend: { position: 'bottom' }
             };
@@ -347,6 +356,11 @@
     }
 
     function updateHistoricalDirectChart(objects) {
+        // Not select hourly data yet
+        if (hourlyData === null) {
+            return;
+        }
+
         var rows = objects.map(function (element) {
             var row = Object.values(element.Directions);
             row.unshift(element.InvestigaionTime);
@@ -354,8 +368,8 @@
         });
 
         var options = {
-            width: 288,
-            height: 234,
+            width: 390,
+            height: 246,
             curveType: 'function',
             legend: { position: 'bottom' }
         };
@@ -368,9 +382,16 @@
         data.addRows(rows);
 
         historicalDirectChart.draw(data, options);
+
+        $('.div-turn-history').fadeIn();
     }
 
     function updatePedestriansInfoWindows() {
+        // Not select hourly data yet
+        if (hourlyData === null) {
+            return;
+        }
+
         // Cleaning
         if (infos.length !== 0) {
             infos.forEach(function (info) { info.close(); });
@@ -412,7 +433,7 @@
 
             var info = new google.maps.InfoWindow({
                 content: infoHtml,
-                maxWidth: 300
+                maxWidth: 400
             });
             info.open(geeMap, centerMarker);
             infos.push(info);
@@ -420,6 +441,19 @@
     }
 
     function showVehicleInfoWindow(marker) {
+        // Not select hourly data yet
+        if (hourlyData === null) {
+            return;
+        }
+
+        // Prevent to open the info window repeatly
+        var cInfo = infos.find(function (info) { return info.id === marker.id; });
+        if (cInfo !== undefined) {
+            cInfo.open(geeMap, marker);
+
+            return;
+        }
+
         var trafficData = hourlyData.TrafficData.filter(function (item) {
             return item.Intersection === marker.id;
         });
@@ -427,7 +461,7 @@
             return accumulator + currentValue.Amount;
         }, 0);
 
-        var infoHtml, maxWidth;
+        var infoHtml, maxWidth = 400;
 
         if (singleData.InvestigationType === 1 || singleData.InvestigationType === 2) {
             var leftData = trafficData.find(function (item) { return item.Direction === '左轉'; });
@@ -440,8 +474,6 @@
                 .end().find('#straight').text(straightData !== undefined ? (straightData.Amount + '(' + (Math.round(straightData.Amount / sum * 1000) / 10) + '%)') : '')
                 .end().find('#right').text(rightData !== undefined ? (rightData.Amount + '(' + (Math.round(rightData.Amount / sum * 1000) / 10) + '%)') : '')
                 .end().html();
-
-            maxWidth = 250;
         }
 
         if (singleData.InvestigationType === 4) {
@@ -459,14 +491,13 @@
                 .end().find('#D').text(dData.Amount + '(' + (Math.round(dData.Amount / sum * 1000) / 10) + '%)')
                 .end().find('#E').text(eData.Amount + '(' + (Math.round(eData.Amount / sum * 1000) / 10) + '%)')
                 .end().html();
-
-            maxWidth = 350;
         }
 
         var info = new google.maps.InfoWindow({
             content: infoHtml,
             maxWidth: maxWidth
         });
+        info['id'] = marker.id;
         info.open(geeMap, marker);
         infos.push(info);
     }

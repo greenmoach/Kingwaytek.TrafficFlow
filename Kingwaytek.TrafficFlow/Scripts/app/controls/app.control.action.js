@@ -20,13 +20,22 @@
 $(document).ready(function () {
     //隱藏
     $('.btn-toggle.l-hide').click(function () {
-        $('.gis-left,.gis-right,.page-right').animate({ left: '-=325px' }, 300);
+        $('.gis-left,.gis-right,.page-right').animate({ left: '-=325px' }, 300, function () {
+            // 右邊測攔縮合，重新調整地圖大小
+            google.maps.event.trigger(geeMap, 'resize');
+        });
         $(this).hide(); $('.l-show').show();
     });
     //展開
     $('.btn-toggle.l-show').click(function () {
-        $('.gis-left,.gis-right,.page-right').animate({ left: '+=325px' }, 300);
+        $('.gis-left,.gis-right,.page-right').animate({ left: '+=325px' }, 300, function () {
+            // 右邊測攔縮合，重新調整地圖大小
+            google.maps.event.trigger(geeMap, 'resize');
+        });
         $(this).hide(); $('.l-hide').show();
+
+        // 右邊測攔縮合，重新調整地圖大小
+        google.maps.event.trigger(geeMap, 'resize');
     });
 });
 
